@@ -45,7 +45,7 @@
   "source_of_truth": {
     "type": "git-repository",
     "path": ".",
-    "repository": "https://github.com/dev-bricks/coma"
+    "repository": "https://github.com/ellmos-ai/coma"
   },
   "adapters": [
     {
