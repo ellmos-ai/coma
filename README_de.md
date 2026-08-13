@@ -4,7 +4,7 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-233%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-236%20passed-brightgreen.svg)](https://docs.pytest.org/)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Organization: ellmos-ai](https://img.shields.io/badge/organization-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -243,7 +243,7 @@ Der Standard ist `NullLock` — gewährt alles, merkt sich nichts.
 ## Tests
 
 ```bat
-python -m pytest -q      :: 233 Tests
+python -m pytest -q      :: 236 Tests
 ```
 
 **Kein Test startet einen echten Prozess.** `subprocess` wird überall ersetzt; das ist Absicht — ein Test, der `claude` startet, kostet Tokens und braucht Netz. Geprüft wird der Kommandobau gegen erwartete Argumentlisten.

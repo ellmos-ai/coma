@@ -5,7 +5,7 @@ All notable changes to COMA will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — 2026-08-04
+## [Unreleased] — 2026-08-13
 
 ### Fixed
 - Fixed 4 ruff lint issues in `comas/__init__.py` compatibility shim by adding `noqa: E402, F401` annotations (100% ruff clean).
@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ecosystem & status Shields.io badges (`ellmos-ai`, `open-bricks`, Pytest 233 passed, Python 3.10+, License MIT).
 - GFM Callout notice for `llms.txt` discoverability in English and German READMEs.
 - Interactive Mermaid architecture diagram for job board protocol and spawner workflow.
+- Multi-agent integration coverage for shared `JobBoard`/`JobRunner` execution,
+  CLI `--dry-run` resolution and incremental JSONL inbox streaming (236 tests
+  passed).
 
 ## [0.2.0] — 2026-07-26
 

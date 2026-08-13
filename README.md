@@ -4,7 +4,7 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-233%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-236%20passed-brightgreen.svg)](https://docs.pytest.org/)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Organization: ellmos-ai](https://img.shields.io/badge/organization-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
@@ -141,7 +141,7 @@ result = spawner.run("Say Hello", log_file="run.log")
 ## Testing
 
 ```bat
-python -m pytest -q      :: 233 passed tests
+python -m pytest -q      :: 236 passed tests
 ```
 
 Tests use mocked subprocesses to ensure fast, deterministic verification with 0 token consumption.

@@ -1,8 +1,8 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for `ellmos-ai/coma`.
-> Last-checked: 2026-08-10
-> Verification: 233 passed Pytest unit tests (100% green).
+> Last-checked: 2026-08-13
+> Verification: 236 passed Pytest unit tests (100% green).
 
 ## Overview
 
@@ -73,7 +73,7 @@ coma check .\coma-vendor.json
 
 ## Verification & Metadata
 
-- **Pytest Suite:** 233 passed unit tests (mocked subprocesses, 0 token consumption during test runs).
+- **Pytest Suite:** 236 passed unit tests (mocked subprocesses, 0 token consumption during test runs).
 - **Python Compatibility:** Python 3.10+
 - **License:** MIT
 - **Organization:** `ellmos-ai`
