@@ -4,9 +4,11 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-236%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-241%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Organization: ellmos-ai](https://img.shields.io/badge/organization-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open-bricks](https://img.shields.io/badge/umbrella-open--bricks-purple.svg)](https://github.com/open-bricks)
 
@@ -141,10 +143,30 @@ result = spawner.run("Say Hello", log_file="run.log")
 ## Testing
 
 ```bat
-python -m pytest -q      :: 236 passed tests
+python -m pytest -q      :: 241 passed tests
 ```
 
 Tests use mocked subprocesses to ensure fast, deterministic verification with 0 token consumption.
+
+## Sibling Tools & Ecosystem
+
+COMA is part of the `ellmos-ai` orchestration architecture and the broader `open-bricks` open-source umbrella:
+
+| Layer / Ecosystem | Repository | Purpose |
+|---|---|---|
+| **Agent Orchestration** | [`ellmos-ai/coma`](https://github.com/ellmos-ai/coma) | Process lifecycle spawner & session-decoupled job board |
+| **Governance & Policy** | [`ellmos-ai/policy-registry`](https://github.com/ellmos-ai/policy-registry) | Central governance, role definitions & delegation rules |
+| **Data Transit** | [`ellmos-ai/sqlite-transit-sync`](https://github.com/ellmos-ai/sqlite-transit-sync) | Zero-copy transaction sync & SQLite replication |
+| **Fleet Inspection** | [`ellmos-ai/system-explorer`](https://github.com/ellmos-ai/system-explorer) | System introspection, MCP diagnostics & fleet monitoring |
+| **Automation Flow** | [`ellmos-ai/workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Event triggers, pipeline hooks & webhook orchestration |
+| **Task Delegation** | [`ellmos-ai/ellmos-delegation-authority`](https://github.com/ellmos-ai/ellmos-delegation-authority) | Autonomous task authorization & authority validation |
+| **Dev Tools** | [`dev-bricks/DevCenter`](https://github.com/dev-bricks/DevCenter) | Developer workstation hub, workspace management & tools |
+| **CLI Sandbox** | [`dev-bricks/CodeBox`](https://github.com/dev-bricks/CodeBox) | Sandboxed code execution & snippet validation |
+| **Agent Bootstrap** | [`dev-bricks/safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Safe startup, environment checks & preflight diagnostics |
+
+## Security
+
+For subprocess isolation details, single-writer protocol boundaries, and vulnerability disclosure policies, see [`SECURITY.md`](SECURITY.md).
 
 ## License
 

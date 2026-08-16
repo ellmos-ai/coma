@@ -4,9 +4,11 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-236%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-241%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Organization: ellmos-ai](https://img.shields.io/badge/organization-ellmos--ai-blue.svg)](https://github.com/ellmos-ai)
 [![Umbrella: open-bricks](https://img.shields.io/badge/umbrella-open--bricks-purple.svg)](https://github.com/open-bricks)
 
@@ -243,11 +245,31 @@ Der Standard ist `NullLock` — gewährt alles, merkt sich nichts.
 ## Tests
 
 ```bat
-python -m pytest -q      :: 236 Tests
+python -m pytest -q      :: 241 Tests
 ```
 
 **Kein Test startet einen echten Prozess.** `subprocess` wird überall ersetzt; das ist Absicht — ein Test, der `claude` startet, kostet Tokens und braucht Netz. Geprüft wird der Kommandobau gegen erwartete Argumentlisten.
 
+## Geschwisterwerkzeuge & Ökosystem
+
+COMA ist integraler Bestandteil der `ellmos-ai` Orchestrierungsarchitektur und des übergeordneten Open-Source-Dachverbunds `open-bricks`:
+
+| Schicht / Ökosystem | Repository | Zweck |
+|---|---|---|
+| **Agent-Orchestrierung** | [`ellmos-ai/coma`](https://github.com/ellmos-ai/coma) | Lebenszyklus-Spawner & entkoppeltes dateibasiertes Job-Board |
+| **Governance & Policies** | [`ellmos-ai/policy-registry`](https://github.com/ellmos-ai/policy-registry) | Zentrale Richtlinien-, Rollen- und Delegationsverwaltung |
+| **Datentransit** | [`ellmos-ai/sqlite-transit-sync`](https://github.com/ellmos-ai/sqlite-transit-sync) | Zero-Copy Transaktions- und SQLite-Replikationssynchronisation |
+| **System-Inspektion** | [`ellmos-ai/system-explorer`](https://github.com/ellmos-ai/system-explorer) | System-Introspektion, MCP-Diagnose & Flotten-Monitoring |
+| **Automationsfluss** | [`ellmos-ai/workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Ereignis-Trigger, Pipeline-Hooks & Webhook-Orchestrierung |
+| **Aufgabendelegation** | [`ellmos-ai/ellmos-delegation-authority`](https://github.com/ellmos-ai/ellmos-delegation-authority) | Autonome Aufgabenautorisierung & Vollmachtenprüfung |
+| **Entwickler-Hub** | [`dev-bricks/DevCenter`](https://github.com/dev-bricks/DevCenter) | Entwickler-Workstation-Hub, Arbeitsbereichsverwaltung & Tools |
+| **CLI Sandbox** | [`dev-bricks/CodeBox`](https://github.com/dev-bricks/CodeBox) | Isolierte Codeausführung & Snippet-Validierung |
+| **Agenten-Bootstrap** | [`dev-bricks/safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Sichere Initialisierung, Umgebungschecks & Preflight-Diagnostik |
+
+## Sicherheit
+
+Details zur Prozessisolierung, den Protokollgrenzen nach dem Single-Writer-Prinzip und Richtlinien zur Offenlegung von Schwachstellen finden sich in [`SECURITY.md`](SECURITY.md).
+
 ## Stand & Lizenz
 
-Version 0.2.0. Lizenz: MIT. Das Quellrepository gehört zum `ellmos-ai` / `open-bricks` Ökosystem.
+Version 0.2.1. Lizenz: MIT. Das Quellrepository gehört zum `ellmos-ai` / `open-bricks` Ökosystem.

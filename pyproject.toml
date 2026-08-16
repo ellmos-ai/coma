@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coma"
-version = "0.2.0"
+version = "0.2.1"
 description = "COMA - Lebenszyklus-Schicht für Agenten: Prozess starten, in Kontakt bleiben, Ergebnis abholen"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -45,3 +45,11 @@ include = ["coma*", "comas*"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]

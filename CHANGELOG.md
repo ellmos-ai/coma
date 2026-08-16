@@ -5,21 +5,17 @@ All notable changes to COMA will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — 2026-08-13
-
-### Fixed
-- Fixed 4 ruff lint issues in `comas/__init__.py` compatibility shim by adding `noqa: E402, F401` annotations (100% ruff clean).
-- Updated `llms.txt` Last-checked timestamp to 2026-08-04 and verified test suite (233 Pytest unit tests passed).
+## [0.2.1] — 2026-08-16
 
 ### Added
-- Root `llms.txt` context index file for AI/LLM discoverability and RAG context indexing (233 Pytest unit tests verified).
-- German parity documentation (`README_de.md`) with top language switcher.
-- Ecosystem & status Shields.io badges (`ellmos-ai`, `open-bricks`, Pytest 233 passed, Python 3.10+, License MIT).
-- GFM Callout notice for `llms.txt` discoverability in English and German READMEs.
-- Interactive Mermaid architecture diagram for job board protocol and spawner workflow.
-- Multi-agent integration coverage for shared `JobBoard`/`JobRunner` execution,
-  CLI `--dry-run` resolution and incremental JSONL inbox streaming (236 tests
-  passed).
+- Dedicated security policy (`SECURITY.md`) outlining process boundaries, single-writer invariants, and vulnerability reporting.
+- Automated metadata, schema, and manifest parity test suite in `tests/test_metadata.py` (5/5 passed).
+- Sibling ecosystem cross-linking table in `README.md` and `README_de.md` linking `ellmos-ai` and `dev-bricks` tools.
+- Badges for Version, Dependencies, and Pytest status (241 passed) in both English and German documentation.
+- Standard `[tool.ruff]` and `[tool.ruff.lint]` configuration in `pyproject.toml`.
+
+### Changed
+- Updated `llms.txt` Last-checked timestamp to 2026-08-16 and test count to 241 passed Pytest unit tests.
 
 ## [0.2.0] — 2026-07-26
 
