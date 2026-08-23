@@ -49,24 +49,28 @@
   },
   "adapters": [
     {
+      "type": "seam",
       "id": "claude",
       "target": "claude-code-cli",
       "status": "verified",
       "note": "Vereinigungsmenge aus llmauto, swarm-ai und START-LOCAL-AGENT.bat; Flags gegen claude --help 2.1.220 geprueft."
     },
     {
+      "type": "seam",
       "id": "codex",
       "target": "codex exec",
       "status": "verified",
       "note": "Codex CLI 0.145.0 am 2026-07-27 read-only live ausgefuehrt; stabiler Node-Einstieg, Ergebnis via --output-last-message."
     },
     {
+      "type": "seam",
       "id": "agy",
       "target": "antigravity-agy",
       "status": "verified",
       "note": "agy 1.1.7 am 2026-07-27 live ausgefuehrt; aktuelles Modellinventar und stdout/Exitcode geprueft."
     },
     {
+      "type": "seam",
       "id": "kimi",
       "target": "kimi-code-cli",
       "status": "skeleton",
