@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68.0", "wheel"]
+requires = ["setuptools>=77.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,8 @@ version = "0.2.1"
 description = "COMA - Lebenszyklus-Schicht für Agenten: Prozess starten, in Kontakt bleiben, Ergebnis abholen"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
     {name = "Lukas Geiger"},
 ]
@@ -19,7 +20,6 @@ keywords = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Environment :: Console",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
