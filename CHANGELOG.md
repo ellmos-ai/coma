@@ -5,6 +5,21 @@ All notable changes to COMA will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-09-09
+
+### Added
+- Process-free `build_session_plan()` API for interactive and headless Claude,
+  Codex, AGY and fail-closed Kimi sessions.
+- Provider capability records, deterministic fallback candidates and a bounded
+  read-only probe with child-process cleanup.
+- `coma session` CLI with dry-run support; role prompt files and user requests
+  stay separate.
+
+### Changed
+- Capability help contracts reflect Claude Code 2.1.263, Codex CLI 0.153.4,
+  agy 1.1.27 and Kimi 0.31.0 as observed on 2026-09-09. Kimi remains
+  unverified for real prompt execution.
+
 ## [0.2.1] — 2026-08-16
 
 ### Added

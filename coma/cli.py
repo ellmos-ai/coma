@@ -1,15 +1,16 @@
 """Kommandozeile: ``coma`` bzw. ``python -m coma``.
 
-Der Ersatz fuer ``START-LOCAL-AGENT.bat`` ist ``coma run``. Alles andere sind
-Lese- und Pruefbefehle fuer Orchestratoren.
+Der Ersatz für ``START-LOCAL-AGENT.bat`` ist ``coma run``. Alles andere sind
+Lese- und Prüfbefehle für Orchestratoren.
 
-``--dry-run`` baut das Kommando und zeigt es, ohne etwas zu starten — damit laesst
-sich pruefen, was ein Lauf ausloesen wuerde, bevor Tokens fliessen.
+``--dry-run`` baut das Kommando und zeigt es, ohne etwas zu starten — damit lässt
+sich prüfen, was ein Lauf auslösen wuerde, bevor Tokens fließen.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Sequence
@@ -28,6 +29,8 @@ from .manifest import MANIFEST_FILENAME, ManifestError, check_all, check_manifes
 from .poll import job_view, overview, read_console_log, read_result, read_status
 from .protocol import JobBoard, ProtocolError
 from .runner import JobRunner
+from .session import build_probe_command, build_session_plan, probe
+from .starters import generate_starters, run_starter
 
 
 def _reconfigure_stdout() -> None:
@@ -52,7 +55,7 @@ def _tools_argument(value: str) -> Any:
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
-#: Vorlage aus einem Preset uebernehmen, damit Einzelangaben davor gelten koennen.
+#: Vorlage aus einem Preset übernehmen, damit Einzelangaben davor gelten können.
 _PRESET_FIELDS = (
     "model",
     "permission_mode",
@@ -64,7 +67,7 @@ _PRESET_FIELDS = (
 
 
 def _adapter_from_args(args: argparse.Namespace) -> Any:
-    """Adapter aus den CLI-Argumenten bauen: Preset als Grundlage, Flags darueber."""
+    """Adapter aus den CLI-Argumenten bauen: Preset als Grundlage, Flags darüber."""
     if args.adapter != ClaudeAdapter.name:
         flags: dict[str, Any] = {}
         for field in ("model", "timeout", "cwd", "output_format"):
@@ -133,18 +136,18 @@ def _add_adapter_options(parser: argparse.ArgumentParser) -> None:
         help="benanntes claude-Profil als Grundlage",
     )
     parser.add_argument("--model", help="Modell, z. B. opus, sonnet, haiku")
-    parser.add_argument("--fallback-model", help="Ausweichmodell bei Ueberlast")
+    parser.add_argument("--fallback-model", help="Ausweichmodell bei Überlast")
     parser.add_argument(
         "--permission-mode",
-        help="dontAsk (verweigert, haengt nie) oder bypassPermissions u. a.",
+        help="dontAsk (verweigert, hängt nie) oder bypassPermissions u. a.",
     )
     parser.add_argument(
         "--allowed-tools",
-        help="Komma-Liste vorab freigegebener Werkzeuge; '-' laesst das Flag weg",
+        help="Komma-Liste vorab freigegebener Werkzeuge; '-' lässt das Flag weg",
     )
     parser.add_argument(
         "--tools",
-        help="Komma-Liste verfuegbarer Built-ins; '' schaltet alle ab, '-' laesst das Flag weg",
+        help="Komma-Liste verfügbarer Built-ins; '' schaltet alle ab, '-' lässt das Flag weg",
     )
     parser.add_argument("--max-budget-usd", type=float, help="Kostendeckel des Laufs")
     parser.add_argument(
@@ -186,7 +189,7 @@ def _add_adapter_options(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument(
         "--allow-unverified", action="store_true",
-        help="nicht live gepruefte Adapter (codex, agy, kimi) trotzdem starten",
+        help="nicht live geprüfte Adapter (codex, agy, kimi) trotzdem starten",
     )
 
 
@@ -194,7 +197,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="coma",
         description=(
-            "COMA — Lebenszyklus-Schicht fuer Agenten: starten, beobachten, abholen."
+            "COMA — Lebenszyklus-Schicht für Agenten: starten, beobachten, abholen."
         ),
     )
     parser.add_argument("--version", action="version", version=f"coma {__version__}")
@@ -205,16 +208,49 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--json", action="store_true", help="Ausgabe als JSON")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run = subparsers.add_parser("run", help="Job starten (Ersatz fuer START-LOCAL-AGENT.bat)")
-    run.add_argument("job_id", nargs="?", help="ohne Angabe: aeltester Auftrag in IN/")
+    run = subparsers.add_parser("run", help="Job starten (Ersatz für START-LOCAL-AGENT.bat)")
+    run.add_argument("job_id", nargs="?", help="ohne Angabe: ältester Auftrag in IN/")
     run.add_argument(
         "--dry-run", action="store_true", help="Kommando nur zeigen, nichts starten"
     )
     _add_adapter_options(run)
 
-    cmd = subparsers.add_parser("cmd", help="Kommando fuer einen freien Prompt zeigen")
+    cmd = subparsers.add_parser("cmd", help="Kommando für einen freien Prompt zeigen")
     cmd.add_argument("prompt", help="der Prompt")
     _add_adapter_options(cmd)
+
+    session = subparsers.add_parser(
+        "session", help="interaktive oder headless Rollensitzung planen/starten"
+    )
+    session.add_argument("--provider", required=True, choices=("claude", "codex", "agy", "kimi"))
+    session.add_argument("--prompt-file", required=True, help="kanonische Rollen-Promptdatei")
+    session.add_argument("--request", required=True, help="getrennter Nutzerauftrag")
+    session.add_argument("--mode", choices=("interactive", "headless"), default="interactive")
+    session.add_argument("--model", default="")
+    session.add_argument("--effort", default="")
+    session.add_argument("--name", default="", help="Sitzungsname")
+    session.add_argument("--cwd", help="Arbeitsverzeichnis")
+    session.add_argument("--trusted", action="store_true", help="belegte CLI-Freigabeflags setzen")
+    session.add_argument("--mcp-config", help="Claude-MCP-Konfiguration")
+    session.add_argument("--allow-unverified", action="store_true")
+    session.add_argument("--probe", action="store_true", help="vor dem Start eine Read-only-Sonde ausführen")
+    session.add_argument("--probe-timeout", type=float, default=120.0)
+    session.add_argument("--dry-run", action="store_true", help="argv nur anzeigen")
+
+    starters = subparsers.add_parser("starters", help="roles[]-Starter erzeugen oder ausführen")
+    starter_commands = starters.add_subparsers(dest="starter_command", required=True)
+    generate = starter_commands.add_parser("generate", help="START.bat und start.sh erzeugen")
+    generate.add_argument("--manifest", required=True)
+    generate.add_argument("--output-dir", required=True)
+    generate.add_argument("--force", action="store_true")
+    starter_run = starter_commands.add_parser("run", help="generierten Fallback ausführen")
+    starter_run.add_argument("role", nargs="?")
+    starter_run.add_argument("--manifest", required=True)
+    starter_run.add_argument("--provider", default="")
+    starter_run.add_argument("--model", default="")
+    starter_run.add_argument("--effort", default="")
+    starter_run.add_argument("--cwd")
+    starter_run.add_argument("--dry-run", action="store_true")
 
     submit = subparsers.add_parser("submit", help="Auftrag in IN/ ablegen")
     submit.add_argument("job_id")
@@ -233,7 +269,7 @@ def build_parser() -> argparse.ArgumentParser:
     log.add_argument("job_id")
     log.add_argument("--tail-bytes", type=int, default=200_000)
 
-    send = subparsers.add_parser("send", help="Nachricht an den Agenten anhaengen")
+    send = subparsers.add_parser("send", help="Nachricht an den Agenten anhängen")
     send.add_argument("job_id")
     send.add_argument("text", help="Freitext oder JSON-Objekt")
 
@@ -241,10 +277,10 @@ def build_parser() -> argparse.ArgumentParser:
     inbox.add_argument("job_id")
     inbox.add_argument("--tail", type=int, default=0, help="nur die letzten N")
 
-    subparsers.add_parser("adapters", help="verfuegbare CLI-Adapter")
+    subparsers.add_parser("adapters", help="verfügbare CLI-Adapter")
 
     check = subparsers.add_parser(
-        "check", help="mitgelieferte Kopien gegen Manifest und Quelle pruefen"
+        "check", help="mitgelieferte Kopien gegen Manifest und Quelle prüfen"
     )
     check.add_argument(
         "manifest", nargs="?",
@@ -252,7 +288,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     check.add_argument("--source", help="Quellverzeichnis des coma-Pakets")
 
-    vendor_cmd = subparsers.add_parser("vendor", help="Manifest fuer eine Kopie schreiben")
+    vendor_cmd = subparsers.add_parser("vendor", help="Manifest für eine Kopie schreiben")
     vendor_cmd.add_argument("manifest", help="Zielpfad der Manifestdatei")
     vendor_cmd.add_argument(
         "--path", required=True, help="Pfad der Kopie, relativ zur Manifestdatei"
@@ -313,6 +349,72 @@ def _cmd_cmd(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_session(args: argparse.Namespace) -> int:
+    plan = build_session_plan(
+        args.provider,
+        prompt_file=args.prompt_file,
+        request=args.request,
+        mode=args.mode,
+        model=args.model,
+        effort=args.effort,
+        session_name=args.name,
+        cwd=args.cwd,
+        trusted=args.trusted,
+        mcp_config=args.mcp_config,
+        allow_unverified=args.allow_unverified,
+    )
+    payload = {
+        "provider": plan.provider,
+        "mode": plan.mode,
+        "verified": plan.verified,
+        "prompt_file": str(plan.prompt_file),
+        "cwd": str(plan.cwd),
+        "commands": [list(command) for command in plan.commands],
+    }
+    if args.dry_run:
+        text = "\n".join(subprocess.list2cmdline(list(command)) for command in plan.commands)
+        _emit(args, payload, text)
+        return 0
+    if args.probe:
+        ok, reason = probe(
+            build_probe_command(
+                plan.provider,
+                plan.executable,
+                model=args.model,
+                effort=args.effort,
+            ),
+            args.probe_timeout,
+            cwd=plan.cwd,
+        )
+        print(f"[SONDE] {plan.provider}: {reason}")
+        if not ok:
+            return 1
+    for command in plan.commands:
+        completed = subprocess.run(list(command), cwd=plan.cwd, check=False)
+        if completed.returncode:
+            return int(completed.returncode)
+    return 0
+
+
+def _cmd_starters(args: argparse.Namespace) -> int:
+    if args.starter_command == "generate":
+        windows, posix = generate_starters(
+            args.manifest, args.output_dir, force=args.force
+        )
+        payload = {"windows": str(windows), "posix": str(posix)}
+        _emit(args, payload, f"Starter geschrieben:\n- {windows}\n- {posix}")
+        return 0
+    return run_starter(
+        args.manifest,
+        role=args.role or "",
+        provider=args.provider,
+        model=args.model,
+        effort=args.effort,
+        cwd=args.cwd,
+        dry_run=args.dry_run,
+    )
+
+
 def _cmd_submit(args: argparse.Namespace) -> int:
     markdown = (
         Path(args.file).read_text(encoding="utf-8") if args.file else sys.stdin.read()
@@ -326,7 +428,7 @@ def _cmd_status(args: argparse.Namespace) -> int:
     paths = JobBoard(args.root).paths(args.job_id)
     status = read_status(paths)
     if status is None:
-        _emit(args, {}, f"kein Status fuer {args.job_id!r} in {paths.out_dir}")
+        _emit(args, {}, f"kein Status für {args.job_id!r} in {paths.out_dir}")
         return 1
     view = job_view(paths)
     text = "\n".join(f"{key:<12}: {value}" for key, value in view.items())
@@ -397,7 +499,7 @@ def _cmd_adapters(args: argparse.Namespace) -> int:
     rows = describe_adapters()
     lines = []
     for row in rows:
-        mark = "geprueft" if row["verified"] else "GERUEST"
+        mark = "geprüft" if row["verified"] else "GERUEST"
         lines.append(f"{row['name']:<8} [{mark}]  {row['display_name']}")
         lines.append(f"         Binary: {row['resolved'] or row['executable'] + ' (nicht gefunden)'}")
         for note in row["notes"]:
@@ -452,6 +554,8 @@ def _cmd_vendor(args: argparse.Namespace) -> int:
 _COMMANDS = {
     "run": _cmd_run,
     "cmd": _cmd_cmd,
+    "session": _cmd_session,
+    "starters": _cmd_starters,
     "submit": _cmd_submit,
     "status": _cmd_status,
     "list": _cmd_list,

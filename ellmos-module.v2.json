@@ -2,12 +2,12 @@
   "schema": "ellmos.module.v2",
   "id": "coma",
   "display_name": "COMA",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "category": "orchestration",
   "kind": "runtime",
   "status": "development",
   "visibility": "public",
-  "description": "Provider-unabhaengige Orchestrierungs- und Lebenszyklus-Schicht fuer Agentenprozesse. Spawn-Schicht mit verifizierten CLI-Adaptern fuer Claude, Codex und Agy sowie fail-closed Kimi-Geruest, Datei-Protokoll mit einem Schreiber je Datei, Statusschreiber und Poll-Hilfen. COMA ist kein Scheduler, sperrt nichts, verwaltet keine Rechte und haelt kein Gedaechtnis.",
+  "description": "Provider-unabhängige Orchestrierungs- und Lebenszyklus-Schicht für Agentenprozesse. Spawn-Schicht mit verifizierten CLI-Adaptern für Claude, Codex und Agy sowie fail-closed Kimi-Gerüst, Datei-Protokoll mit einem Schreiber je Datei, Statusschreiber und Poll-Hilfen. COMA ist kein Scheduler, sperrt nichts, verwaltet keine Rechte und hält kein Gedächtnis.",
   "package": "coma",
   "entrypoints": {
     "cli": "python -m coma",
@@ -15,6 +15,10 @@
   },
   "provides": [
     "runtime.agent-spawn",
+    "runtime.agent-session",
+    "runtime.provider-probe",
+    "runtime.provider-fallback",
+    "runtime.role-starter",
     "runtime.agent-lifecycle",
     "orchestration.job-protocol",
     "orchestration.status-polling"
@@ -53,28 +57,28 @@
       "id": "claude",
       "target": "claude-code-cli",
       "status": "verified",
-      "note": "Vereinigungsmenge aus llmauto, swarm-ai und START-LOCAL-AGENT.bat; Flags gegen claude --help 2.1.220 geprueft."
+      "note": "Vereinigungsmenge aus llmauto, swarm-ai und START-LOCAL-AGENT.bat; Flags gegen claude --help 2.1.220 geprüft."
     },
     {
       "type": "seam",
       "id": "codex",
       "target": "codex exec",
       "status": "verified",
-      "note": "Codex CLI 0.145.0 am 2026-07-27 read-only live ausgefuehrt; stabiler Node-Einstieg, Ergebnis via --output-last-message."
+      "note": "Codex CLI 0.145.0 am 2026-07-27 read-only live ausgeführt; stabiler Node-Einstieg, Ergebnis via --output-last-message."
     },
     {
       "type": "seam",
       "id": "agy",
       "target": "antigravity-agy",
       "status": "verified",
-      "note": "agy 1.1.7 am 2026-07-27 live ausgefuehrt; aktuelles Modellinventar und stdout/Exitcode geprueft."
+      "note": "agy 1.1.7 am 2026-07-27 live ausgeführt; aktuelles Modellinventar und stdout/Exitcode geprüft."
     },
     {
       "type": "seam",
       "id": "kimi",
       "target": "kimi-code-cli",
       "status": "skeleton",
-      "note": "Kimi Code 0.29.2 gefunden; der COMA-Adapter bleibt bis zu einem eigenen Prompt-Lauf unverified und startet ohne ausdrueckliche Freigabe fail-closed. COMA selbst besitzt keinen Scheduler und keine aktive Eigen-Synchronisierung."
+      "note": "Kimi Code 0.29.2 gefunden; der COMA-Adapter bleibt bis zu einem eigenen Prompt-Lauf unverified und startet ohne ausdrückliche Freigabe fail-closed. COMA selbst besitzt keinen Scheduler und keine aktive Eigen-Synchronisierung."
     }
   ]
 }
