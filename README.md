@@ -146,6 +146,19 @@ plan = build_session_plan(
 print(plan.command)  # argv only; no process has started
 ```
 
+### Starters from `roles[]`
+
+`coma starters generate` reads the module's top-level `roles[]` declarations
+and writes a thin `START.bat` plus executable `start.sh`. Both forward to the
+unified console when it is installed and expose a visible COMA fallback when it
+is not. The generator only replaces files carrying its own marker unless
+`--force` is explicit.
+
+```bat
+coma starters generate --manifest ellmos-module.v2.json --output-dir starters
+starters\START.bat tasksolver --provider codex --dry-run
+```
+
 ## CLI Commands
 
 | Command | Purpose |
@@ -154,6 +167,7 @@ print(plan.command)  # argv only; no process has started
 | `run ... --dry-run` | Build and show command string without executing |
 | `cmd <prompt>` | Show command string for custom prompt |
 | `session --provider … --prompt-file … --request …` | Plan or start an interactive/headless role session |
+| `starters generate` · `starters run` | Generate dual-platform `roles[]` starters or use their COMA fallback |
 | `submit <jobid>` | Submit job prompt into `IN/` |
 | `status <jobid>` · `list` | Check status of job(s) |
 | `result <jobid>` · `log <jobid>` | Read result output or console log |
@@ -164,7 +178,7 @@ print(plan.command)  # argv only; no process has started
 ## Testing
 
 ```bat
-python -m pytest -q      :: 252 passed tests
+python -m pytest -q      :: 258 passed tests
 ```
 
 Tests never start a provider. One bounded probe test uses the local Python

@@ -1,10 +1,10 @@
 """COMA — COMmunication for Autonomous Subagents.
 
-Die **Lebenszyklus-Schicht** fuer Agenten: Wie entsteht ein Agent als eigener
-Prozess, und wie bleibt man mit ihm in Kontakt, solange er laeuft?
+Die **Lebenszyklus-Schicht** für Agenten: Wie entsteht ein Agent als eigener
+Prozess, und wie bleibt man mit ihm in Kontakt, solange er läuft?
 
-Genau eine Verantwortung. COMA sperrt nichts, verwaltet keine Rechte und haelt
-kein Gedaechtnis. Das Vokabular trennt sauber: COMA spricht ``spawn``, ``send``,
+Genau eine Verantwortung. COMA sperrt nichts, verwaltet keine Rechte und hält
+kein Gedächtnis. Das Vokabular trennt sauber: COMA spricht ``spawn``, ``send``,
 ``poll``, ``result`` — ein Koordinator wie Roshambo spricht ``claim``,
 ``release``, ``remember``, ``recall``, ``decide``, ``status``.
 
@@ -99,6 +99,12 @@ from .status import (
     STATE_RUNNING,
     StatusWriter,
 )
+from .starters import (
+    RoleDeclaration,
+    generate_starters,
+    load_roles,
+    run_starter,
+)
 
 __all__ = [
     "ADAPTERS",
@@ -136,6 +142,7 @@ __all__ = [
     "PROBE_TOKEN",
     "PROVIDERS",
     "ProviderCapability",
+    "RoleDeclaration",
     "ProtocolError",
     "SpawnError",
     "SpawnSpec",
@@ -155,15 +162,18 @@ __all__ = [
     "describe_adapters",
     "from_agent",
     "get_adapter",
+    "generate_starters",
     "is_finished",
     "is_running",
     "job_view",
+    "load_roles",
     "overview",
     "ordered_candidates",
     "probe",
     "read_console_log",
     "read_result",
     "read_status",
+    "run_starter",
     "state",
     "to_agent",
     "vendor",

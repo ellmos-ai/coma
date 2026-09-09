@@ -60,6 +60,7 @@ class TestNoDependencies:
             "pathlib",
             "re",
             "shutil",
+            "stat",
             "subprocess",
             "sys",
             "threading",

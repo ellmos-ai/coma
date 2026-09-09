@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Vertraege fuer interaktive/headless Sitzungen ohne echten Modellstart."""
+"""Vertraege für interaktive/headless Sitzungen ohne echten Modellstart."""
 from __future__ import annotations
 
 import sys

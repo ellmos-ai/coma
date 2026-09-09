@@ -3,10 +3,10 @@
 Die bestehenden Adapter bilden weiterhin den unbeaufsichtigten Jobpfad
 ``IN/OUT/DONE`` ab. Dieses Modul ergaenzt daneben den zweiten, bewusst
 prozessfreien Vertrag: ein Konsument kann eine interaktive oder headless
-Sitzung planen, die argv pruefen und erst danach selbst ueber den passenden
+Sitzung planen, die argv prüfen und erst danach selbst über den passenden
 Prozesshost starten.
 
-Die Flags wurden am 2026-09-09 gegen die lokal installierten Hilfen geprueft:
+Die Flags wurden am 2026-09-09 gegen die lokal installierten Hilfen geprüft:
 Claude Code 2.1.263, Codex CLI 0.153.4, agy 1.1.27 und Kimi 0.31.0. Kimi bleibt
 fail-closed, weil nur seine Hilfe, nicht ein echter Promptlauf verifiziert ist.
 """
@@ -32,7 +32,7 @@ DEFAULT_PROBE_TIMEOUT = 120.0
 
 @dataclass(frozen=True)
 class ProviderCapability:
-    """Belegte Eigenschaften einer CLI, ohne einen Verfuegbarkeitsclaim."""
+    """Belegte Eigenschaften einer CLI, ohne einen Verfügbarkeitsclaim."""
 
     provider: str
     instruction_file: str
@@ -51,18 +51,18 @@ CAPABILITIES: Mapping[str, ProviderCapability] = {
     ),
     "codex": ProviderCapability(
         "codex", "AGENTS.md", True, "Codex CLI 0.153.4",
-        notes=("interaktiv ohne Subcommand; headless ueber exec",),
+        notes=("interaktiv ohne Subcommand; headless über exec",),
     ),
     "agy": ProviderCapability(
         "agy", "GEMINI.md", True, "agy 1.1.27",
-        notes=("interaktiv ueber --prompt-interactive; headless ueber -p",),
+        notes=("interaktiv über --prompt-interactive; headless über -p",),
     ),
     "kimi": ProviderCapability(
         "kimi", "AGENTS.md", False, "Kimi 0.31.0",
         supports_effort=False,
         notes=(
             "kein interaktiver positionaler Startprompt; Boot mit -p, danach --continue",
-            "nur Hilfe geprueft; echter Promptlauf bleibt unverified",
+            "nur Hilfe geprüft; echter Promptlauf bleibt unverified",
         ),
     ),
 }
@@ -92,7 +92,7 @@ class SessionPlan:
 
     @property
     def command(self) -> list[str]:
-        """Erstes Kommando fuer Ein-Schritt-Konsumenten."""
+        """Erstes Kommando für Ein-Schritt-Konsumenten."""
         return list(self.commands[0])
 
 
@@ -126,7 +126,7 @@ def _resolve_executable(provider: str, explicit: str | None) -> str:
         return _required_text(explicit, "executable")
     resolved = shutil.which(provider)
     if not resolved:
-        raise AdapterError(f"CLI fuer Provider {provider!r} wurde nicht gefunden")
+        raise AdapterError(f"CLI für Provider {provider!r} wurde nicht gefunden")
     return resolved
 
 
@@ -145,7 +145,7 @@ def build_session_plan(
     executable: str | None = None,
     allow_unverified: bool = False,
 ) -> SessionPlan:
-    """Baut eine Sitzungs-argv fuer einen vorhandenen Rollenprompt.
+    """Baut eine Sitzungs-argv für einen vorhandenen Rollenprompt.
 
     ``prompt_file`` und ``request`` bleiben getrennt: die Rollenregeln kommen
     aus der Datei, der Nutzerauftrag bleibt ein eigenes Argument. Die Funktion
@@ -156,7 +156,7 @@ def build_session_plan(
     capability = CAPABILITIES[name]
     if not capability.verified and not allow_unverified:
         raise AdapterError(
-            f"Provider {name!r} ist fuer Sitzungsstarts nicht live verifiziert; "
+            f"Provider {name!r} ist für Sitzungsstarts nicht live verifiziert; "
             "allow_unverified=True ist erforderlich"
         )
 
@@ -327,7 +327,7 @@ def build_probe_command(
     model: str = "",
     effort: str = "",
 ) -> list[str]:
-    """Ein einmaliger, read-only Print-Aufruf fuer die Erreichbarkeitssonde."""
+    """Ein einmaliger, read-only Print-Aufruf für die Erreichbarkeitssonde."""
     name = normalize_provider(provider)
     command = [_required_text(executable, "executable")]
     if name == "claude":
@@ -382,7 +382,7 @@ def probe(
 ) -> tuple[bool, str]:
     """Erkennt den Token und beendet die eigene Sonde samt Kindprozess."""
     if timeout <= 0:
-        raise AdapterError("probe timeout muss groesser als null sein")
+        raise AdapterError("probe timeout muss größer als null sein")
     try:
         proc = subprocess.Popen(
             list(command),
