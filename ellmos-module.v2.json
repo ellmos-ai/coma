@@ -2,7 +2,7 @@
   "schema": "ellmos.module.v2",
   "id": "coma",
   "display_name": "COMA",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "category": "orchestration",
   "kind": "runtime",
   "status": "development",
@@ -15,6 +15,9 @@
   },
   "provides": [
     "runtime.agent-spawn",
+    "runtime.agent-session",
+    "runtime.provider-probe",
+    "runtime.provider-fallback",
     "runtime.agent-lifecycle",
     "orchestration.job-protocol",
     "orchestration.status-polling"

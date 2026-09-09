@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Sequence
@@ -28,6 +29,7 @@ from .manifest import MANIFEST_FILENAME, ManifestError, check_all, check_manifes
 from .poll import job_view, overview, read_console_log, read_result, read_status
 from .protocol import JobBoard, ProtocolError
 from .runner import JobRunner
+from .session import build_probe_command, build_session_plan, probe
 
 
 def _reconfigure_stdout() -> None:
@@ -216,6 +218,24 @@ def build_parser() -> argparse.ArgumentParser:
     cmd.add_argument("prompt", help="der Prompt")
     _add_adapter_options(cmd)
 
+    session = subparsers.add_parser(
+        "session", help="interaktive oder headless Rollensitzung planen/starten"
+    )
+    session.add_argument("--provider", required=True, choices=("claude", "codex", "agy", "kimi"))
+    session.add_argument("--prompt-file", required=True, help="kanonische Rollen-Promptdatei")
+    session.add_argument("--request", required=True, help="getrennter Nutzerauftrag")
+    session.add_argument("--mode", choices=("interactive", "headless"), default="interactive")
+    session.add_argument("--model", default="")
+    session.add_argument("--effort", default="")
+    session.add_argument("--name", default="", help="Sitzungsname")
+    session.add_argument("--cwd", help="Arbeitsverzeichnis")
+    session.add_argument("--trusted", action="store_true", help="belegte CLI-Freigabeflags setzen")
+    session.add_argument("--mcp-config", help="Claude-MCP-Konfiguration")
+    session.add_argument("--allow-unverified", action="store_true")
+    session.add_argument("--probe", action="store_true", help="vor dem Start eine Read-only-Sonde ausfuehren")
+    session.add_argument("--probe-timeout", type=float, default=120.0)
+    session.add_argument("--dry-run", action="store_true", help="argv nur anzeigen")
+
     submit = subparsers.add_parser("submit", help="Auftrag in IN/ ablegen")
     submit.add_argument("job_id")
     submit.add_argument("--file", help="Markdown-Datei; ohne Angabe von stdin")
@@ -310,6 +330,53 @@ def _cmd_cmd(args: argparse.Namespace) -> int:
         "notes": list(spec.notes),
     }
     _emit(args, payload, spec.rendered())
+    return 0
+
+
+def _cmd_session(args: argparse.Namespace) -> int:
+    plan = build_session_plan(
+        args.provider,
+        prompt_file=args.prompt_file,
+        request=args.request,
+        mode=args.mode,
+        model=args.model,
+        effort=args.effort,
+        session_name=args.name,
+        cwd=args.cwd,
+        trusted=args.trusted,
+        mcp_config=args.mcp_config,
+        allow_unverified=args.allow_unverified,
+    )
+    payload = {
+        "provider": plan.provider,
+        "mode": plan.mode,
+        "verified": plan.verified,
+        "prompt_file": str(plan.prompt_file),
+        "cwd": str(plan.cwd),
+        "commands": [list(command) for command in plan.commands],
+    }
+    if args.dry_run:
+        text = "\n".join(subprocess.list2cmdline(list(command)) for command in plan.commands)
+        _emit(args, payload, text)
+        return 0
+    if args.probe:
+        ok, reason = probe(
+            build_probe_command(
+                plan.provider,
+                plan.executable,
+                model=args.model,
+                effort=args.effort,
+            ),
+            args.probe_timeout,
+            cwd=plan.cwd,
+        )
+        print(f"[SONDE] {plan.provider}: {reason}")
+        if not ok:
+            return 1
+    for command in plan.commands:
+        completed = subprocess.run(list(command), cwd=plan.cwd, check=False)
+        if completed.returncode:
+            return int(completed.returncode)
     return 0
 
 
@@ -452,6 +519,7 @@ def _cmd_vendor(args: argparse.Namespace) -> int:
 _COMMANDS = {
     "run": _cmd_run,
     "cmd": _cmd_cmd,
+    "session": _cmd_session,
     "submit": _cmd_submit,
     "status": _cmd_status,
     "list": _cmd_list,

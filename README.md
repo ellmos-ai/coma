@@ -5,7 +5,7 @@
 **[English](README.md) | [Deutsch](README_de.md)**
 
 [![Pytest Status](https://img.shields.io/badge/pytest-241%20passed-brightgreen.svg)](https://docs.pytest.org/)
-[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -124,7 +124,27 @@ result = spawner.run("Say Hello", log_file="run.log")
 | `claude` | Anthropic Claude Code CLI | **Verified** — Flags checked against `claude --help` 2.1.220 |
 | `codex` | OpenAI Codex CLI | **Verified** — Tested against CLI 0.145.0 |
 | `agy` | Google Antigravity / AGY CLI | **Verified** — Tested against agy 1.1.7 |
-| `kimi` | Kimi Code CLI | **Skeleton** — CLI 0.29.2 detected |
+| `kimi` | Kimi Code CLI | **Skeleton** — help contract checked with CLI 0.31.0; no real prompt run |
+
+### Interactive and headless sessions
+
+`build_session_plan()` provides one process-free contract for interactive and
+headless Claude, Codex, AGY and Kimi argv. A role prompt file and the user
+request remain separate arguments. `ordered_candidates()` and
+`available_candidates()` build a deterministic provider fallback chain, while
+`build_probe_command()` and `probe()` provide a bounded read-only reachability
+check with child-process cleanup. Kimi remains fail-closed unless a caller that
+already owns a verified Kimi contract explicitly opts in.
+
+```python
+from coma import build_session_plan
+
+plan = build_session_plan(
+    "codex", prompt_file="AGENTS.md", request="Review the current change.",
+    mode="interactive", model="gpt-6", effort="high", cwd=".",
+)
+print(plan.command)  # argv only; no process has started
+```
 
 ## CLI Commands
 
@@ -133,6 +153,7 @@ result = spawner.run("Say Hello", log_file="run.log")
 | `run [jobid]` | Execute job from queue |
 | `run ... --dry-run` | Build and show command string without executing |
 | `cmd <prompt>` | Show command string for custom prompt |
+| `session --provider … --prompt-file … --request …` | Plan or start an interactive/headless role session |
 | `submit <jobid>` | Submit job prompt into `IN/` |
 | `status <jobid>` · `list` | Check status of job(s) |
 | `result <jobid>` · `log <jobid>` | Read result output or console log |
@@ -143,10 +164,11 @@ result = spawner.run("Say Hello", log_file="run.log")
 ## Testing
 
 ```bat
-python -m pytest -q      :: 241 passed tests
+python -m pytest -q      :: 252 passed tests
 ```
 
-Tests use mocked subprocesses to ensure fast, deterministic verification with 0 token consumption.
+Tests never start a provider. One bounded probe test uses the local Python
+interpreter as a harmless fake CLI; all remaining subprocess calls are mocked.
 
 ## Sibling Tools & Ecosystem
 

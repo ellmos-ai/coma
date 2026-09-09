@@ -29,7 +29,7 @@ Vollstaendige Beschreibung: ``KONZEPT.md`` und ``README.md``.
 """
 from __future__ import annotations
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 from .adapters import (
     ADAPTERS,
@@ -73,6 +73,19 @@ from .protocol import (
     check_job_id,
 )
 from .runner import JobHandle, JobRunner
+from .session import (
+    CAPABILITIES,
+    PROBE_TOKEN,
+    PROVIDERS,
+    Candidate,
+    ProviderCapability,
+    SessionPlan,
+    available_candidates,
+    build_probe_command,
+    build_session_plan,
+    ordered_candidates,
+    probe,
+)
 from .spawn import (
     ProcessHandle,
     SpawnError,
@@ -89,6 +102,7 @@ from .status import (
 
 __all__ = [
     "ADAPTERS",
+    "CAPABILITIES",
     "DEFAULT_ADAPTER",
     "DEFAULT_ALLOWED_TOOLS",
     "KNOWN_OUTPUT_FORMATS",
@@ -101,6 +115,7 @@ __all__ = [
     "STATE_RUNNING",
     "AdapterError",
     "AgyAdapter",
+    "Candidate",
     "Channel",
     "ChannelError",
     "CheckReport",
@@ -118,15 +133,22 @@ __all__ = [
     "ManifestError",
     "NullLock",
     "ProcessHandle",
+    "PROBE_TOKEN",
+    "PROVIDERS",
+    "ProviderCapability",
     "ProtocolError",
     "SpawnError",
     "SpawnSpec",
     "Spawner",
+    "SessionPlan",
     "StatusWriter",
     "UnverifiedAdapterError",
     "__version__",
     "adapter_names",
+    "available_candidates",
     "build_manifest",
+    "build_probe_command",
+    "build_session_plan",
     "check_job_id",
     "check_manifest",
     "claimed",
@@ -137,6 +159,8 @@ __all__ = [
     "is_running",
     "job_view",
     "overview",
+    "ordered_candidates",
+    "probe",
     "read_console_log",
     "read_result",
     "read_status",

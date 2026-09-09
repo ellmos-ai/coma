@@ -62,6 +62,7 @@ class TestNoDependencies:
             "shutil",
             "subprocess",
             "sys",
+            "threading",
             "time",
             "types",
             "typing",

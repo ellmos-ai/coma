@@ -5,7 +5,7 @@
 **[English](README.md) | [Deutsch](README_de.md)**
 
 [![Pytest Status](https://img.shields.io/badge/pytest-241%20passed-brightgreen.svg)](https://docs.pytest.org/)
-[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](pyproject.toml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -168,9 +168,29 @@ while handle.poll() is None:
 | `claude` | Claude Code CLI | **verifiziert** — Flags gegen `claude --help` 2.1.220 geprüft, echter Durchlauf belegt |
 | `codex` | native `codex exec` | **Verifiziert** — CLI 0.145.0, read-only/workspace-write, Ergebnisdatei via `--output-last-message` |
 | `agy` | Antigravity/Gemini | **Verifiziert** — agy 1.1.7, stdout und Exitcode live geprüft; Job-Ergebnisdatei bleibt kanonisch |
-| `kimi` | Kimi Code CLI | **Gerüst** — CLI 0.29.2 gefunden; der COMA-Adapter bleibt unverified, bis ein eigener Prompt-Lauf belegt ist |
+| `kimi` | Kimi Code CLI | **Gerüst** — Hilfevertrag mit CLI 0.31.0 geprüft; kein echter Promptlauf belegt |
 
 `verified` ist keine Kosmetik: Der `Spawner` **weigert sich**, einen Gerüst-Adapter zu starten, solange nicht ausdrücklich `allow_unverified=True` gesetzt ist. So ist Adapterwissen dokumentiert und getestet, ohne dass ein ungetesteter Aufrufweg unbemerkt in einen unbeaufsichtigten Lauf gerät.
+
+### Interaktive und Headless-Sitzungen
+
+`build_session_plan()` liefert einen gemeinsamen, prozessfreien Vertrag für
+interaktive und Headless-argv von Claude, Codex, Agy und Kimi. Rollenpromptdatei
+und Nutzerauftrag bleiben getrennte Argumente. `ordered_candidates()` und
+`available_candidates()` bauen die geordnete Anbieter-Fallback-Kette;
+`build_probe_command()` und `probe()` stellen eine begrenzte Read-only-Sonde mit
+Cleanup des eigenen Kindprozesses bereit. Kimi bleibt ohne ausdrückliches Opt-in
+fail-closed, solange kein echter COMA-Promptlauf belegt ist.
+
+```python
+from coma import build_session_plan
+
+plan = build_session_plan(
+    "codex", prompt_file="AGENTS.md", request="Prüfe die aktuelle Änderung.",
+    mode="interactive", model="gpt-6", effort="high", cwd=".",
+)
+print(plan.command)  # nur argv; kein Prozess wurde gestartet
+```
 
 ```bat
 coma adapters      :: zeigt Stand, gefundene Binary und die Fallstricke je Adapter
@@ -233,6 +253,7 @@ Der Standard ist `NullLock` — gewährt alles, merkt sich nichts.
 | `run [jobid]` | Job starten (Ersatz für `START-LOCAL-AGENT.bat`); ohne ID der älteste |
 | `run … --dry-run` | Kommando bauen und zeigen, nichts starten |
 | `cmd <prompt>` | Kommando für einen freien Prompt zeigen |
+| `session --provider … --prompt-file … --request …` | Interaktive/Headless-Rollensitzung planen oder starten |
 | `submit <jobid>` | Auftrag in `IN/` ablegen (`--file` oder stdin) |
 | `status <jobid>` · `list` | Zustand eines Jobs bzw. aller Jobs |
 | `result <jobid>` · `log <jobid>` | Ergebnisdatei bzw. Konsolenlog ausgeben |
@@ -245,10 +266,12 @@ Der Standard ist `NullLock` — gewährt alles, merkt sich nichts.
 ## Tests
 
 ```bat
-python -m pytest -q      :: 241 Tests
+python -m pytest -q      :: 252 Tests
 ```
 
-**Kein Test startet einen echten Prozess.** `subprocess` wird überall ersetzt; das ist Absicht — ein Test, der `claude` startet, kostet Tokens und braucht Netz. Geprüft wird der Kommandobau gegen erwartete Argumentlisten.
+**Kein Test startet einen Anbieter.** Eine begrenzte Sondenprobe nutzt den
+lokalen Python-Interpreter als harmlose Fake-CLI; alle übrigen Subprozessaufrufe
+sind ersetzt. So fließen keine Tokens und die argv-Verträge bleiben deterministisch.
 
 ## Geschwisterwerkzeuge & Ökosystem
 
@@ -272,4 +295,4 @@ Details zur Prozessisolierung, den Protokollgrenzen nach dem Single-Writer-Prinz
 
 ## Stand & Lizenz
 
-Version 0.2.1. Lizenz: MIT. Das Quellrepository gehört zum `ellmos-ai` / `open-bricks` Ökosystem.
+Version 0.3.0. Lizenz: MIT. Das Quellrepository gehört zum `ellmos-ai` / `open-bricks` Ökosystem.
