@@ -15,7 +15,8 @@ authors = [
 ]
 keywords = [
     "ai", "agent", "orchestration", "subprocess", "lifecycle", "cli-adapter",
-    "claude-code", "multi-agent",
+    "claude-code", "multi-agent", "autonomous-agents", "local-first",
+    "session-decoupling", "job-board", "ellmos",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -33,6 +34,22 @@ classifiers = [
 # Netz, ohne Cluster. Das ist sein Trennungsgrund gegenüber Roshambo, nicht ein
 # noch nicht erledigter Schritt. Siehe KONZEPT.md, Abschnitt "Offline".
 dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ellmos-ai/coma"
+Repository = "https://github.com/ellmos-ai/coma"
+Documentation = "https://github.com/ellmos-ai/coma#readme"
+Issues = "https://github.com/ellmos-ai/coma/issues"
+Changelog = "https://github.com/ellmos-ai/coma/blob/main/CHANGELOG.md"
+Security = "https://github.com/ellmos-ai/coma/blob/main/SECURITY.md"
+"Marketing Log" = "https://github.com/ellmos-ai/coma/blob/main/MARKETING-LOG.txt"
+"Parent Organization" = "https://github.com/ellmos-ai"
+"Umbrella Ecosystem" = "https://github.com/open-bricks"
 
 [project.scripts]
 coma = "coma.cli:main"

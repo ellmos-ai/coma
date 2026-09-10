@@ -1,12 +1,12 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for `ellmos-ai/coma`.
-> Last-checked: 2026-08-16
-> Verification: 241 passed Pytest unit tests (100% green).
+> Last-checked: 2026-09-10
+> Verification: 260 passed Pytest unit tests (100% green).
 
 ## Overview
 
-COMA (`coma`) is a zero-dependency, local-first **agent lifecycle layer and session-decoupled communication channel**. It manages how autonomous AI agents (such as Claude Code CLI, Codex, Antigravity/Gemini, and Kimi Code) are spawned as independent subprocesses, monitored during execution, and communicated with via a file-based job board protocol.
+COMA (`coma`) is a zero-dependency, local-first **agent lifecycle layer and session-decoupled communication channel**. It manages how autonomous AI agents (such as Claude Code CLI, OpenAI Codex CLI, Google Antigravity / AGY CLI, and Kimi Code CLI) are spawned as independent subprocesses, monitored during execution, and communicated with via a file-based job board protocol.
 
 COMA operates purely on local files and standard processes—without external network services, databases, cloud servers, or user accounts.
 
@@ -16,8 +16,10 @@ COMA operates purely on local files and standard processes—without external ne
 |---|---|---|
 | **Lifecycle & Spawner** | Process creation, CLI argument formatting, subprocess execution, stdout/stderr logging | **COMA (`coma.spawner`, `coma.adapters`)** |
 | **Decoupled Communication** | Session-independent job submission, progress tracking, status reporting, result retrieval | **COMA (`coma.protocol`, `coma.board`, `coma.runner`)** |
+| **Session Planning** | Process-free argv planning for interactive and headless sessions with CLI reachability probes | **COMA (`coma.session`)** |
+| **Starter Generation** | Dual-platform starter scripts (`START.bat`, `start.sh`) generated from `roles[]` manifests | **COMA (`coma.starters`)** |
 | **Locking & Permissions** | File access rules, claim management (optional protocol integration) | `lock-master` / Roshambo |
-| **Agent Memory** | Context retention, decision history, attempt tracking | Roshambo / Task Memory |
+| **Agent Memory** | Context retention, decision history, attempt tracking | `memoryhooker` / Roshambo |
 
 ## The File-Based Job Board Protocol
 
@@ -38,13 +40,31 @@ DONE/  <jobid>.md                       Completed job prompt (moved upon success
 COMA abstracts CLI flag differences into verified adapters:
 - **`ClaudeAdapter`**: Formats flags for Anthropic Claude Code CLI (`-p`, `--permission-mode dontAsk`, `--allowedTools`, `--disallowedTools mcp__*`).
 - **`CodexAdapter`**: Formats flags for OpenAI Codex CLI (`exec`, workspace-write, `--output-last-message`).
-- **`AntigravityAdapter`**: Formats flags for Google Antigravity / AGY CLI.
-- **`KimiAdapter`**: Formats flags for Kimi Code CLI.
+- **`AntigravityAdapter`**: Formats flags for Google Antigravity / AGY CLI (`agy`).
+- **`KimiAdapter`**: Formats flags for Kimi Code CLI (fail-closed skeleton).
+
+## Session Planning & Starters
+
+- **`build_session_plan()`**: Constructs process-free argument lists for interactive or headless provider sessions (`Claude`, `Codex`, `AGY`, `Kimi`), keeping role prompts and requests separated.
+- **`ordered_candidates()` / `available_candidates()`**: Deterministic provider fallback chain.
+- **`probe()` / `build_probe_command()`**: Bounded, read-only reachability check with child-process cleanup.
+- **`coma starters generate`**: Generates dual-platform `START.bat` and `start.sh` from module `roles[]` definitions with overwrite protection markers.
+
+## Governance & Runtime Invariants
+
+- **INV-COMA-01 (Single Writer):** Exactly one writer per channel file; no distributed locking needed.
+- **INV-COMA-02 (Zero Egress):** 0 network calls, 0 listening ports, standard library only.
+- **INV-COMA-03 (Session Decoupling):** Spawner runs processes detached from interactive client sessions.
+- **INV-COMA-04 (Process-Free Dry Runs):** Argv construction without starting processes or consuming tokens.
+- **INV-COMA-05 (Deterministic CLI Fallback):** Multi-provider chains resolve binaries deterministically.
+- **INV-COMA-06 (Fail-Closed Provider Safety):** Unverified adapters (Kimi) reject real prompt runs unless explicit opt-in.
+- **INV-COMA-07 (Bounded Probes):** Reachability checks enforce timeouts and guarantee child-process cleanup.
+- **INV-COMA-08 (Idempotent Starters):** Generated starters carry unique markers to prevent overwrites.
 
 ## Quick Python API Usage
 
 ```python
-from coma import JobBoard, JobRunner, ClaudeAdapter, Spawner
+from coma import JobBoard, JobRunner, ClaudeAdapter, Spawner, build_session_plan
 
 # 1. Job Board Protocol
 board = JobBoard(r"C:\Users\user\_agentjobs")
@@ -58,6 +78,10 @@ result = runner.run("job123")
 adapter = ClaudeAdapter.preset("unattended")
 spawner = Spawner(adapter)
 handle = spawner.start("Audit code", log_file="audit.log")
+
+# 4. Session Planning
+plan = build_session_plan("codex", prompt_file="AGENTS.md", request="Audit code", mode="headless")
+print(plan.command)
 ```
 
 ## Quick CLI Usage
@@ -68,13 +92,17 @@ coma --root C:\Users\user\_agentjobs run job123 --dry-run
 coma --root C:\Users\user\_agentjobs status job123
 coma --root C:\Users\user\_agentjobs result job123
 coma adapters
+coma session --provider codex --prompt-file AGENTS.md --request "Audit" --dry-run
+coma starters generate --manifest ellmos-module.v2.json --output-dir starters
 coma check .\coma-vendor.json
 ```
 
 ## Verification & Metadata
 
-- **Pytest Suite:** 236 passed unit tests (mocked subprocesses, 0 token consumption during test runs).
+- **Pytest Suite:** 260 passed unit tests (mocked subprocesses, 0 token consumption during test runs).
 - **Python Compatibility:** Python 3.10+
 - **License:** MIT
 - **Organization:** `ellmos-ai`
 - **Umbrella Ecosystem:** `open-bricks`
+- **Discoverability & Marketing:** See [`MARKETING-LOG.txt`](MARKETING-LOG.txt)
+- **German Documentation:** See [`README_de.md`](README_de.md)

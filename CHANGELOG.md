@@ -5,6 +5,21 @@ All notable changes to COMA will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Bilingual Mermaid lifecycle sequence diagram (`sequenceDiagram`) with autonumbering and strict label quoting in `README.md` and `README_de.md` per HOOK-BANNER-ASSET-01.
+- Governance and Runtime Invariants section (`INV-COMA-01` to `INV-COMA-08`) documenting single-writer channels, zero network egress, headless/interactive decoupling, and bounded probe cleanup.
+- Dedicated repository-level `MARKETING-LOG.txt` outlining target personas, SEO discoverability keywords, community directory submissions, and integration blueprints.
+- Standard PEP 621 URLs in `pyproject.toml` (Homepage, Repository, Documentation, Issues, Changelog, Security, Marketing Log, Parent Organization, Umbrella Ecosystem).
+- Extended test coverage in `tests/test_metadata.py` verifying PEP 621 URLs, sequence diagrams, invariants, and MARKETING-LOG structure (260 passed tests).
+
+### Changed
+- Synchronized Pytest status badges across English and German documentation to 260 passed unit tests.
+- Enhanced quick navigation tables of contents with bilingual anchor parity.
+- Updated `SECURITY.md` supported versions table to include `0.3.x`.
+- Updated `llms.txt` with Last-checked date (2026-09-10), 260 verified unit tests, and session planning / starter generation context.
+
 ## [0.3.0] — 2026-09-09
 
 ### Added

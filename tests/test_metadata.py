@@ -60,6 +60,7 @@ def test_core_documentation_files():
         "KONZEPT.md",
         "BEFUNDE.md",
         "CHANGELOG.md",
+        "MARKETING-LOG.txt",
         "pyproject.toml",
         "ellmos-module.v2.json",
     ]
@@ -103,6 +104,8 @@ def test_llms_txt_structure():
     assert "KimiAdapter" in content
     assert "JobBoard" in content
     assert "JobRunner" in content
+    assert "INV-COMA-01" in content
+    assert "MARKETING-LOG.txt" in content
 
 
 def test_readme_badge_and_ecosystem_parity():
@@ -116,3 +119,32 @@ def test_readme_badge_and_ecosystem_parity():
         assert "llms.txt" in readme, f"llms.txt reference missing in {lang} README"
         assert "pytest" in readme, f"Pytest badge missing in {lang} README"
         assert "MIT" in readme, f"License badge missing in {lang} README"
+        assert "docs/assets/banner.svg" in readme, f"Banner reference missing in {lang} README"
+        assert "sequenceDiagram" in readme, f"Sequence diagram missing in {lang} README"
+        assert "flowchart TD" in readme, f"Flowchart diagram missing in {lang} README"
+        for inv_num in range(1, 9):
+            assert f"INV-COMA-0{inv_num}" in readme, f"INV-COMA-0{inv_num} missing in {lang} README"
+
+
+def test_pyproject_pep621_urls():
+    """Verify that pyproject.toml defines complete PEP 621 project URLs."""
+    pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert "[project.urls]" in pyproject_content
+    assert "Homepage" in pyproject_content
+    assert "Repository" in pyproject_content
+    assert "Documentation" in pyproject_content
+    assert "Issues" in pyproject_content
+    assert "Changelog" in pyproject_content
+    assert "Security" in pyproject_content
+    assert "Marketing Log" in pyproject_content
+
+
+def test_marketing_log_structure():
+    """Verify that MARKETING-LOG.txt exists and contains required strategic sections."""
+    marketing_log_path = REPO_ROOT / "MARKETING-LOG.txt"
+    assert marketing_log_path.exists()
+    content = marketing_log_path.read_text(encoding="utf-8")
+    assert "Ziel-Personas" in content or "Target" in content
+    assert "Discoverability" in content or "SEO" in content
+    assert "Awesome-" in content
+    assert "Roadmap" in content or "Empfehlungen" in content

@@ -1,0 +1,90 @@
+# MARKETING-LOG — COMA (Command & Communication for Autonomous Agents)
+# Stand: 2026-09-10 | Repository: ellmos-ai/coma | Lizenz: MIT
+
+## 1. Positionierung & Kernnutzen (Value Proposition)
+
+COMA (`coma`) ist die schlanke, dateibasierte Lebenszyklus- und Entkopplungsschicht für autonome KI-Agenten.
+Es löst das fundamentale Problem interaktiver Agenten-Sessions (wie z. B. Claude Code CLI, OpenAI Codex CLI, Google Antigravity / AGY CLI und Kimi Code CLI):
+Wenn Agenten in Remote-Control- oder interaktiven Terminalsitzungen ausgeführt werden, blockieren Berechtigungsabfragen
+(`--dangerously-skip-permissions`, `dontAsk` etc.) häufig bei unbesetzter Konsole oder hinterlassen hängende Prozesse.
+
+COMA startet den Agenten als eigenständigen, entkoppelten Betriebssystem-Prozess außerhalb der interaktiven Session und
+etabliert einen kollisionsfreien Dateisystem-Kanal (`IN/`, `OUT/`, `DONE/`).
+
+- **Zero-Dependency:** 100% Python Standard-Bibliothek, null externe Pakete zur Laufzeit.
+- **Zero-Network-Egress:** Keine Netzwerkverbindungen, keine Cloud-Dienste, keine Kontopflicht, 100% lokal.
+- **Single-Writer-Protokoll:** Jede Datei im Auftragsbaum besitzt genau einen autorisierten Schreiber — strukturelle Vermeidung von Race Conditions und Lock-Konflikten.
+- **Prozessfreie Kommandokonstruktion:** `--dry-run`, `cmd` und `build_session_plan()` erzeugen verifizierte argv-Vektoren ohne Prozessstart und ohne Tokenverbrauch.
+
+---
+
+## 2. Ziel-Personas (Target Audience)
+
+1. **Autonomous Agent Architects & Framework Developers**
+   - Entwickler, die Multi-Agenten-Pipelines und Swarm-Strukturen aufsetzen.
+   - Suchen eine robuste, dateibasierte Entkopplung zwischen Orchestrator-Session und ausführendem Worker-Prozess.
+
+2. **Local-First & Privacy-Conscious AI Engineers**
+   - Teams mit strikten Air-Gapped-, DSGVO- oder On-Prem-Vorgaben, die keine externen Daemon-Dienste oder Cloud-Orchestratoren zulassen.
+   - Profitieren vom garantierten Zero-Network-Egress und auditierbaren Dateisystem-Kanälen.
+
+3. **Claude Code / Codex / Antigravity CLI Power Users**
+   - Anwender, die Hintergrund-Jobs unbeaufsichtigt und headless ablaufen lassen möchten, ohne dass interaktive Prompts den Ablauf blockieren.
+   - Nutzen vorgefertigte CLI-Adapter (`ClaudeAdapter`, `CodexAdapter`, `AntigravityAdapter`, `KimiAdapter`).
+
+4. **Edge & Headless Automation Operators**
+   - Betreiber von Scheduled Tasks, Cronjobs oder lokalen Service-Pipelines, die strukturierte Statusmeldungen (`coma.<jobid>.json`), Konsolen-Logs (`console.log`) und Fortschritts-Streams (`from-agent.jsonl`) benötigen.
+
+---
+
+## 3. Discoverability & SEO-Keywords
+
+`autonomous-agents`, `agent-lifecycle`, `subprocess-spawner`, `claude-code`, `codex-cli`, `antigravity-cli`, `kimi-cli`,
+`multi-agent`, `session-decoupling`, `job-board`, `file-based-queue`, `local-first`, `zero-dependency`, `zero-egress`,
+`process-isolation`, `python-stdlib`, `ellmos-ai`, `open-bricks`
+
+---
+
+## 4. Verzeichnis- & Katalog-Empfehlungen (Directory Submissions)
+
+Folgende Verzeichnisse und Community-Sammlungen eignen sich für eine Aufnahme von COMA:
+
+| Verzeichnis / Liste | Kategorie | Begründung / Relevanz |
+|---|---|---|
+| **Awesome-AI-Agents** (`e2b-dev/awesome-ai-agents`) | Agent Infrastructure / Tools | Etabliertes Referenzverzeichnis für Agenten-Entwicklung; COMA füllt die Lücke des entkoppelten Subprozess-Spawners. |
+| **Awesome-Local-AI** | Local Infrastructure | Zeigt lokale, serverlose Orchestrierung ohne externe Cloud-Abhängigkeiten. |
+| **Awesome-Claude** | Developer Tools / Extensions | Direkter Support für Claude Code CLI via `ClaudeAdapter` mit Berechtigungs-Flag-Übersetzung. |
+| **LibHunt / Python** | Task Queue / Process Automation | Listet Python-Pakete; COMA bietet Zero-Dependency JobBoard-Alternative zu Celery/RQ für lokale Agenten. |
+| **PyPI (Python Package Index)** | Package Release | Bereitstellung als `pip install coma-agents` oder `ellmos-coma` nach Erreichen von v0.3.x/v1.0.0. |
+
+---
+
+## 5. Ökosystem-Integration & Geschwister-Werkzeuge
+
+COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
+
+- **`ellmos-ai/policy-registry`**: Liefert Governance-Regeln und Rollendefinitionen, die als Prompts über `IN/<jobid>.md` übergeben werden.
+- **`ellmos-ai/lock-master`**: Verwaltet Projekt- und Dateisperren (Roshambo-Schicht) getrennt vom Prozesslebenszyklus in COMA.
+- **`ellmos-ai/rinnsal`**: Nutzt COMA als lokalen Ausführungskanal für autonome Hintergrundaufgaben und SQLite-gepufferte Kontextübergabe.
+- **`ellmos-ai/condition-gates`**: Validiert Vorbedingungen und Evidenzen, bevor ein COMA-Job gestartet oder als fertig markiert wird.
+- **`ellmos-ai/workflowhooker`**: Löst COMA-Job-Starts ereignisgesteuert über Dateisystem- oder Webhook-Signale aus.
+- **`ellmos-ai/memoryhooker`**: Sichert Erfahrungen und Lessons Learned nach erfolgreichem Abschluss eines COMA-Jobs.
+- **`dev-bricks/safe-start-for-codex`**: Führt Umgebungs- und Health-Checks vor dem Start von COMA-Agenten durch.
+
+---
+
+## 6. Konkrete Marketing- & Design-Empfehlungen (Roadmap)
+
+1. **Asciinema Terminal Screencast:**
+   - Aufnahme eines kurzen (30–45s) Terminal-Demos: `coma submit`, `coma run --dry-run`, `coma run`, `coma status` und `coma result`.
+   - Einbindung als SVG/GIF in `README.md` und `README_de.md`.
+
+2. **PyPI Package Publication (`coma-agents`):**
+   - Sobald das Modul-Gate freigegeben ist, Paketierung über `build` und Veröffentlichung auf PyPI.
+   - Ermöglicht `pip install coma-agents` für weltweite Nutzbarkeit.
+
+3. **Multi-Agent MCP Bridge:**
+   - Bereitstellung eines schlanken MCP-Tools (`coma_submit`, `coma_poll`, `coma_result`), damit Claude Desktop, Cursor und Antigravity COMA-Hintergrundjobs nativ ansteuern können.
+
+4. **Dual-Language Interaktive Quickstarts:**
+   - Ausbau von interaktiven Python-Notebooks / Beispielen unter `examples/` für Standard-Agent-Workflows (Refactoring, Code-Review, Test-Generierung).
