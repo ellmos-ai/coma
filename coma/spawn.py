@@ -254,6 +254,7 @@ class Spawner:
         self._guard(spec)
         start = _now()
         kwargs: dict[str, Any] = {
+            "stdin": subprocess.DEVNULL,
             "env": dict(spec.env),
             "timeout": spec.timeout,
             "cwd": spec.cwd,
@@ -354,6 +355,7 @@ class Spawner:
         try:
             popen = subprocess.Popen(
                 spec.command,
+                stdin=subprocess.DEVNULL,
                 stdout=stdout,
                 stderr=subprocess.STDOUT,
                 env=dict(spec.env),

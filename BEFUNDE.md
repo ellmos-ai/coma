@@ -25,3 +25,24 @@
 Der Kimi-Adapter bleibt wie in README und Konzept als Gerüst/unverified
 gekennzeichnet. Aus diesem Maintainer-Lauf wurden keine unverified Adapter,
 Agentenprozesse oder externen Kommunikationspfade gestartet.
+
+## 2026-08-20 – TASKWRITER-Readback / offene COMA-Gates
+
+- Der aktuelle Plan-D-Clone steht sauber auf `c129f3d` und ist zu `origin/main`
+  paritätisch. Task 1310 (comas-Kompatibilitätsalias) und Task 1311
+  (Multi-Agent-Integrationsabdeckung) sind bereits `done`; der Evidence-
+  Readback zu 1311 wurde nicht erneut als offene Arbeit angelegt.
+- Der aktuelle Release-/Manifeststand ist 0.2.1 mit 241 dokumentierten Tests.
+  Ältere Angaben in diesem Befundregister und in `KONZEPT.md` sowie ein
+  widersprüchlicher Agy-Docstring bleiben als geklärte Dokumentationslücken
+  sichtbar und werden nicht stillschweigend überschrieben.
+- Über die TASKPLAN-API wurden die belegten nächsten Schritte formalisiert:
+  `2088` Dokumentations-/Adapterparität (`effort=medium`, `scope=local`),
+  `2089` Kimi-Verifikationsgate (`special`, `local`), `2090` zentrale
+  Multi-Agent-Registry (`large`, `local`), `2091` autorisiertes Plan-D-
+  Deployment (`special`, `local`) und `2092` Cross-Projekt-Migration von
+  `llmauto`/`swarm-ai` (`large`, `central`).
+- Der im Konzept genannte Zielpfad `C:\Users\lukas\OneDrive\.CONTROL\coma`
+  ist nicht vorhanden; der OneDrive-Cloud-Filter meldet dort weiterhin hohes
+  Lock-Risiko. Es wurde nichts kopiert, verschoben, überschrieben, getestet,
+  live gestartet, veröffentlicht oder gepusht.
