@@ -4,7 +4,7 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-260%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-262%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
 [![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
@@ -70,7 +70,7 @@ Die Verben trennen sauber: COMA spricht `spawn`, `send`, `poll`, `result`. Ein K
 ```python
 from coma import JobBoard, JobRunner
 
-board = JobBoard(r"C:\Users\du\_agentjobs")
+board = JobBoard(r"C:\jobs\_agentjobs")
 board.submit("meinjob", "# Auftrag\n\nSchreibe das Ergebnis nach OUT/meinjob.result.md.\n")
 
 result = JobRunner(board).run("meinjob")
@@ -80,10 +80,10 @@ print(result["status"]["state"], result["result_written"])
 Oder von der Kommandozeile:
 
 ```bat
-coma --root C:\Users\du\_agentjobs run meinjob
-coma --root C:\Users\du\_agentjobs run meinjob --dry-run   :: nur zeigen, nichts starten
-coma --root C:\Users\du\_agentjobs status meinjob
-coma --root C:\Users\du\_agentjobs result meinjob
+coma --root C:\jobs\_agentjobs run meinjob
+coma --root C:\jobs\_agentjobs run meinjob --dry-run   :: nur zeigen, nichts starten
+coma --root C:\jobs\_agentjobs status meinjob
+coma --root C:\jobs\_agentjobs result meinjob
 ```
 
 **`--dry-run` zuerst.** Es baut das vollständige Kommando und zeigt es, ohne dass ein Token fließt.
@@ -369,7 +369,7 @@ Zur Wahrung der Systemintegrität und Deterministik gelten 8 strikte Invarianten
 ## Tests
 
 ```bat
-python -m pytest -q      :: 260 Tests bestanden (100% grün)
+python -m pytest -q      :: 262 Tests bestanden (100% grün)
 ```
 
 **Kein Test startet einen Anbieter.** Eine begrenzte Sondenprobe nutzt den

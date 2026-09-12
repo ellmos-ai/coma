@@ -1,8 +1,8 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for `ellmos-ai/coma`.
-> Last-checked: 2026-09-10
-> Verification: 260 passed Pytest unit tests (100% green).
+> Last-checked: 2026-09-12
+> Verification: 262 passed Pytest unit tests (100% green).
 
 ## Overview
 
@@ -67,7 +67,7 @@ COMA abstracts CLI flag differences into verified adapters:
 from coma import JobBoard, JobRunner, ClaudeAdapter, Spawner, build_session_plan
 
 # 1. Job Board Protocol
-board = JobBoard(r"C:\Users\user\_agentjobs")
+board = JobBoard(r"C:\jobs\_agentjobs")
 board.submit("job123", "# Instruction\nPerform technical audit and write output to OUT/job123.result.md\n")
 
 # 2. Run Job via Runner
@@ -87,10 +87,10 @@ print(plan.command)
 ## Quick CLI Usage
 
 ```bat
-coma --root C:\Users\user\_agentjobs submit job123 --file prompt.md
-coma --root C:\Users\user\_agentjobs run job123 --dry-run
-coma --root C:\Users\user\_agentjobs status job123
-coma --root C:\Users\user\_agentjobs result job123
+coma --root C:\jobs\_agentjobs submit job123 --file prompt.md
+coma --root C:\jobs\_agentjobs run job123 --dry-run
+coma --root C:\jobs\_agentjobs status job123
+coma --root C:\jobs\_agentjobs result job123
 coma adapters
 coma session --provider codex --prompt-file AGENTS.md --request "Audit" --dry-run
 coma starters generate --manifest ellmos-module.v2.json --output-dir starters

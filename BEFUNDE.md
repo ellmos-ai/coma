@@ -42,7 +42,7 @@ Agentenprozesse oder externen Kommunikationspfade gestartet.
   Multi-Agent-Registry (`large`, `local`), `2091` autorisiertes Plan-D-
   Deployment (`special`, `local`) und `2092` Cross-Projekt-Migration von
   `llmauto`/`swarm-ai` (`large`, `central`).
-- Der im Konzept genannte Zielpfad `C:\Users\lukas\OneDrive\.CONTROL\coma`
+- Der im Konzept genannte Zielpfad `<OneDrive>/.CONTROL/coma`
   ist nicht vorhanden; der OneDrive-Cloud-Filter meldet dort weiterhin hohes
   Lock-Risiko. Es wurde nichts kopiert, verschoben, überschrieben, getestet,
   live gestartet, veröffentlicht oder gepusht.
@@ -51,5 +51,5 @@ Agentenprozesse oder externen Kommunikationspfade gestartet.
 
 - Agy-Adapter-Docstring in `coma/adapters/agy.py` auf `verified = True` korrigiert.
 - `KONZEPT.md` Status, Versionsstand (0.2.1) und Adapter-Verifikation (Claude, Codex, Agy verifiziert, Kimi Gerüst) synchronisiert.
-- `python -m pytest`: **243 Tests bestanden** (100% grün, prozessfrei).
-- Die OneDrive-Projektion (`C:\Users\lukas\OneDrive\.TOPICS\.AI\.MODULES\.ORCHESTRATION\coma`) bleibt als gitlose Altprojektion (0.2.0) klassifiziert; keine unautorisierte Spiegelung bei aktiver cldflt.sys Lock-Gefahr.
+- `python -m pytest`: **260 Tests bestanden** (100% grün, prozessfrei).
+- Die OneDrive-Projektion (`<OneDrive>/.TOPICS/.AI/.MODULES/.ORCHESTRATION/coma`) bleibt als gitlose Altprojektion klassifiziert; keine unautorisierte Spiegelung bei aktiver cldflt.sys Lock-Gefahr.

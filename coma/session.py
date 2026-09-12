@@ -25,7 +25,8 @@ from .adapters import AdapterError
 
 PROVIDERS: tuple[str, ...] = ("claude", "codex", "agy", "kimi")
 SESSION_MODES: tuple[str, ...] = ("interactive", "headless")
-PROBE_TOKEN = "COMA_SESSION_PROBE_OK"
+PROBE_SENTINEL = "COMA_SESSION_PROBE_OK"
+PROBE_TOKEN = PROBE_SENTINEL
 PROBE_REQUEST = f"Reply with exactly {PROBE_TOKEN} and nothing else."
 DEFAULT_PROBE_TIMEOUT = 120.0
 
@@ -432,6 +433,7 @@ __all__ = [
     "CAPABILITIES",
     "DEFAULT_PROBE_TIMEOUT",
     "PROBE_REQUEST",
+    "PROBE_SENTINEL",
     "PROBE_TOKEN",
     "PROVIDERS",
     "SESSION_MODES",

@@ -75,6 +75,7 @@ from .protocol import (
 from .runner import JobHandle, JobRunner
 from .session import (
     CAPABILITIES,
+    PROBE_SENTINEL,
     PROBE_TOKEN,
     PROVIDERS,
     Candidate,
@@ -139,6 +140,7 @@ __all__ = [
     "ManifestError",
     "NullLock",
     "ProcessHandle",
+    "PROBE_SENTINEL",
     "PROBE_TOKEN",
     "PROVIDERS",
     "ProviderCapability",

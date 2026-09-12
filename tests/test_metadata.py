@@ -61,6 +61,8 @@ def test_core_documentation_files():
         "BEFUNDE.md",
         "CHANGELOG.md",
         "MARKETING-LOG.txt",
+        "THIRD_PARTY_LICENSES.md",
+        "TODO.md",
         "pyproject.toml",
         "ellmos-module.v2.json",
     ]
@@ -148,3 +150,27 @@ def test_marketing_log_structure():
     assert "Discoverability" in content or "SEO" in content
     assert "Awesome-" in content
     assert "Roadmap" in content or "Empfehlungen" in content
+
+
+def test_license_and_third_party_inventory():
+    """Verify THIRD_PARTY_LICENSES.md invariant and PEP 639 license-files."""
+    licenses_path = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
+    assert licenses_path.exists()
+    content = licenses_path.read_text(encoding="utf-8")
+    assert "Zero External Runtime Dependencies" in content
+    assert "INV-COMA-02" in content
+    assert "MIT License" in content
+
+    pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'license-files = ["LICENSE", "THIRD_PARTY_LICENSES.md"]' in pyproject_content
+
+
+def test_todo_status_table():
+    """Verify TODO.md existence and STATUS table format."""
+    todo_path = REPO_ROOT / "TODO.md"
+    assert todo_path.exists()
+    content = todo_path.read_text(encoding="utf-8")
+    assert "## STATUS" in content
+    assert "| Category" in content or "|Category" in content
+    assert "TASK-COMA-" in content
+
