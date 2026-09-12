@@ -1,9 +1,9 @@
 # COMA — COMmunication for Autonomous Subagents
 
 > Modul-Konzept. Beschlossen von Lukas Geiger am 2026-07-26, erarbeitet in Session
-> „OPUS WORKSTATION". Status: **Modul gebaut** (`coma` 0.2.0, 2026-08-01) — die
-> Spawn-Schicht ist aus den drei bestehenden Implementierungen extrahiert, 233 Tests
-> laufen ohne Prozessstart, ein echter Durchlauf über die Python-Schicht ist belegt.
+> „OPUS WORKSTATION". Status: **Modul gebaut & erweitert** (`coma` 0.2.1, 2026-08-20) — die
+> Spawn-Schicht ist aus den drei bestehenden Implementierungen extrahiert, 243 Tests
+> laufen ohne Prozessstart, Claude, Codex und Agy sind verifiziert, Kimi liegt als Gerüst vor.
 > Referenzimplementierung (`.bat`) existiert weiter und bleibt lokal.
 > Siehe `README.md`, „Offen" unten und den Ergebnisbericht
 > `_agentjobs/OUT/coma-modul-bauen.result.md`.
@@ -193,11 +193,9 @@ Stand 2026-08-01, nach dem Bau des Moduls (`coma` 0.2.0, Ergebnisbericht:
       mit `claim`/`release`/`status`), `NullLock`, Kontextmanager `claimed()`.
       **Nur definiert**, nicht implementiert; kein Import von `lock-master`,
       `team-lock` oder Roshambo (per Test abgesichert)
-- [~] CLI-Adapter über claude hinaus — `codex`, `agy`, `kimi` liegen als **Gerüst**
-      vor: Kommandobau nach den Konventionen aus `~/CLAUDE.md`, getestet, mit
-      dokumentierten Fallstricken. **Nicht live geprüft** (`verified = False`);
-      der Spawner verweigert sie ohne ausdrückliches `allow_unverified=True`.
-      Offen bleibt je Adapter ein echter Durchlauf
+- [x] CLI-Adapter über claude hinaus — `codex` und `agy` sind live verifiziert
+      (`verified = True`); `kimi` liegt als **Gerüst** vor (`verified = False`,
+      der Spawner verweigert ihn ohne ausdrückliches `allow_unverified=True`).
 - [ ] Zentrale Registry `coma-reg.json` für Mehr-Agenten-Betrieb — nicht gebaut.
       Der Spawner kann bereits nebenläufig starten (`run_many`, `ProcessHandle`,
       `wait_all`), aber es gibt kein zentrales Verzeichnis über mehrere Agenten

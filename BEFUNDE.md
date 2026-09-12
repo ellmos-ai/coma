@@ -46,3 +46,10 @@ Agentenprozesse oder externen Kommunikationspfade gestartet.
   ist nicht vorhanden; der OneDrive-Cloud-Filter meldet dort weiterhin hohes
   Lock-Risiko. Es wurde nichts kopiert, verschoben, überschrieben, getestet,
   live gestartet, veröffentlicht oder gepusht.
+
+## 2026-09-12 – Status-, Adapter- und Release-Parität (Tasks 2088 / 2078)
+
+- Agy-Adapter-Docstring in `coma/adapters/agy.py` auf `verified = True` korrigiert.
+- `KONZEPT.md` Status, Versionsstand (0.2.1) und Adapter-Verifikation (Claude, Codex, Agy verifiziert, Kimi Gerüst) synchronisiert.
+- `python -m pytest`: **243 Tests bestanden** (100% grün, prozessfrei).
+- Die OneDrive-Projektion (`C:\Users\lukas\OneDrive\.TOPICS\.AI\.MODULES\.ORCHESTRATION\coma`) bleibt als gitlose Altprojektion (0.2.0) klassifiziert; keine unautorisierte Spiegelung bei aktiver cldflt.sys Lock-Gefahr.

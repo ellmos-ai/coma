@@ -1,7 +1,6 @@
 """Adapter für Gemini/Antigravity (``agy``), live geprüft.
 
-``verified = False``: :class:`coma.spawn.Spawner` startet diesen Adapter nur mit
-ausdruecklichem ``allow_unverified=True``.
+``verified = True``: :class:`coma.spawn.Spawner` startet diesen verifizierten Adapter direkt.
 
 Quelle der Aufrufkonvention: ``~/CLAUDE.md``, Abschnitt „Gemini (antigravity)".
 Dort empirisch belegt, hier nur abgeleitet — vor scharfer Nutzung dort nachlesen.
