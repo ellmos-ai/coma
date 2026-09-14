@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coma"
-version = "0.3.0"
+version = "0.3.1"
 description = "COMA - Lebenszyklus-Schicht für Agenten: Prozess starten, in Kontakt bleiben, Ergebnis abholen"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -47,6 +47,7 @@ Documentation = "https://github.com/ellmos-ai/coma#readme"
 Issues = "https://github.com/ellmos-ai/coma/issues"
 Changelog = "https://github.com/ellmos-ai/coma/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/coma/blob/main/SECURITY.md"
+"LLM Ready" = "https://github.com/ellmos-ai/coma/blob/main/llms.txt"
 "Marketing Log" = "https://github.com/ellmos-ai/coma/blob/main/MARKETING-LOG.txt"
 "Parent Organization" = "https://github.com/ellmos-ai"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"
@@ -62,6 +63,7 @@ include = ["coma*", "comas*"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 pythonpath = ["."]
+addopts = "-ra -v"
 
 [tool.ruff]
 target-version = "py310"

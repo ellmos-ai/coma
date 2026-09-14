@@ -4,8 +4,8 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-262%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
-[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](pyproject.toml)
+[![Pytest Status](https://img.shields.io/badge/pytest-270%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
+[![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
 [![Netzwerk](https://img.shields.io/badge/netzwerk-zero--egress-success.svg)](SECURITY.md)
@@ -369,7 +369,7 @@ Zur Wahrung der Systemintegrität und Deterministik gelten 8 strikte Invarianten
 ## Tests
 
 ```bat
-python -m pytest -q      :: 262 Tests bestanden (100% grün)
+python -m pytest -q      :: 270 Tests bestanden (100% grün)
 ```
 
 **Kein Test startet einen Anbieter.** Eine begrenzte Sondenprobe nutzt den
@@ -407,4 +407,4 @@ Details zur Prozessisolierung, den Protokollgrenzen nach dem Single-Writer-Prinz
 
 ## Stand & Lizenz
 
-Version 0.3.0. Lizenz: MIT. Das Quellrepository gehört zum `ellmos-ai` / `open-bricks` Ökosystem.
+Version 0.3.1. Lizenz: MIT. Das Quellrepository gehört zum `ellmos-ai` / `open-bricks` Ökosystem.

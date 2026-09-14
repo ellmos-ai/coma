@@ -138,7 +138,10 @@ def test_pyproject_pep621_urls():
     assert "Issues" in pyproject_content
     assert "Changelog" in pyproject_content
     assert "Security" in pyproject_content
+    assert "LLM Ready" in pyproject_content
     assert "Marketing Log" in pyproject_content
+    assert "Parent Organization" in pyproject_content
+    assert "Umbrella Ecosystem" in pyproject_content
 
 
 def test_marketing_log_structure():
@@ -173,4 +176,82 @@ def test_todo_status_table():
     assert "## STATUS" in content
     assert "| Category" in content or "|Category" in content
     assert "TASK-COMA-" in content
+
+
+def test_ci_workflow_timeouts_concurrency_and_runner():
+    """Verify .github/workflows/tests.yml CI workflow timeouts and concurrency."""
+    ci_path = REPO_ROOT / ".github" / "workflows" / "tests.yml"
+    assert ci_path.exists(), ".github/workflows/tests.yml missing"
+    content = ci_path.read_text(encoding="utf-8")
+    assert "timeout-minutes: 15" in content
+    assert "cancel-in-progress: true" in content
+    assert "pytest -ra -v" in content
+
+
+def test_stale_workflow_present_and_safe():
+    """Verify .github/workflows/stale.yml stale lifecycle automation."""
+    stale_path = REPO_ROOT / ".github" / "workflows" / "stale.yml"
+    assert stale_path.exists(), ".github/workflows/stale.yml missing"
+    content = stale_path.read_text(encoding="utf-8")
+    assert "actions/stale@v9" in content
+    assert "timeout-minutes: 10" in content
+    assert "cancel-in-progress: true" in content
+    assert "issues: write" in content
+    assert "pull-requests: write" in content
+
+
+def test_welcome_workflow_present_and_safe():
+    """Verify .github/workflows/welcome.yml contributor greeting workflow."""
+    welcome_path = REPO_ROOT / ".github" / "workflows" / "welcome.yml"
+    assert welcome_path.exists(), ".github/workflows/welcome.yml missing"
+    content = welcome_path.read_text(encoding="utf-8")
+    assert "actions/first-interaction@v3" in content
+    assert "timeout-minutes: 5" in content
+    assert "cancel-in-progress: true" in content
+
+
+def test_gitignore_canonical_locks_and_multihost_defense():
+    """Verify .gitignore hardening for canonical locks, host sync artifacts, and caches."""
+    gi_path = REPO_ROOT / ".gitignore"
+    assert gi_path.exists(), ".gitignore missing"
+    content = gi_path.read_text(encoding="utf-8")
+    required_patterns = [
+        "LOCK",
+        "LOCK.*",
+        "uv.lock",
+        "*-WORKSTATION*",
+        "*-ASUS*",
+        "*-LAPTOP*",
+        "* (kopie)*",
+        "* (copy)*",
+        "*conflicted copy*",
+        ".coverage.*",
+        "htmlcov/",
+        ".mypy_cache/",
+        ".hypothesis/",
+        ".turbo/",
+    ]
+    for pattern in required_patterns:
+        assert pattern in content, f"Missing required .gitignore pattern: {pattern}"
+
+
+def test_pyproject_pytest_addopts():
+    """Verify pyproject.toml configures standard pytest runner options."""
+    content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'addopts = "-ra -v"' in content
+
+
+def test_marketing_log_recent_hygiene_entry():
+    """Verify MARKETING-LOG.txt includes recent Pfad A hygiene audit entry."""
+    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+    assert "Stand: 2026-09-14" in content
+    assert "Pfad A" in content
+    assert "Release 0.3.1 Highlights" in content
+
+
+def test_changelog_recent_pfad_a_entry():
+    """Verify CHANGELOG.md documents Release 0.3.1 on 2026-09-14."""
+    content = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "[0.3.1] — 2026-09-14" in content
+    assert ".github/workflows/tests.yml" in content
 

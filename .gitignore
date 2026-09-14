@@ -81,11 +81,53 @@ _proof/
 credentials.json
 secrets.json
 
-# Local locks and synchronization markers
+# Multi-Agent Lock-System (lokal, nie committen)
 LOCK*.txt
-*.sync-conflict-*
-*-WORKSTATION-LG*
+*.lock
+LOCK.*
+LOCK
+LOCK.permissions.json
+uv.lock
+
+# Host-spezifische Sync-Dateien (OneDrive Sync-Konflikte)
 *-ASUS-GEI*
+*-ASUS*
+*-WORKSTATION-LG*
+*-WORKSTATION*
+*-LAPTOP*
+*-Mac Studio*
+*.sync-conflict-*
+*.conflict
+*-conflict-*
+*-CONFLIT-*
+* (kopie)*
+* (copy)*
+* (Kopie)*
+* (Copy)*
+*conflicted copy*
+*.sync-temp-*
+
+# Pytest / Coverage / Caches
+.coverage.*
+coverage/
+htmlcov/
+.ruff_cache/
+.tox/
+.mypy_cache/
+.hypothesis/
+.turbo/
+.nyc_output/
+wheelhouse/
+.wheel-smoke/
+
+# OS-Artefakte
+.DS_Store
+Thumbs.db
+
+# Temporäre Test- und Build-Artefakte
+*.tmp
+*.bak
+*~
 *.orig
 *.rej
 

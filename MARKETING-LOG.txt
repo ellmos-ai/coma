@@ -1,5 +1,5 @@
 # MARKETING-LOG — COMA (Command & Communication for Autonomous Agents)
-# Stand: 2026-09-10 | Repository: ellmos-ai/coma | Lizenz: MIT
+# Stand: 2026-09-14 | Repository: ellmos-ai/coma | Lizenz: MIT
 
 ## 1. Positionierung & Kernnutzen (Value Proposition)
 
@@ -88,3 +88,15 @@ COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
 
 4. **Dual-Language Interaktive Quickstarts:**
    - Ausbau von interaktiven Python-Notebooks / Beispielen unter `examples/` für Standard-Agent-Workflows (Refactoring, Code-Review, Test-Generierung).
+
+---
+
+## 7. Release 0.3.1 Highlights (Pfad A — Quality, Stale Automation & Multi-Host Defense Audit 2026-09-14)
+
+- **CI Workflow & Concurrency Hardening:** Deployed `.github/workflows/tests.yml` with multi-OS (Ubuntu, Windows, macOS) and multi-Python (3.10–3.13) matrix, `timeout-minutes: 15` runaway guardrail, and `cancel-in-progress: true` concurrency group cancellation.
+- **Stale Issues & PRs Lifecycle Automation:** Added `.github/workflows/stale.yml` using `actions/stale@v9` with `timeout-minutes: 10`, daily scheduled cron (`30 1 * * *`), and least-privilege permissions (`issues: write`, `pull-requests: write`).
+- **Welcome Workflow Deployment:** Added `.github/workflows/welcome.yml` with `timeout-minutes: 5` execution bounds and welcoming guidance for community issues and PRs.
+- **Multi-Host & Conflict Hardening:** Extended `.gitignore` against cross-system sync artifacts across multi-host environments (`* (Kopie)*`, `* (Copy)*`, `*conflicted copy*`, `*-WORKSTATION*`, `*-ASUS*`, `*-LAPTOP*`, `*-Mac Studio*`), canonical lock indicators (`LOCK`, `LOCK.*`, `uv.lock`), and coverage/cache directories.
+- **PEP 621 Standard Compliance:** Registered `"LLM Ready"` context URL pointing to `llms.txt` and configured standard Pytest options (`addopts = "-ra -v"`) in `pyproject.toml`.
+- **Version Harmonization:** Synchronized release version to `0.3.1` across package manifests, module definition, and documentation.
+- **Automated Contract Tests:** Expanded `tests/test_metadata.py` with contract tests verifying CI timeouts, stale workflow configuration, multi-host gitignore defense, PEP 621 metadata, and marketing log recency.

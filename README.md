@@ -4,8 +4,8 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-262%20passed-brightgreen.svg)](https://docs.pytest.org/)
-[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](pyproject.toml)
+[![Pytest Status](https://img.shields.io/badge/pytest-270%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Version](https://img.shields.io/badge/version-0.3.1-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
 [![Network](https://img.shields.io/badge/network-zero--egress-success.svg)](SECURITY.md)
@@ -269,7 +269,7 @@ To preserve security, system integrity, and predictability, COMA adheres to 8 st
 ## Testing
 
 ```bat
-python -m pytest -q      :: 262 passed tests
+python -m pytest -q      :: 270 passed tests
 ```
 
 Tests never start a provider. One bounded probe test uses the local Python

@@ -1,7 +1,7 @@
 # TODO.md — Active work
 
-**Version:** 0.3.0  
-**Updated:** 2026-09-12  
+**Version:** 0.3.1
+**Updated:** 2026-09-14
 **Reason:** Standardization, path neutrality, gate readiness, and AI discoverability  
 **Purpose:** Track only work that remains open.
 
@@ -15,6 +15,7 @@
 | Starters Generator | DONE | Dual-platform `START.bat` and `start.sh` generation from module `roles[]` with idempotent marker guards. |
 | Path Neutrality & Hygiene | DONE | Neutral environments, standard `.gitignore` patterns, zero personal paths, zero secrets. |
 | AI Discoverability & Metadata | DONE | Machine-readable `llms.txt`, PEP 621 classifiers, PEP 639 license inventory, schema v2 metadata parity. |
+| CI Workflows & Multi-Host Defense | DONE | Multi-OS/Python GitHub Actions with timeouts, stale triage workflow, hardened .gitignore. |
 | Ecosystem Integration | DONE | Registered in `.MODULES/.ORCHESTRATION/coma`, Plan-D pointer configured, shared under `ellmos-ai` and `open-bricks`. |
 | Public Release Gate | USER | MIT License selected; explicit public visibility approval pending from user. |
 
@@ -33,6 +34,9 @@
 
 - [x] **TASK-COMA-04: Release-Hygiene, Lizenzinventar & Gate-Bereitschaft (v0.3.0)** (`effort=low`, `scope=hygiene`, priority `high`).
   - **Ergebnis:** Standard-`TODO.md` mit `## STATUS`-Tabelle etabliert, `THIRD_PARTY_LICENSES.md` angelegt, `.gitignore` um Mindesteinträge gehärtet, `final_gate_check.py` auf 10/10 PASS gebracht.
+
+- [x] **TASK-COMA-05: Pfad A Technische Hygiene, CI-Workflow & Multi-Host-Härtung (v0.3.1)** (`effort=low`, `scope=hygiene`, priority `high`).
+  - **Ergebnis:** GitHub Actions Test- & Stale-Workflows mit Timeout- und Concurrency-Härtung, erweiterte Multi-Host- und Lock-Defense in `.gitignore`, PEP 621 LLM-Ready Metadaten, Pytest Runner-Flags, 270 automatisierte Vertragstests (100% grün).
 
 ---
 <!-- REMEMBER: ENDUSERTEXTE BEKOMMEN ECHTE UMLAUTE Ü Ö Ä ß -->
