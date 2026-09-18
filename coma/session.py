@@ -76,6 +76,7 @@ class Candidate:
     provider: str
     model: str = ""
     effort: str = ""
+    source: str = "config"
 
 
 @dataclass(frozen=True)
@@ -272,16 +273,16 @@ def ordered_candidates(
     """Deduplizierte Kette: explizite Wahl, Default, Ersatzanbieter."""
     wanted = (primary,) + ((provider_default,) if provider_default else ()) + tuple(fallbacks)
     chain: list[Candidate] = []
-    seen: set[Candidate] = set()
+    seen: set[tuple[str, str, str]] = set()
     for item in wanted:
-        candidate = Candidate(
-            normalize_provider(item.provider),
-            str(item.model).strip(),
-            str(item.effort).strip(),
-        )
-        if candidate not in seen:
-            seen.add(candidate)
-            chain.append(candidate)
+        provider = normalize_provider(item.provider)
+        model = str(item.model).strip()
+        effort = str(item.effort).strip()
+        source = getattr(item, "source", "config")
+        key = (provider, model, effort)
+        if key not in seen:
+            seen.add(key)
+            chain.append(Candidate(provider, model, effort, source=source))
     return tuple(chain)
 
 
@@ -296,10 +297,12 @@ def available_candidates(
     skipped: list[str] = []
     unavailable: set[str] = set()
     for raw in candidates:
+        source = getattr(raw, "source", "config")
         candidate = Candidate(
             normalize_provider(raw.provider),
             str(raw.model).strip(),
             str(raw.effort).strip(),
+            source=source,
         )
         name = candidate.provider
         if name in unavailable:
@@ -429,9 +432,18 @@ def probe(
     return False, f"Exit {proc.returncode} ohne {PROBE_TOKEN}"
 
 
+from .clutch import (
+    GANG_PREFIX_MAP,
+    gang_to_candidate,
+    get_clutch_models_status,
+    is_clutch_available,
+    resolve_clutch_candidates,
+)
+
 __all__ = [
     "CAPABILITIES",
     "DEFAULT_PROBE_TIMEOUT",
+    "GANG_PREFIX_MAP",
     "PROBE_REQUEST",
     "PROBE_SENTINEL",
     "PROBE_TOKEN",
@@ -443,8 +455,12 @@ __all__ = [
     "available_candidates",
     "build_probe_command",
     "build_session_plan",
+    "gang_to_candidate",
+    "get_clutch_models_status",
+    "is_clutch_available",
     "normalize_mode",
     "normalize_provider",
     "ordered_candidates",
     "probe",
+    "resolve_clutch_candidates",
 ]
