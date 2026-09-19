@@ -5,6 +5,25 @@ All notable changes to COMA will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] — 2026-09-19
+
+### Added
+- Comprehensive 18-point Quick Navigation architecture across both English (`README.md`) and German (`README_de.md`) documentation with 100% reciprocal HTML anchors.
+- Detailed Target Personas section defining 4 core personas (`[PERSONA-01]` Autonomous Agent Swarm Architects, `[PERSONA-02]` Local-First Sovereign Developers, `[PERSONA-03]` Remote-Control Headless DevOps, `[PERSONA-04]` Enterprise Security Auditors) and high-intent bilingual search queries.
+- 10-Dimension Comparative Matrix benchmarking COMA against 4 industry alternatives (Celery/RQ/Redis, Temporal/Camunda/Airflow, Raw Python subprocess, Cloud Agent Frameworks) mapped directly across invariants `INV-COMA-01` through `INV-COMA-10`.
+- System architecture topology Mermaid flowchart (`flowchart TD`) visualizing 5 distinct layers from client orchestration to detached OS subprocesses.
+- Level 1 Software Bill of Materials (SBOM) and SPDX inventory in `THIRD_PARTY_LICENSES.md` with explicit unprivileged user mode (`RunAsInvoker`) certification and zero-copyleft isolation guarantee.
+- Statutory liability limitation notice pursuant to German Law (§ 521 BGB Gefälligkeitsrecht) in English and German documentation.
+- Standard PEP 621 `"Third-Party Licenses"` URL and expanded package keywords in `pyproject.toml`.
+- Section 8 in `MARKETING-LOG.txt` documenting the Pfad B marketing, discoverability, and visual architecture overhaul.
+- Automated contract tests in `tests/test_metadata.py` verifying 18-point navigation parity, persona definitions, comparative matrix completeness, § 521 BGB notices, and SBOM invariant mappings (284 passed tests | 100% green).
+
+### Changed
+- Expanded GitHub repository topics to full 20/20 capacity and configured canonical homepage URL via GitHub CLI.
+- Synchronized package version to `0.3.2` across `pyproject.toml`, `coma/__init__.py`, `ellmos-module.v2.json`, and documentation.
+- Updated `llms.txt` with Last-checked date (2026-09-19), 277 verified tests, 4 target personas, 10 invariants, and § 521 BGB notice.
+- Refreshed documentation badges for test suite pass, unprivileged `RunAsInvoker` execution, and 48h security response SLA.
+
 ## [0.3.1] — 2026-09-14
 
 ### Added

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coma"
-version = "0.3.1"
+version = "0.3.2"
 description = "COMA - Lebenszyklus-Schicht für Agenten: Prozess starten, in Kontakt bleiben, Ergebnis abholen"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,7 +16,7 @@ authors = [
 keywords = [
     "ai", "agent", "orchestration", "subprocess", "lifecycle", "cli-adapter",
     "claude-code", "multi-agent", "autonomous-agents", "local-first",
-    "session-decoupling", "job-board", "ellmos",
+    "session-decoupling", "job-board", "ellmos", "zero-egress", "open-bricks",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -49,6 +49,7 @@ Changelog = "https://github.com/ellmos-ai/coma/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/coma/blob/main/SECURITY.md"
 "LLM Ready" = "https://github.com/ellmos-ai/coma/blob/main/llms.txt"
 "Marketing Log" = "https://github.com/ellmos-ai/coma/blob/main/MARKETING-LOG.txt"
+"Third-Party Licenses" = "https://github.com/ellmos-ai/coma/blob/main/THIRD_PARTY_LICENSES.md"
 "Parent Organization" = "https://github.com/ellmos-ai"
 "Umbrella Ecosystem" = "https://github.com/open-bricks"
 

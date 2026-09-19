@@ -100,3 +100,16 @@ COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
 - **PEP 621 Standard Compliance:** Registered `"LLM Ready"` context URL pointing to `llms.txt` and configured standard Pytest options (`addopts = "-ra -v"`) in `pyproject.toml`.
 - **Version Harmonization:** Synchronized release version to `0.3.1` across package manifests, module definition, and documentation.
 - **Automated Contract Tests:** Expanded `tests/test_metadata.py` with contract tests verifying CI timeouts, stale workflow configuration, multi-host gitignore defense, PEP 621 metadata, and marketing log recency.
+
+---
+
+## 8. Release 0.3.2 Highlights (Pfad B — Marketing, Discoverability, Visual Architecture & SBOM Re-Certification 2026-09-19)
+
+- **18-Point Quick Navigation Parity:** Introduced identical 18-point numbered navigation structures in both `README.md` and `README_de.md` with 100% reciprocal HTML anchors (`<a id="..."></a>`).
+- **Target Personas & Search Intent Mapping:** Formulated 4 dedicated personas (`[PERSONA-01]` Autonomous Agent Swarm Architects, `[PERSONA-02]` Local-First Sovereign Developers, `[PERSONA-03]` Remote-Control Headless DevOps, `[PERSONA-04]` Enterprise Security Auditors) and mapped high-intent search queries in English and German.
+- **10-Dimension Comparative Matrix:** Benchmarked COMA against Celery/RQ, Temporal/Camunda, raw Python subprocesses, and cloud agent frameworks across 10 architectural invariants (`INV-COMA-01` to `INV-COMA-10`).
+- **Dual Mermaid Visualizations:** Added 5-layer system architecture topology flowchart (`flowchart TD`) and sequence diagram (`sequenceDiagram`) with zero trailing semicolons and strict label escaping.
+- **Level 1 SBOM & Unprivileged Certification:** Updated `THIRD_PARTY_LICENSES.md` to Stand 2026-09-19 with complete SPDX package inventory, 10-invariant compliance matrix, and `RunAsInvoker` non-elevation certification.
+- **Statutory Notice (§ 521 BGB):** Embedded statutory liability limitation notice for gratuitous open-source software under German Law.
+- **GitHub Discoverability:** Expanded topics to full 20/20 capacity (`agent-lifecycle`, `agent-orchestration`, `ai-agents`, `antigravity`, `claude-code`, `cli`, `codex`, `job-board`, `local-first`, `multi-agent`, `offline-first`, `open-bricks`, `process-isolation`, `python`, `session-decoupling`, `spawn`, `status-polling`, `subagents`, `zero-dependencies`, `zero-egress`) and verified homepage URL via GitHub CLI.
+- **Contract Test Suite Expansion:** Added automated tests in `tests/test_metadata.py` verifying navigation parity, persona definitions, comparative matrix, § 521 BGB disclaimer, and SBOM recency (284 passed tests | 100% green).
