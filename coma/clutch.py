@@ -6,13 +6,11 @@ lokal ueberstimmbar, abschaltbar.
 from __future__ import annotations
 
 import json
-import os
 import shutil
 import subprocess
-from dataclasses import dataclass
-from typing import Callable, Mapping, Sequence
+from typing import Callable, Mapping
 
-from .session import Candidate, normalize_provider, PROVIDERS
+from .session import Candidate, PROVIDERS
 
 # Bekannte Gaenge auf CLI-Provider abbilden
 GANG_PREFIX_MAP: tuple[tuple[str, str, Callable[[str], str]], ...] = (

@@ -4,7 +4,7 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-284%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-290%20passed-brightgreen.svg)](https://docs.pytest.org/)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
@@ -423,7 +423,7 @@ To preserve security, system integrity, and predictability, COMA adheres to 10 s
 ## 13. Testing & Verification Suite
 
 ```bash
-python -m pytest -q      :: 284 passed tests
+python -m pytest -q      :: 290 passed tests
 ```
 
 Tests never start a provider. One bounded probe test uses the local Python
@@ -508,4 +508,4 @@ For subprocess isolation details, single-writer protocol boundaries, non-elevati
 <a id="stand--lizenz"></a>
 ## 18. License & Open-Source Umbrella
 
-MIT License. Developed under the `ellmos-ai` / `open-bricks` ecosystem.
+MIT License. Developed under the [ellmos-ai](https://github.com/ellmos-ai) / [open-bricks](https://github.com/open-bricks) ecosystem. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for copyright attribution.

@@ -87,7 +87,12 @@ LOCK*.txt
 LOCK.*
 LOCK
 LOCK.permissions.json
+LOCK.user.*
+LOCK.until.*
+LOCK.condition.*
+.automation-lock
 uv.lock
+!package-lock.json
 
 # Host-spezifische Sync-Dateien (OneDrive Sync-Konflikte)
 *-ASUS-GEI*
@@ -96,6 +101,7 @@ uv.lock
 *-WORKSTATION*
 *-LAPTOP*
 *-Mac Studio*
+*-MacBook*
 *.sync-conflict-*
 *.conflict
 *-conflict-*
@@ -111,6 +117,7 @@ uv.lock
 .coverage.*
 coverage/
 htmlcov/
+.pytest_temp/
 .ruff_cache/
 .tox/
 .mypy_cache/

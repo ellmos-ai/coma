@@ -57,6 +57,7 @@ def test_core_documentation_files():
         "llms.txt",
         "SECURITY.md",
         "LICENSE",
+        "NOTICE",
         "KONZEPT.md",
         "BEFUNDE.md",
         "CHANGELOG.md",
@@ -138,6 +139,7 @@ def test_pyproject_pep621_urls():
     assert "Issues" in pyproject_content
     assert "Changelog" in pyproject_content
     assert "Security" in pyproject_content
+    assert "Notice" in pyproject_content
     assert "LLM Ready" in pyproject_content
     assert "Marketing Log" in pyproject_content
     assert "Parent Organization" in pyproject_content
@@ -165,7 +167,7 @@ def test_license_and_third_party_inventory():
     assert "MIT License" in content
 
     pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'license-files = ["LICENSE", "THIRD_PARTY_LICENSES.md"]' in pyproject_content
+    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]' in pyproject_content
 
 
 def test_todo_status_table():
@@ -244,7 +246,7 @@ def test_pyproject_pytest_addopts():
 def test_marketing_log_recent_hygiene_entry():
     """Verify MARKETING-LOG.txt includes recent Pfad A hygiene audit entry."""
     content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-09-14" in content
+    assert "Stand: 2026-09-24" in content or "Stand: 2026-09-14" in content
     assert "Pfad A" in content
     assert "Release 0.3.1 Highlights" in content
 
@@ -404,3 +406,63 @@ def test_changelog_and_marketing_log_release_0_3_2():
     assert "[0.3.2] — 2026-09-19" in changelog
     assert "Release 0.3.2 Highlights" in marketing
     assert "Pfad B" in marketing
+
+
+def test_notice_attribution_file():
+    """Verify presence and valid copyright attribution in NOTICE file."""
+    notice_path = REPO_ROOT / "NOTICE"
+    assert notice_path.exists(), "NOTICE file missing"
+    content = notice_path.read_text(encoding="utf-8")
+    assert "coma" in content
+    assert "Copyright (c) 2026 Lukas Geiger" in content
+    assert "ellmos-ai" in content
+    assert "open-bricks" in content
+    assert "THIRD_PARTY_LICENSES.md" in content
+
+
+def test_security_sla_and_contacts():
+    """Verify 48-hour response SLA, 5-day triage, and security team contacts in SECURITY.md."""
+    sec_content = (REPO_ROOT / "SECURITY.md").read_text(encoding="utf-8")
+    assert "48 hours" in sec_content
+    assert "5 business days" in sec_content
+    assert "security@ellmos.ai" in sec_content
+    assert "security@open-bricks.org" in sec_content
+    assert "lukas@open-bricks.org" in sec_content
+
+
+def test_gitignore_canonical_extended_patterns():
+    """Verify .gitignore includes canonical lock patterns, MacBook host tokens, and pytest temp caches."""
+    content = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
+    required = [
+        "LOCK.user.*",
+        "LOCK.until.*",
+        "LOCK.condition.*",
+        ".automation-lock",
+        "!package-lock.json",
+        "*-MacBook*",
+        ".pytest_temp/",
+    ]
+    for pattern in required:
+        assert pattern in content, f"Pattern {pattern} missing in .gitignore"
+
+
+def test_pyproject_pytest_hardening():
+    """Verify pyproject.toml pytest configuration hardening."""
+    content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'minversion = "7.0"' in content
+    assert "norecursedirs" in content
+
+
+def test_unreleased_changelog_entry():
+    """Verify CHANGELOG.md includes an [Unreleased] section for turnusgemäße Pfad A hygiene."""
+    content = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "## [Unreleased]" in content
+    assert "NOTICE" in content
+    assert ".gitignore" in content
+
+
+def test_marketing_log_audit_stand_20260924():
+    """Verify MARKETING-LOG.txt documents Pfad A audit stand 2026-09-24."""
+    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+    assert "Stand: 2026-09-24" in content
+    assert "Pfad A Maintenance & Hygiene Audit (Stand 2026-09-24)" in content

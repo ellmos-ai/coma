@@ -40,6 +40,15 @@ COMA (`coma`) provides a local-first, process-isolated lifecycle spawner and ses
 If you discover a security vulnerability or execution hazard within COMA:
 
 1. **Do not open a public issue.**
-2. Report the vulnerability privately to Lukas Geiger via GitHub Security Advisories at [https://github.com/ellmos-ai/coma/security/advisories](https://github.com/ellmos-ai/coma/security/advisories) or directly through project communication channels.
-3. Include a minimal reproduction case, details of the adapter/OS environment, and expected vs. actual behavior.
-4. Security reports will be acknowledged within 48 hours, with fixes coordinated before public disclosure.
+2. Report the vulnerability privately via GitHub Security Advisories at [https://github.com/ellmos-ai/coma/security/advisories](https://github.com/ellmos-ai/coma/security/advisories).
+3. If GitHub Advisories is unavailable, contact the security team directly:
+   - Primary Security Contact: `security@ellmos.ai`
+   - Umbrella Security: `security@open-bricks.org`
+   - Lead Maintainer: `lukas@open-bricks.org` / `support@lukasgeiger.com`
+4. Include a minimal reproduction case, details of the adapter/OS environment, and expected vs. actual behavior.
+
+### Response SLA & Disclosure Timeline
+
+- **Initial Acknowledgment:** Within **48 hours** of receiving your report.
+- **Triage & Status Assessment:** Within **5 business days** with an initial remediation assessment.
+- **Coordinated Disclosure:** Security patches are validated locally and pushed via GitHub releases. We adhere to responsible, coordinated disclosure practices.

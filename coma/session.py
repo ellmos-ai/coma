@@ -432,7 +432,7 @@ def probe(
     return False, f"Exit {proc.returncode} ohne {PROBE_TOKEN}"
 
 
-from .clutch import (
+from .clutch import (  # noqa: E402
     GANG_PREFIX_MAP,
     gang_to_candidate,
     get_clutch_models_status,

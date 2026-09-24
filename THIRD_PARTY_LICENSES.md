@@ -1,8 +1,7 @@
 # Third-Party Licenses & Software Inventory
 
-> **Project:** `ellmos-ai/coma`<br>
-> **Repository License:** [MIT License](LICENSE)<br>
-> **Audited:** 2026-09-19 (Initial Audit: 2026-09-12)<br>
+> **Repository License:** [MIT License](LICENSE) | [Attribution Notice](NOTICE)<br>
+> **Audited:** 2026-09-24 (Previous Audits: 2026-09-19, 2026-09-12)<br>
 > **Status:** Invariant Confirmed — Zero External Runtime Dependencies (`INV-COMA-02`)<br>
 > **Architecture & Security:** 100% Local-First, Zero-Egress, Single-Writer Channel Protocol, Unprivileged User-Mode (`RunAsInvoker`)
 

@@ -5,6 +5,18 @@ All notable changes to COMA will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Root `NOTICE` file establishing formal open-source copyright attribution (Lukas Geiger / ellmos-ai / open-bricks).
+- Registered `Notice` URL in `[project.urls]` and included `NOTICE` in PEP 621 `license-files` within `pyproject.toml`.
+- Expanded `.gitignore` with canonical lock patterns (`LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`, `.automation-lock`, `!package-lock.json`), multi-host tokens (`*-MacBook*`), and `.pytest_temp/`.
+- Configured pytest standards (`minversion = "7.0"`, `norecursedirs`) in `pyproject.toml`.
+- Extended `SECURITY.md` with explicit 48-hour acknowledgment SLA, 5-business-day triage commitment, and official security reporting addresses (`security@ellmos.ai`, `security@open-bricks.org`, `lukas@open-bricks.org`).
+- Re-audited `THIRD_PARTY_LICENSES.md` to Stand 2026-09-24 cross-referencing `NOTICE`.
+- Added Section 9 to `MARKETING-LOG.txt` documenting Pfad A maintenance and technical hygiene audit.
+- Implemented 6 new automated contract tests in `tests/test_metadata.py` verifying NOTICE attribution, security SLA details, canonical lock gitignore patterns, and metadata consistency (290 tests | 100% green).
+
 ## [0.3.2] — 2026-09-19
 
 ### Added

@@ -1,5 +1,5 @@
 # MARKETING-LOG — COMA (Command & Communication for Autonomous Agents)
-# Stand: 2026-09-14 | Repository: ellmos-ai/coma | Lizenz: MIT
+# Stand: 2026-09-24 (Vorige Stände: 2026-09-19, 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
 
 ## 1. Positionierung & Kernnutzen (Value Proposition)
 
@@ -113,3 +113,14 @@ COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
 - **Statutory Notice (§ 521 BGB):** Embedded statutory liability limitation notice for gratuitous open-source software under German Law.
 - **GitHub Discoverability:** Expanded topics to full 20/20 capacity (`agent-lifecycle`, `agent-orchestration`, `ai-agents`, `antigravity`, `claude-code`, `cli`, `codex`, `job-board`, `local-first`, `multi-agent`, `offline-first`, `open-bricks`, `process-isolation`, `python`, `session-decoupling`, `spawn`, `status-polling`, `subagents`, `zero-dependencies`, `zero-egress`) and verified homepage URL via GitHub CLI.
 - **Contract Test Suite Expansion:** Added automated tests in `tests/test_metadata.py` verifying navigation parity, persona definitions, comparative matrix, § 521 BGB disclaimer, and SBOM recency (284 passed tests | 100% green).
+
+---
+
+## 9. Pfad A Maintenance & Hygiene Audit (Stand 2026-09-24)
+
+- **Formal NOTICE Attribution:** Added root `NOTICE` file establishing open-source attribution for Lukas Geiger / `ellmos-ai` under the `open-bricks` umbrella, and registered it in `pyproject.toml` `license-files` and PEP 621 `[project.urls]` Notice URL.
+- **Canonical Lock System & Multi-Host Gitignore Hardening:** Hardened `.gitignore` against canonical multi-agent locks (`LOCK.user.*`, `LOCK.until.*`, `LOCK.condition.*`, `.automation-lock`, `!package-lock.json`), multi-host tokens (`*-MacBook*`), and temporary pytest cache artifacts (`.pytest_temp/`).
+- **PEP 621 & Pytest Configuration Standards:** Standardized `minversion = "7.0"` and `norecursedirs` in `pyproject.toml`.
+- **Security SLA Policy Hardening:** Updated `SECURITY.md` with explicit 48-hour acknowledgment SLA, 5-business-day triage commitment, and security contacts (`security@ellmos.ai`, `security@open-bricks.org`, `lukas@open-bricks.org`).
+- **Third-Party Inventory & SBOM Re-Audit:** Updated `THIRD_PARTY_LICENSES.md` to Stand 2026-09-24, validating Zero External Runtime Dependencies (`INV-COMA-02`) and cross-referencing `NOTICE`.
+- **Automated Contract Tests:** Expanded `tests/test_metadata.py` with 6 new contract tests covering NOTICE presence, security SLA contacts, canonical lock patterns, and metadata parity (290 tests | 100% green).

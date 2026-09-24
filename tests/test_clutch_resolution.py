@@ -2,14 +2,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
-from typing import Sequence
 
-import pytest
 
 from coma.clutch import (
     gang_to_candidate,
-    get_clutch_models_status,
     is_clutch_available,
     resolve_clutch_candidates,
 )

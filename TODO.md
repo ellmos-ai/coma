@@ -1,8 +1,8 @@
 # TODO.md — Active work
 
-**Version:** 0.3.1
-**Updated:** 2026-09-14
-**Reason:** Standardization, path neutrality, gate readiness, and AI discoverability  
+**Version:** 0.3.2
+**Updated:** 2026-09-24
+**Reason:** Standardization, NOTICE attribution, multi-host lock defense, gate readiness, and AI discoverability
 **Purpose:** Track only work that remains open.
 
 ## STATUS

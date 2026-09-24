@@ -1,9 +1,10 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for `ellmos-ai/coma`.<br>
-> Last-checked: 2026-09-19<br>
-> Verification: 284 passed Pytest unit tests (100% green).<br>
+> Last-checked: 2026-09-24<br>
+> Verification: 290 passed Pytest unit & contract tests (100% green).<br>
 > Execution Mode: Standard User Mode (`RunAsInvoker`) — Zero Administrative Elevation.<br>
+> Attribution & Notice: [NOTICE](NOTICE) | [MIT License](LICENSE)<br>
 > Statutory Notice: § 521 BGB Gefälligkeitsrecht applies.
 
 ## Overview
@@ -112,6 +113,7 @@ coma check .\coma-vendor.json
 
 - [`README.md`](README.md): Primary documentation and 18-point quick navigation.
 - [`README_de.md`](README_de.md): German documentation and architecture overview.
+- [`NOTICE`](NOTICE): Formal copyright attribution (Lukas Geiger / ellmos-ai / open-bricks).
 - [`KONZEPT.md`](KONZEPT.md): Architectural rationale, session-decoupling motivation, and offline design.
 - [`SECURITY.md`](SECURITY.md): Process isolation, single-writer protocol boundaries, and 48h vulnerability reporting SLA.
 - [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md): Level 1 SBOM, zero-dependency invariant, and unprivileged user mode certification.

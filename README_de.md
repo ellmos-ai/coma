@@ -4,7 +4,7 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-284%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest Status](https://img.shields.io/badge/pytest-290%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Abhaengigkeiten](https://img.shields.io/badge/abhaengigkeiten-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
@@ -422,7 +422,7 @@ COMA wahrt Systemstabilität, Sicherheit und Nachvollziehbarkeit über 10 verbin
 ## 13. Tests & Verifikationssuite
 
 ```bat
-python -m pytest -q      :: 284 bestanden
+python -m pytest -q      :: 290 bestanden
 ```
 
 Tests starten niemals echte Provider. Ein beschränkter Probe-Test nutzt den lokalen
@@ -502,4 +502,4 @@ Details zu Subprozess-Isolation, Single-Writer-Protokollgrenzen, Rechteverzicht 
 <a id="18-license--umbrella"></a>
 ## 18. Lizenz & Open-Source-Dach
 
-MIT-Lizenz. Entwickelt unter dem Dach von `ellmos-ai` und `open-bricks`.
+MIT-Lizenz. Entwickelt unter dem Dach von [ellmos-ai](https://github.com/ellmos-ai) und [open-bricks](https://github.com/open-bricks). Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE) für Copyright- und Urheberhinweise.
