@@ -102,6 +102,8 @@ uv.lock
 *-LAPTOP*
 *-Mac Studio*
 *-MacBook*
+*-IDEAPAD*
+*-IDEAPAD-GEI*
 *.sync-conflict-*
 *.conflict
 *-conflict-*
@@ -118,6 +120,7 @@ uv.lock
 coverage/
 htmlcov/
 .pytest_temp/
+.pytest_tmp*/
 .ruff_cache/
 .tox/
 .mypy_cache/
@@ -130,6 +133,8 @@ wheelhouse/
 # OS-Artefakte
 .DS_Store
 Thumbs.db
+Desktop.ini
+desktop.ini
 
 # Temporäre Test- und Build-Artefakte
 *.tmp

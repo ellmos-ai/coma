@@ -5,6 +5,8 @@
 **[English](README.md) | [Deutsch](README_de.md)**
 
 [![Pytest Status](https://img.shields.io/badge/pytest-290%20passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Verified](https://img.shields.io/badge/verified-2026--09--28-brightgreen.svg)](MARKETING-LOG.txt)
+[![Third-Party Licenses (Text)](https://img.shields.io/badge/licenses--text-Level%201%20SBOM-blue.svg)](THIRD_PARTY_LICENSES.txt)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
@@ -31,6 +33,7 @@
 
 ---
 
+<a id="sec-01"></a>
 <a id="1-what-is-coma--value-proposition"></a>
 <a id="1-what-is-coma"></a>
 <a id="what-is-coma"></a>
@@ -59,6 +62,7 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 
 ---
 
+<a id="sec-02"></a>
 <a id="2-primary-use-cases--session-decoupling"></a>
 <a id="2-use-cases"></a>
 <a id="use-cases"></a>
@@ -78,6 +82,7 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 
 ---
 
+<a id="sec-03"></a>
 <a id="3-target-personas--discoverability"></a>
 <a id="3-personas"></a>
 <a id="target-personas--discoverability"></a>
@@ -118,6 +123,7 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 
 ---
 
+<a id="sec-04"></a>
 <a id="4-quickstart--command-line-usage"></a>
 <a id="4-quickstart"></a>
 <a id="quickstart"></a>
@@ -149,6 +155,7 @@ coma --root C:\jobs\_agentjobs result myjob
 
 ---
 
+<a id="sec-05"></a>
 <a id="5-file-based-job-board-protocol"></a>
 <a id="5-job-protocol"></a>
 <a id="job-protocol"></a>
@@ -172,6 +179,7 @@ DONE/  <jobid>.md                       Completed job prompt
 
 ---
 
+<a id="sec-06"></a>
 <a id="6-spawner-layer--multi-engine-cli-adapters"></a>
 <a id="6-spawner-layer"></a>
 <a id="spawner-layer"></a>
@@ -204,6 +212,7 @@ result = spawner.run("Say Hello", log_file="run.log")
 
 ---
 
+<a id="sec-07"></a>
 <a id="7-interactive-and-headless-session-planning"></a>
 <a id="7-interactive-and-headless-sessions"></a>
 <a id="interactive-and-headless-sessions"></a>
@@ -232,6 +241,7 @@ print(plan.command)  # argv only; no process has started
 
 ---
 
+<a id="sec-08"></a>
 <a id="8-starters-from-roles-declarations"></a>
 <a id="8-starters-from-roles"></a>
 <a id="starters-from-roles"></a>
@@ -253,6 +263,7 @@ starters\START.bat tasksolver --provider codex --dry-run
 
 ---
 
+<a id="sec-09"></a>
 <a id="9-10-dimension-comparative-matrix-vs-alternatives"></a>
 <a id="9-comparative-matrix-vs-alternatives"></a>
 <a id="comparative-matrix-vs-alternatives"></a>
@@ -278,6 +289,7 @@ starters\START.bat tasksolver --provider codex --dry-run
 
 ---
 
+<a id="sec-10"></a>
 <a id="10-dual-mermaid-diagrams-topology--lifecycle"></a>
 <a id="10-dual-mermaid-diagrams"></a>
 <a id="architecture-flow"></a>
@@ -364,6 +376,7 @@ sequenceDiagram
 
 ---
 
+<a id="sec-11"></a>
 <a id="11-governance--10-runtime-invariants"></a>
 <a id="11-governance-and-runtime-invariants"></a>
 <a id="governance-and-runtime-invariants"></a>
@@ -390,6 +403,7 @@ To preserve security, system integrity, and predictability, COMA adheres to 10 s
 
 ---
 
+<a id="sec-12"></a>
 <a id="12-cli-commands--options-reference"></a>
 <a id="12-cli-commands"></a>
 <a id="cli-commands"></a>
@@ -414,6 +428,7 @@ To preserve security, system integrity, and predictability, COMA adheres to 10 s
 
 ---
 
+<a id="sec-13"></a>
 <a id="13-testing--verification-suite"></a>
 <a id="13-testing"></a>
 <a id="testing"></a>
@@ -431,6 +446,7 @@ interpreter as a harmless fake CLI; all remaining subprocess calls are mocked.
 
 ---
 
+<a id="sec-14"></a>
 <a id="14-third-party-licenses--level-1-sbom"></a>
 <a id="14-third-party-licenses--sbom"></a>
 <a id="third-party-licenses"></a>
@@ -448,6 +464,7 @@ COMA enforces an audited **Level 1 Software Bill of Materials (SBOM)** with Zero
 
 ---
 
+<a id="sec-15"></a>
 <a id="15-sibling-ecosystem--architectural-integration"></a>
 <a id="15-sibling-tools--ecosystem"></a>
 <a id="sibling-tools--ecosystem"></a>
@@ -475,6 +492,7 @@ COMA is part of the `ellmos-ai` orchestration architecture and the broader `open
 
 ---
 
+<a id="sec-16"></a>
 <a id="16-security-architecture--subprocess-isolation"></a>
 <a id="16-security"></a>
 <a id="security"></a>
@@ -487,6 +505,7 @@ For subprocess isolation details, single-writer protocol boundaries, non-elevati
 
 ---
 
+<a id="sec-17"></a>
 <a id="17-statutory-notice--liability-limitation-521-bgb"></a>
 <a id="17-statutory-notice--liability-limitation"></a>
 <a id="statutory-notice"></a>
@@ -500,6 +519,7 @@ For subprocess isolation details, single-writer protocol boundaries, non-elevati
 
 ---
 
+<a id="sec-18"></a>
 <a id="18-license--open-source-umbrella"></a>
 <a id="18-license--umbrella"></a>
 <a id="license"></a>

@@ -1,0 +1,125 @@
+THIRD-PARTY LICENSES & LEVEL 1 SBOM NOTICE
+Project: ellmos-ai/coma
+Audited: 2026-09-28
+Repository License: MIT License (see LICENSE)
+Repository Attribution Notice: NOTICE (see NOTICE)
+Architecture & Security: 100% Local-First, Zero-Egress, Single-Writer Channel Protocol, Unprivileged User-Mode (RunAsInvoker), Zero External Runtime Dependencies (INV-COMA-02)
+
+================================================================================
+1. EXECUTIVE SUMMARY & ZERO-COPYLEFT ISOLATION GUARANTEE
+================================================================================
+
+COMA (Command & Communication for Autonomous Agents) is engineered as a provider-independent,
+session-decoupled agent lifecycle and process orchestration interface. To preserve maximum
+operational reliability across multi-agent environments (Claude Code CLI, OpenAI Codex CLI,
+Google Antigravity / AGY CLI, Kimi Code CLI), ensure deterministic multi-OS execution
+(Windows, Linux, macOS), and eliminate external supply-chain attack vectors, COMA strictly
+enforces the Zero External Runtime Dependencies invariant (INV-COMA-02).
+
+- 100% Permissive / Standard Library: Core execution uses exclusively the Python Standard
+  Library distributed under the Python Software Foundation License (PSFL-2.0).
+- Zero-Copyleft Isolation Guarantee: No GPL, AGPL, or viral copyleft dependencies are
+  incorporated into the runtime distribution.
+- Unprivileged User-Mode (RunAsInvoker): COMA executes exclusively in standard, non-elevated
+  user space without requesting root or administrator privileges.
+
+================================================================================
+2. INVARIANT CROSS-REFERENCE MATRIX (INV-COMA-01 .. INV-COMA-10)
+================================================================================
+
+Invariant ID  | Operational Mandate                | Technical Enforcement                | License Scope
+--------------+------------------------------------+--------------------------------------+-------------------
+INV-COMA-01   | Single-Writer Rule                 | Exactly one writer per channel file  | PSFL-2.0 / MIT
+INV-COMA-02   | Zero External Runtime Dependencies | 100% pure standard library           | PSFL-2.0
+INV-COMA-03   | Session Decoupling & RC Immunity   | Dedicated process trees outside RC   | PSFL-2.0 / MIT
+INV-COMA-04   | Process-Free Dry Runs              | Build command args without execution | PSFL-2.0 / MIT
+INV-COMA-05   | Deterministic Multi-Provider Fallback| Systematic provider resolution chain| PSFL-2.0 / MIT
+INV-COMA-06   | Fail-Closed Provider Safety        | Experimental adapters fail-closed    | PSFL-2.0 / MIT
+INV-COMA-07   | Bounded Probe Cleanup              | Timeout-guaranteed child termination | PSFL-2.0 / MIT
+INV-COMA-08   | Idempotent Dual-Platform Starters  | Safe idempotent batch & shell scripts| PSFL-2.0 / MIT
+INV-COMA-09   | Unprivileged User-Mode Execution   | Non-elevated user mode (RunAsInvoker)| MIT
+INV-COMA-10   | 48h Security & Governance SLA      | Committed response & triage SLA      | SECURITY.md
+
+================================================================================
+3. ZERO-COPYLEFT ISOLATION GUARANTEE & RUNASINVOKER CERTIFICATION
+================================================================================
+
+1. Zero-Copyleft Guarantee: No component of COMA links against, vendors,
+   or invokes any code under GPLv1, GPLv2, GPLv3, AGPLv3, LGPL, SSPL, or CC-BY-SA
+   copyleft licenses. All dependencies and tools are strictly permissive (MIT, PSFL-2.0).
+2. Unprivileged Execution (RunAsInvoker): COMA requires no administrative
+   privileges, no daemon services, and no root credentials. It operates entirely
+   in unprivileged user space.
+3. Zero-Egress Perimeter: By default, no network traffic is emitted by COMA.
+   All agent communication is handled locally via the file-system protocol (IN/, OUT/, DONE/).
+
+================================================================================
+4. RUNTIME DEPENDENCY MATRIX (LEVEL 1 SBOM)
+================================================================================
+
+Package                  Role / Functional Scope                                License   Upstream
+-----------------------+------------------------------------------------------+---------+---------------------
+Python Standard Library  Process management, JSON, filesystem I/O, threading    PSFL-2.0  python/cpython
+(External Wheels)        None (Zero external runtime dependencies confirmed)    N/A       N/A
+
+================================================================================
+5. DEVELOPMENT & QUALITY ASSURANCE TOOLING
+================================================================================
+
+Package                  Usage & Purpose                                        License   Source / Upstream
+-----------------------+------------------------------------------------------+---------+---------------------
+pytest (>=8.0.0)         Automated unit, regression, and contract test runner   MIT       pytest-dev/pytest
+ruff (>=0.5.0)           High-performance Python linter and style enforcer      MIT/Apache astral-sh/ruff
+setuptools (>=77.0.0)    PEP 517 / PEP 621 packaging and build backend          MIT       pypa/setuptools
+wheel (>=0.40.0)         Standard wheel distribution builder                    MIT       pypa/wheel
+
+================================================================================
+6. EXTERNAL SYSTEM-LEVEL BINARIES & CLI ADAPTER TARGETS
+================================================================================
+
+Binary / Target          Verified Version     License       Scope            Purpose
+-----------------------+--------------------+-------------+----------------+----------------------------------
+Python                   >=3.10               PSFL-2.0      System Runtime   Multi-OS host runtime
+Git                      >=2.40               GPL-2.0-only  Version Control  Source repository management
+claude                   2.1.263              Proprietary   Agent Engine     Anthropic Claude Code CLI adapter
+codex                    0.153.4              Proprietary   Agent Engine     OpenAI Codex CLI adapter
+agy                      1.1.27               Proprietary   Agent Engine     Google Antigravity CLI adapter
+kimi                     0.31.0               Proprietary   Agent Engine     Kimi Code CLI skeleton adapter
+
+================================================================================
+7. LICENSE TEXTS & ATTRIBUTION
+================================================================================
+
+MIT LICENSE (coma, pytest, ruff, setuptools, wheel)
+--------------------------------------------------
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2 (Python Standard Library)
+---------------------------------------------------------------------
+1. This LICENSE AGREEMENT is between the Python Software Foundation ("PSF"), and
+the Individual or Organization ("Licensee") accessing and otherwise using this
+software ("Python") in source or binary form and its associated documentation.
+
+2. Subject to the terms and conditions of this License Agreement, PSF hereby
+grants Licensee a non-exclusive, royalty-free, world-wide license to reproduce,
+analyze, test, perform and/or display publicly, prepare derivative works, distribute,
+and otherwise use Python alone or in any derivative version, provided, however, that
+PSF's License Agreement and PSF's notice of copyright, i.e., "Copyright (c) 2001-2026
+Python Software Foundation; All Rights Reserved" are included in Python alone or
+in any derivative version prepared by Licensee.

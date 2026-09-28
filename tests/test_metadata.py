@@ -167,7 +167,7 @@ def test_license_and_third_party_inventory():
     assert "MIT License" in content
 
     pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]' in pyproject_content
+    assert 'license-files = ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "THIRD_PARTY_LICENSES.txt"]' in pyproject_content
 
 
 def test_todo_status_table():
@@ -240,13 +240,13 @@ def test_gitignore_canonical_locks_and_multihost_defense():
 def test_pyproject_pytest_addopts():
     """Verify pyproject.toml configures standard pytest runner options."""
     content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'addopts = "-ra -v"' in content
+    assert 'addopts = "-ra -v --basetemp=.pytest_temp"' in content
 
 
 def test_marketing_log_recent_hygiene_entry():
     """Verify MARKETING-LOG.txt includes recent Pfad A hygiene audit entry."""
     content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-09-24" in content or "Stand: 2026-09-14" in content
+    assert "Stand: 2026-09-28" in content or "Stand: 2026-09-24" in content or "Stand: 2026-09-14" in content
     assert "Pfad A" in content
     assert "Release 0.3.1 Highlights" in content
 
@@ -464,5 +464,86 @@ def test_unreleased_changelog_entry():
 def test_marketing_log_audit_stand_20260924():
     """Verify MARKETING-LOG.txt documents Pfad A audit stand 2026-09-24."""
     content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-09-24" in content
+    assert "2026-09-24" in content
     assert "Pfad A Maintenance & Hygiene Audit (Stand 2026-09-24)" in content
+
+
+def test_readme_sec_01_to_18_anchor_parity():
+    """Verify that README.md and README_de.md implement sec-01 through sec-18 reciprocal anchors."""
+    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
+
+    for i in range(1, 19):
+        sec_tag = f'id="sec-{i:02d}"'
+        assert sec_tag in readme_en, f"Anchor sec-{i:02d} missing in README.md"
+        assert sec_tag in readme_de, f"Anchor sec-{i:02d} missing in README_de.md"
+
+
+def test_third_party_licenses_text_companion():
+    """Verify THIRD_PARTY_LICENSES.txt Level 1 SBOM text companion exists and satisfies invariants."""
+    text_path = REPO_ROOT / "THIRD_PARTY_LICENSES.txt"
+    assert text_path.exists(), "THIRD_PARTY_LICENSES.txt missing"
+    content = text_path.read_text(encoding="utf-8")
+
+    assert "LEVEL 1 SBOM NOTICE" in content
+    assert "RunAsInvoker" in content
+    assert "Zero External Runtime Dependencies" in content
+    assert "Zero-Copyleft Isolation Guarantee" in content
+    assert "MIT LICENSE" in content
+    assert "PYTHON SOFTWARE FOUNDATION LICENSE" in content
+
+    for i in range(1, 11):
+        inv_id = f"INV-COMA-{i:02d}"
+        assert inv_id in content, f"{inv_id} missing in THIRD_PARTY_LICENSES.txt"
+
+
+def test_pep621_github_topics_saturation():
+    """Verify pyproject.toml defines saturated keywords matching GitHub repository topics."""
+    pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    topics = [
+        "agent-lifecycle",
+        "agent-orchestration",
+        "ai-agents",
+        "antigravity",
+        "backend-agnostic",
+        "chat-runtime",
+        "claude-code",
+        "cli",
+        "codex",
+        "job-board",
+        "local-first",
+        "messaging",
+        "multi-agent",
+        "offline-first",
+        "open-bricks",
+        "process-isolation",
+        "python",
+        "session-decoupling",
+        "spawn",
+        "status-polling",
+        "subagents",
+        "zero-dependencies",
+        "zero-egress",
+    ]
+    for topic in topics:
+        assert f'"{topic}"' in pyproject_content, (
+            f"Topic '{topic}' missing in pyproject.toml keywords"
+        )
+    assert '"Third-Party Licenses (Text)"' in pyproject_content
+
+
+def test_marketing_log_audit_stand_20260928():
+    """Verify MARKETING-LOG.txt documents Pfad B audit stand 2026-09-28."""
+    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+    assert "Stand: 2026-09-28" in content
+    assert (
+        "Pfad B Discoverability, Visual Architecture & Level 1 SBOM Audit (Stand"
+        " 2026-09-28)"
+        in content
+    )
+
+
+def test_notice_third_party_text_companion():
+    """Verify NOTICE cross-references THIRD_PARTY_LICENSES.txt companion."""
+    content = (REPO_ROOT / "NOTICE").read_text(encoding="utf-8")
+    assert "THIRD_PARTY_LICENSES.txt" in content

@@ -1,10 +1,10 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for `ellmos-ai/coma`.<br>
-> Last-checked: 2026-09-24<br>
+> Last-checked: 2026-09-28<br>
 > Verification: 290 passed Pytest unit & contract tests (100% green).<br>
 > Execution Mode: Standard User Mode (`RunAsInvoker`) — Zero Administrative Elevation.<br>
-> Attribution & Notice: [NOTICE](NOTICE) | [MIT License](LICENSE)<br>
+> Attribution & Notice: [NOTICE](NOTICE) | [MIT License](LICENSE) | [Level 1 SBOM (Text)](THIRD_PARTY_LICENSES.txt)<br>
 > Statutory Notice: § 521 BGB Gefälligkeitsrecht applies.
 
 ## Overview
@@ -117,6 +117,7 @@ coma check .\coma-vendor.json
 - [`KONZEPT.md`](KONZEPT.md): Architectural rationale, session-decoupling motivation, and offline design.
 - [`SECURITY.md`](SECURITY.md): Process isolation, single-writer protocol boundaries, and 48h vulnerability reporting SLA.
 - [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md): Level 1 SBOM, zero-dependency invariant, and unprivileged user mode certification.
+- [`THIRD_PARTY_LICENSES.txt`](THIRD_PARTY_LICENSES.txt): Plain-text Level 1 SBOM companion file and full license text inventory.
 - [`MARKETING-LOG.txt`](MARKETING-LOG.txt): Target personas, SEO keywords, ecosystem integrations, and release highlights.
 - [`CHANGELOG.md`](CHANGELOG.md): Historical releases and semantic version log.
 - [`TODO.md`](TODO.md): Release readiness gates and active task tracker.

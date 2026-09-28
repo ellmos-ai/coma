@@ -1,5 +1,5 @@
 # MARKETING-LOG — COMA (Command & Communication for Autonomous Agents)
-# Stand: 2026-09-24 (Vorige Stände: 2026-09-19, 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
+# Stand: 2026-09-28 (Vorige Stände: 2026-09-24, 2026-09-19, 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
 
 ## 1. Positionierung & Kernnutzen (Value Proposition)
 
@@ -124,3 +124,15 @@ COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
 - **Security SLA Policy Hardening:** Updated `SECURITY.md` with explicit 48-hour acknowledgment SLA, 5-business-day triage commitment, and security contacts (`security@ellmos.ai`, `security@open-bricks.org`, `lukas@open-bricks.org`).
 - **Third-Party Inventory & SBOM Re-Audit:** Updated `THIRD_PARTY_LICENSES.md` to Stand 2026-09-24, validating Zero External Runtime Dependencies (`INV-COMA-02`) and cross-referencing `NOTICE`.
 - **Automated Contract Tests:** Expanded `tests/test_metadata.py` with 6 new contract tests covering NOTICE presence, security SLA contacts, canonical lock patterns, and metadata parity (290 tests | 100% green).
+
+---
+
+## 10. Pfad B Discoverability, Visual Architecture & Level 1 SBOM Audit (Stand 2026-09-28)
+
+- **18-Point Bilingual Navigation Parity & Dual Reciprocal Anchors:** Integrated reciprocal dual HTML anchors (`<a id="sec-01"></a>`..`<a id="sec-18"></a>` aliases) across all 18 numbered sections in both `README.md` and `README_de.md`, providing permanent universal deep-links for documentation, RAG engines, and external tooling. Fixed umlaut encoding defect in section 15 anchors.
+- **Level 1 SBOM Plain-Text Companion (`THIRD_PARTY_LICENSES.txt`):** Created full plain-text companion file documenting zero-copyleft guarantee, `RunAsInvoker` non-elevation certification, complete runtime/build dependency matrices, and 10-invariant compliance cross-reference table (`INV-COMA-01`..`INV-COMA-10`).
+- **PEP 621 Metadata Saturation & URL Registration:** Saturated `pyproject.toml` package keywords with full 20/20 GitHub repository topics (`agent-lifecycle`, `agent-orchestration`, `ai-agents`, `antigravity`, `backend-agnostic`, `chat-runtime`, `claude-code`, `cli`, `codex`, `job-board`, `local-first`, `messaging`, `multi-agent`, `offline-first`, `open-bricks`, `process-isolation`, `python`, `session-decoupling`, `spawn`, `status-polling`, `subagents`, `zero-dependencies`, `zero-egress`). Registered `"Third-Party Licenses (Text)"` in `[project.urls]` and added `THIRD_PARTY_LICENSES.txt` to PEP 621 `license-files`.
+- **Pytest Isolation & Multi-Host Defense:** Hardened `pyproject.toml` with `addopts = "-ra -v --basetemp=.pytest_temp"` and `.hypothesis` in `norecursedirs`. Extended `.gitignore` with `*-IDEAPAD*`, `*-IDEAPAD-GEI*`, `.pytest_tmp*/`, `Desktop.ini`, and `desktop.ini`.
+- **Shields.io Badge Synchronization:** Synchronized Shields.io badges across `README.md` and `README_de.md` (`Verified: 2026-09-28` / `Geprüft: 2026-09-28`, `Third-Party Licenses (Text)`).
+- **RAG Context & License Attribution Parity:** Updated `llms.txt` context index (`Last-checked: 2026-09-28`) and root `NOTICE` attribution file with explicit cross-references to `THIRD_PARTY_LICENSES.txt`.
+- **Automated Contract Tests:** Expanded `tests/test_metadata.py` with dedicated contract tests verifying `sec-01`..`sec-18` anchor parity, `THIRD_PARTY_LICENSES.txt` plain-text companion invariants, PEP 621 keywords saturation, and marketing log recency.
