@@ -8,14 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- CI Lifecycle Workflows `.github/workflows/auto-assign.yml` (`actions/github-script@v7`, `timeout-minutes: 5`, least-privilege `pull-requests: write`, `issues: write`, concurrency cancellation) and `.github/workflows/label-sync.yml` (`EndBug/label-sync@v2`, `timeout-minutes: 5`, `issues: write`).
+- Canonical `.github/labels.yml` defining 11 standard triage labels according to GOVERNANCE.md §4.2.
+- Comprehensive bilingual `CONTRIBUTING.md` guide (EN/DE) with formal Quality Gates, Plan D local development workflow, unprivileged `RunAsInvoker` guarantee (`INV-COMA-09`), and complete compliance matrix for operational invariants `INV-COMA-01` through `INV-COMA-10`.
+- Registered `"Contributing"`, `"Level 1 SBOM"`, and `"Plain-Text License"` URLs in PEP 621 `[project.urls]` within `pyproject.toml`.
+- Re-audited Level 1 SBOM companion `THIRD_PARTY_LICENSES.txt` and `THIRD_PARTY_LICENSES.md` to Stand 2026-10-01, validating Zero External Runtime Dependencies (`INV-COMA-02`), Zero-Copyleft Isolation, and unprivileged user-mode execution.
+- Multi-host sync and lock protection in `.gitignore` covering `TASKPLAN_*.md`, `ehthumbs.db`, `LOCK.dev.*`, `LOCK.antigravity.*`, and `LOCK.bugsearch.*`.
+- Hardened pytest configuration in `pyproject.toml` with `.pytest_tmp*`, `.tox`, and `.turbo` in `norecursedirs`.
+- Section 11 in `MARKETING-LOG.txt` documenting the Pfad A maintenance & hygiene audit (Stand 2026-10-01).
+- Synchronized Shields.io badges across `README.md` and `README_de.md` for `Verified: 2026-10-01` / `Geprüft: 2026-10-01`.
+- Updated `llms.txt` context index (`Last-checked: 2026-10-01`).
+- Expanded automated contract test suite in `tests/test_metadata.py` verifying CI lifecycle workflows, labels, contributing guidelines, PEP 621 URLs, and SBOM recency.
 - 18-point bilingual quick navigation parity across `README.md` and `README_de.md` with reciprocal dual HTML anchors (`<a id="sec-01"></a>`..`<a id="sec-18"></a>` aliases).
 - Plain-text Level 1 SBOM companion `THIRD_PARTY_LICENSES.txt` with Invariant Cross-Reference Matrix table mapping `INV-COMA-01`..`INV-COMA-10`, unprivileged user-mode certification (`RunAsInvoker`), and full license text inventory.
 - Registered `"Third-Party Licenses (Text)"` URL in `[project.urls]` and included `THIRD_PARTY_LICENSES.txt` in PEP 621 `license-files` within `pyproject.toml`.
-- Saturated PEP 621 package `keywords` with full 20/20 GitHub repository topics (`agent-lifecycle`, `agent-orchestration`, `ai-agents`, `antigravity`, `backend-agnostic`, `chat-runtime`, `claude-code`, `cli`, `codex`, `job-board`, `local-first`, `messaging`, `multi-agent`, `offline-first`, `open-bricks`, `process-isolation`, `python`, `session-decoupling`, `spawn`, `status-polling`, `subagents`, `zero-dependencies`, `zero-egress`).
+- Saturated PEP 621 package `keywords` with full 20/20 GitHub repository topics.
 - Hardened pytest runner configuration with `addopts = "-ra -v --basetemp=.pytest_temp"` and `.hypothesis` in `norecursedirs`.
 - Expanded `.gitignore` with multi-host tokens (`*-IDEAPAD*`, `*-IDEAPAD-GEI*`), cache patterns (`.pytest_tmp*/`), and Windows folder descriptors (`Desktop.ini`, `desktop.ini`).
-- Synchronized Shields.io badges across `README.md` and `README_de.md` for `Verified: 2026-09-28` / `Geprüft: 2026-09-28` and Level 1 SBOM plain-text companion.
-- Updated `llms.txt` context index (`Last-checked: 2026-09-28`) and `NOTICE` attribution cross-referencing `THIRD_PARTY_LICENSES.txt`.
+- Updated `NOTICE` attribution cross-referencing `THIRD_PARTY_LICENSES.txt`.
 - Root `NOTICE` file establishing formal open-source copyright attribution (Lukas Geiger / ellmos-ai / open-bricks).
 - Extended `SECURITY.md` with explicit 48-hour acknowledgment SLA, 5-business-day triage commitment, and official security reporting addresses (`security@ellmos.ai`, `security@open-bricks.org`, `lukas@open-bricks.org`).
 - Section 10 in `MARKETING-LOG.txt` documenting the Pfad B marketing, discoverability, and visual architecture audit.

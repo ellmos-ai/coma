@@ -1,6 +1,6 @@
 THIRD-PARTY LICENSES & LEVEL 1 SBOM NOTICE
 Project: ellmos-ai/coma
-Audited: 2026-09-28
+Audited: 2026-10-01
 Repository License: MIT License (see LICENSE)
 Repository Attribution Notice: NOTICE (see NOTICE)
 Architecture & Security: 100% Local-First, Zero-Egress, Single-Writer Channel Protocol, Unprivileged User-Mode (RunAsInvoker), Zero External Runtime Dependencies (INV-COMA-02)

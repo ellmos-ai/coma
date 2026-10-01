@@ -5,7 +5,7 @@
 **[English](README.md) | [Deutsch](README_de.md)**
 
 [![Pytest Status](https://img.shields.io/badge/pytest-290%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
-[![Geprüft](https://img.shields.io/badge/gepr%C3%BCft-2026--09--28-brightgreen.svg)](MARKETING-LOG.txt)
+[![Geprüft](https://img.shields.io/badge/gepr%C3%BCft-2026--10--01-brightgreen.svg)](MARKETING-LOG.txt)
 [![Drittanbieter-Lizenzen (Text)](https://img.shields.io/badge/lizenzen--text-Level%201%20SBOM-blue.svg)](THIRD_PARTY_LICENSES.txt)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)

@@ -1,5 +1,5 @@
 # MARKETING-LOG — COMA (Command & Communication for Autonomous Agents)
-# Stand: 2026-09-28 (Vorige Stände: 2026-09-24, 2026-09-19, 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
+# Stand: 2026-10-01 (Vorige Stände: Stand: 2026-09-28, Stand: 2026-09-24, Stand: 2026-09-19, Stand: 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
 
 ## 1. Positionierung & Kernnutzen (Value Proposition)
 
@@ -136,3 +136,16 @@ COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
 - **Shields.io Badge Synchronization:** Synchronized Shields.io badges across `README.md` and `README_de.md` (`Verified: 2026-09-28` / `Geprüft: 2026-09-28`, `Third-Party Licenses (Text)`).
 - **RAG Context & License Attribution Parity:** Updated `llms.txt` context index (`Last-checked: 2026-09-28`) and root `NOTICE` attribution file with explicit cross-references to `THIRD_PARTY_LICENSES.txt`.
 - **Automated Contract Tests:** Expanded `tests/test_metadata.py` with dedicated contract tests verifying `sec-01`..`sec-18` anchor parity, `THIRD_PARTY_LICENSES.txt` plain-text companion invariants, PEP 621 keywords saturation, and marketing log recency.
+
+---
+
+## 11. Pfad A Maintenance & Hygiene Audit (Stand 2026-10-01)
+
+- **CI Lifecycle Workflows Deployment:** Added `.github/workflows/auto-assign.yml` (least-privilege PR triage with `actions/github-script@v7`, `timeout-minutes: 5`, and concurrency cancellation) and `.github/workflows/label-sync.yml` (`EndBug/label-sync@v2`, `timeout-minutes: 5`, `issues: write`).
+- **Canonical Label Configuration:** Deployed `.github/labels.yml` with 11 standard triage and prioritization labels gemäß GOVERNANCE.md §4.2.
+- **Bilingual CONTRIBUTING Guidelines:** Created root `CONTRIBUTING.md` in full English and German parity documenting Quality Gates, Plan D local development setup, unprivileged `RunAsInvoker` guarantee (`INV-COMA-09`), and operational compliance across `INV-COMA-01` through `INV-COMA-10`.
+- **Level 1 SBOM & Plain-Text Companion Re-Audit:** Updated `THIRD_PARTY_LICENSES.txt` and `THIRD_PARTY_LICENSES.md` to Stand 2026-10-01, verifying Zero External Runtime Dependencies (`INV-COMA-02`), Zero-Copyleft Isolation, and non-elevated user execution.
+- **PEP 621 Metadata Expansion:** Registered `"Contributing"`, `"Level 1 SBOM"`, and `"Plain-Text License"` URLs in `[project.urls]` within `pyproject.toml`. Hardened pytest configuration with `.pytest_tmp*`, `.tox`, and `.turbo` in `norecursedirs`.
+- **Multi-Host & Taskplan Gitignore Hardening:** Hardened `.gitignore` with `TASKPLAN_*.md`, `ehthumbs.db`, `LOCK.dev.*`, `LOCK.antigravity.*`, and `LOCK.bugsearch.*`.
+- **Documentation & Context Synchronisation:** Synchronized Shields.io badges across `README.md` and `README_de.md` for `Verified: 2026-10-01` / `Geprüft: 2026-10-01`, and refreshed `llms.txt` context index (`Last-checked: 2026-10-01`).
+- **Automated Contract Tests:** Expanded `tests/test_metadata.py` with dedicated tests validating CI lifecycle workflows, canonical labels, contributing guidelines, PEP 621 URLs, and SBOM recency.

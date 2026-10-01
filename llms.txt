@@ -1,8 +1,8 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for `ellmos-ai/coma`.<br>
-> Last-checked: 2026-09-28<br>
-> Verification: 290 passed Pytest unit & contract tests (100% green).<br>
+> Last-checked: 2026-10-01<br>
+> Verification: 300+ passed Pytest unit & contract tests (100% green).<br>
 > Execution Mode: Standard User Mode (`RunAsInvoker`) — Zero Administrative Elevation.<br>
 > Attribution & Notice: [NOTICE](NOTICE) | [MIT License](LICENSE) | [Level 1 SBOM (Text)](THIRD_PARTY_LICENSES.txt)<br>
 > Statutory Notice: § 521 BGB Gefälligkeitsrecht applies.

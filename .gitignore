@@ -90,7 +90,11 @@ LOCK.permissions.json
 LOCK.user.*
 LOCK.until.*
 LOCK.condition.*
+LOCK.dev.*
+LOCK.antigravity.*
+LOCK.bugsearch.*
 .automation-lock
+TASKPLAN_*.md
 uv.lock
 !package-lock.json
 
@@ -133,6 +137,7 @@ wheelhouse/
 # OS-Artefakte
 .DS_Store
 Thumbs.db
+ehthumbs.db
 Desktop.ini
 desktop.ini
 

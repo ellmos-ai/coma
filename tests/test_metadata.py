@@ -246,7 +246,12 @@ def test_pyproject_pytest_addopts():
 def test_marketing_log_recent_hygiene_entry():
     """Verify MARKETING-LOG.txt includes recent Pfad A hygiene audit entry."""
     content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-09-28" in content or "Stand: 2026-09-24" in content or "Stand: 2026-09-14" in content
+    assert (
+        "Stand: 2026-10-01" in content
+        or "Stand: 2026-09-28" in content
+        or "Stand: 2026-09-24" in content
+        or "Stand: 2026-09-14" in content
+    )
     assert "Pfad A" in content
     assert "Release 0.3.1 Highlights" in content
 
@@ -547,3 +552,107 @@ def test_notice_third_party_text_companion():
     """Verify NOTICE cross-references THIRD_PARTY_LICENSES.txt companion."""
     content = (REPO_ROOT / "NOTICE").read_text(encoding="utf-8")
     assert "THIRD_PARTY_LICENSES.txt" in content
+
+
+def test_ci_lifecycle_auto_assign_workflow():
+    """Verify .github/workflows/auto-assign.yml configuration and least-privilege permissions."""
+    wf_path = REPO_ROOT / ".github" / "workflows" / "auto-assign.yml"
+    assert wf_path.exists(), "auto-assign.yml missing"
+    content = wf_path.read_text(encoding="utf-8")
+    assert "actions/github-script@v7" in content
+    assert "timeout-minutes: 5" in content
+    assert "cancel-in-progress: true" in content
+    assert "pull-requests: write" in content
+    assert "issues: write" in content
+
+
+def test_ci_lifecycle_label_sync_workflow():
+    """Verify .github/workflows/label-sync.yml configuration and least-privilege permissions."""
+    wf_path = REPO_ROOT / ".github" / "workflows" / "label-sync.yml"
+    assert wf_path.exists(), "label-sync.yml missing"
+    content = wf_path.read_text(encoding="utf-8")
+    assert "EndBug/label-sync@v2" in content
+    assert "timeout-minutes: 5" in content
+    assert "cancel-in-progress: true" in content
+    assert "issues: write" in content
+    assert "config-file: .github/labels.yml" in content
+
+
+def test_canonical_labels_configuration():
+    """Verify .github/labels.yml defines all canonical triage labels from GOVERNANCE.md §4.2."""
+    labels_path = REPO_ROOT / ".github" / "labels.yml"
+    assert labels_path.exists(), ".github/labels.yml missing"
+    content = labels_path.read_text(encoding="utf-8")
+    required_labels = [
+        "bug",
+        "enhancement",
+        "good first issue",
+        "help wanted",
+        "documentation",
+        "duplicate",
+        "wontfix",
+        "priority: high",
+        "priority: low",
+        "needs-triage",
+        "stale",
+        "security",
+        "dependencies",
+    ]
+    for label in required_labels:
+        assert f"name: {label}" in content or f"name: '{label}'" in content, (
+            f"Missing required label: {label}"
+        )
+
+
+def test_bilingual_contributing_guidelines():
+    """Verify CONTRIBUTING.md exists with bilingual parity, quality gates, and invariants."""
+    contrib_path = REPO_ROOT / "CONTRIBUTING.md"
+    assert contrib_path.exists(), "CONTRIBUTING.md missing"
+    content = contrib_path.read_text(encoding="utf-8")
+    assert "Contributing to coma" in content
+    assert "Mitwirken an coma" in content
+    assert "RunAsInvoker" in content
+    assert "T-20260920-167562623" in content
+    assert "pytest -ra -v" in content
+    for i in range(1, 11):
+        assert f"INV-COMA-{i:02d}" in content, f"INV-COMA-{i:02d} missing in CONTRIBUTING.md"
+
+
+def test_pep621_extended_hygiene_urls():
+    """Verify pyproject.toml defines Contributing, Level 1 SBOM, and Plain-Text License URLs."""
+    pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'Contributing = "https://github.com/ellmos-ai/coma/blob/main/CONTRIBUTING.md"' in pyproject_content
+    assert '"Level 1 SBOM" = "https://github.com/ellmos-ai/coma/blob/main/THIRD_PARTY_LICENSES.md"' in pyproject_content
+    assert '"Plain-Text License" = "https://raw.githubusercontent.com/ellmos-ai/coma/main/LICENSE"' in pyproject_content
+    assert '".pytest_tmp*"' in pyproject_content
+    assert '".tox"' in pyproject_content
+    assert '".turbo"' in pyproject_content
+
+
+def test_third_party_licenses_audit_recency_20261001():
+    """Verify THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md are audited to 2026-10-01."""
+    txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
+    md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
+    assert "Audited: 2026-10-01" in txt_content
+    assert "Audited:** 2026-10-01" in md_content
+    for i in range(1, 11):
+        inv_id = f"INV-COMA-{i:02d}"
+        assert inv_id in txt_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.txt"
+        assert inv_id in md_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.md"
+
+
+def test_marketing_log_audit_stand_20261001():
+    """Verify MARKETING-LOG.txt documents Pfad A audit stand 2026-10-01."""
+    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+    assert "Stand: 2026-10-01" in content
+    assert "11. Pfad A Maintenance & Hygiene Audit (Stand 2026-10-01)" in content
+
+
+def test_gitignore_additional_multihost_guards():
+    """Verify .gitignore includes TASKPLAN, ehthumbs.db, and lock guards."""
+    content = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert "TASKPLAN_*.md" in content
+    assert "ehthumbs.db" in content
+    assert "LOCK.dev.*" in content
+    assert "LOCK.antigravity.*" in content
+    assert "LOCK.bugsearch.*" in content
