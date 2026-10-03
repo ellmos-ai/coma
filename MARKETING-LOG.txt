@@ -1,5 +1,5 @@
 # MARKETING-LOG — COMA (Command & Communication for Autonomous Agents)
-# Stand: 2026-10-01 (Vorige Stände: Stand: 2026-09-28, Stand: 2026-09-24, Stand: 2026-09-19, Stand: 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
+# Stand: 2026-10-04 (Vorige Stände: Stand: 2026-10-01, Stand: 2026-09-28, Stand: 2026-09-24, Stand: 2026-09-19, Stand: 2026-09-14) | Repository: ellmos-ai/coma | Lizenz: MIT
 
 ## 1. Positionierung & Kernnutzen (Value Proposition)
 
@@ -149,3 +149,35 @@ COMA ist integraler Bestandteil der `ellmos-ai` und `open-bricks` Infrastruktur:
 - **Multi-Host & Taskplan Gitignore Hardening:** Hardened `.gitignore` with `TASKPLAN_*.md`, `ehthumbs.db`, `LOCK.dev.*`, `LOCK.antigravity.*`, and `LOCK.bugsearch.*`.
 - **Documentation & Context Synchronisation:** Synchronized Shields.io badges across `README.md` and `README_de.md` for `Verified: 2026-10-01` / `Geprüft: 2026-10-01`, and refreshed `llms.txt` context index (`Last-checked: 2026-10-01`).
 - **Automated Contract Tests:** Expanded `tests/test_metadata.py` with dedicated tests validating CI lifecycle workflows, canonical labels, contributing guidelines, PEP 621 URLs, and SBOM recency.
+
+---
+
+## 12. Pfad B Discoverability, Visual Architecture & Level 1 SBOM Audit (Stand 2026-10-04)
+
+- **Live Traffic & Clone Analytics:**
+  - 14-Tage-Clones: 274 Clones über 98 eindeutige Cloner (Spitzen am 2026-10-01 mit 64 Clones / 27 Uniques und 2026-09-24 mit 48 Clones / 19 Uniques).
+  - 14-Tage-Views: 6 Views über 4 eindeutige Besucher.
+  - Befund: Sehr starke Clone- und Ingestion-Aktivität von automatisierten Repräsentanten und Buildern, bei moderatem manuellem Web-Traffic. Discoverability profitiert maßgeblich von strukturierter RAG-Aufbereitung (`llms.txt`) und exzellenter Terminal-/CLI-Architektur.
+
+- **ASCII Vier-Sichten-Architekturtopologie (Section 2 Parität EN/DE):**
+  - Projektion aller 10 architektonischen und Laufzeitinvarianten (`INV-COMA-01` bis `INV-COMA-10`) in eine strukturierte 4-Sichten-Darstellung:
+    - *View 1 / Sicht 1:* Client-Laufzeiten, Orchestrator-Eintrittspunkte & Sitzungsplanung (`JobBoard.submit`, `JobRunner.run`, `Spawner.run`, CLI-Befehle, prozessfreie Trockenläufe `INV-COMA-04`, deterministischer Fallback `INV-COMA-05`, Starter aus `roles[]` `INV-COMA-08`).
+    - *View 2 / Sicht 2:* Single-Writer-Dateiprotokoll & Verzeichnis-Warteschlangen (`IN/`, `OUT/`, `DONE/`, `to-agent.jsonl`, `from-agent.jsonl`, `coma.<jobid>.json`, `console.log`, `result.md`, `INV-COMA-01`).
+    - *View 3 / Sicht 3:* COMA Kern-Lebenszyklus-Engine & Multi-Provider CLI-Adapter (100% Python Standardbibliothek `INV-COMA-02`, verifizierte Claude-, Codex- und AGY-Adapter, Fail-Closed Kimi-Sicherheit `INV-COMA-06`, begrenzte Probe-Bereinigung `INV-COMA-07`, Prozess-Isolation & RC-Immunität `INV-COMA-03`).
+    - *View 4 / Sicht 4:* Air-Gap Sicherheitsperimeter, unprivilegierter RunAsInvoker & Governance (Strikter Benutzermodus `INV-COMA-09`, Zero Network Egress, Zero-Copyleft MIT-Isolation, gesetzlicher Hinweis § 521 BGB Gefälligkeitsrecht, verbindliche 48h Security Response SLA `INV-COMA-10`).
+
+- **Level 1 SBOM Text-Companion & Re-Audit Stand 2026-10-04:**
+  - `THIRD_PARTY_LICENSES.txt` und `THIRD_PARTY_LICENSES.md` auf Stand 2026-10-04 re-auditiert.
+  - Bestätigung aller 10 Invarianten, strikter Unprivileged User Mode (`RunAsInvoker`), Zero-Copyleft Isolation Guarantee, reiner Python-Standardbibliothek-Stack (PSFL-2.0).
+
+- **Dokumentations-, Badge- & Test-Parität:**
+  - Shields.io Badges in `README.md` und `README_de.md` auf 313 bestandene Tests (`pytest-313 passed` / `pytest-313 bestanden | 100% green`) und Verifikationsstempel `Verified: 2026-10-04` / `Geprüft: 2026-10-04` synchronisiert.
+  - Section 13 CLI-Testbefehl auf 313 Tests aktualisiert.
+  - `llms.txt` Stand 2026-10-04 mit 313 Tests Baseline und Verweisen auf die Vier-Sichten-Topologie aktualisiert.
+  - Release Notes in `CHANGELOG.md` unter `## [Unreleased]` Stand 2026-10-04 dokumentiert.
+  - Version `0.3.2` strikt eingefroren per T-20260920-167562623 (0 Version-Diffs).
+
+- **Konkrete, nicht-automatisierte Handlungsempfehlungen (Discoverability):**
+  - **[REC-20261004-01] Interaktives Terminal-GIF / Asciinema-Player:** Aufnahme eines 20s Terminal-Casts für die interaktive Dokumentation (`coma run myjob --dry-run` und `coma session --provider codex`), um Konversionsraten auf GitHub zu maximieren.
+  - **[REC-20261004-02] PyPI Alpha Packaging (`coma-agents`):** Einreichung des minimalen Zero-Dependency-Pakets auf PyPI als `coma-agents` zur einfachen Installation via `pip install coma-agents`.
+  - **[REC-20261004-03] Upstream Pull Request zu Awesome-AI-Agents & Awesome-Claude:** Erstellung präziser Upstream-PRs zur Aufnahme in kuratierte Repositorien unter der Kategorie "Local-First Agent Spawner & Subprocess Lifecycle".

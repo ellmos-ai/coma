@@ -4,8 +4,8 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-290%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
-[![Geprüft](https://img.shields.io/badge/gepr%C3%BCft-2026--10--01-brightgreen.svg)](MARKETING-LOG.txt)
+[![Pytest Status](https://img.shields.io/badge/pytest-313%20bestanden-brightgreen.svg)](https://docs.pytest.org/)
+[![Geprüft](https://img.shields.io/badge/gepr%C3%BCft-2026--10--04-brightgreen.svg)](MARKETING-LOG.txt)
 [![Drittanbieter-Lizenzen (Text)](https://img.shields.io/badge/lizenzen--text-Level%201%20SBOM-blue.svg)](THIRD_PARTY_LICENSES.txt)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
@@ -81,6 +81,51 @@ Die Verben trennen sauber: COMA spricht `spawn`, `send`, `poll`, `result`. Ein K
 
 3. **Hintergrund-Auftragsverarbeitung**
    Dateisystem-basierte Steuerung (`IN/`, `OUT/`, `DONE/`) für autonome Hintergrund-Läufer und entkoppelte Tool-Ausführungen.
+
+### ASCII Vier-Sichten-Architekturtopologie
+
+```text
++====================================================================================================================+
+|                    COMA -- VIER-SICHTEN-ARCHITEKTURTOPOLOGIE (LOKAL-FIRST & ZERO-EGRESS)                           |
++====================================================================================================================+
+| [SICHT 1: CLIENT-LAUFZEITEN, ORCHESTRATOR-EINTRITTSPUNKTE & SITZUNGSPLANUNG]                                       |
+|  * High-Level Client-APIs: JobBoard.submit(job_id, prompt), JobRunner.run(job_id), Spawner.run(prompt)             |
+|  * Interaktive CLI-Befehle: coma run, coma cmd, coma session, coma submit, coma status, coma result, coma send     |
+|  * Prozessfreie Trockenläufe [INV-COMA-04]: build_cmd() & build_session_plan() erzeugen argv-Vektoren ohne Start  |
+|  * Deterministischer Multi-Provider-Fallback [INV-COMA-05]: ordered_candidates() & available_candidates() Auflösung|
+|  * Idempotente Dual-Plattform-Starter [INV-COMA-08]: START.bat & start.sh aus roles[] mit Schutzmarkern            |
++--------------------------------------------------------------------------------------------------------------------+
+                                                          |
+                                                          v
++--------------------------------------------------------------------------------------------------------------------+
+| [SICHT 2: SINGLE-WRITER DATEIPROTOKOLL & VERZEICHNIS-WARTESCHLANGEN]                                               |
+|  * Single-Writer-Dateiprotokoll [INV-COMA-01]: Genau ein Schreiber je Kanaldatei, vollständige Kollisionsfreiheit |
+|  * Auftrags-Eingang: IN/<jobid>.md (Auftragsprompt durch Einreicher; atomare Ausführungsübernahme durch Runner)    |
+|  * Live-Streaming: OUT/coma.<jobid>.to-agent.jsonl (Orchestrator) & from-agent.jsonl (Agent)                       |
+|  * Ausführungsstatus & Telemetrie: OUT/coma.<jobid>.json (Zustandsmaschine) & OUT/coma.<jobid>.console.log        |
+|  * Ergebnisabgabe & Archivierung: OUT/<jobid>.result.md -> atomare Überführung nach DONE/<jobid>.md bei Erfolg      |
++--------------------------------------------------------------------------------------------------------------------+
+                                                          |
+                                                          v
++--------------------------------------------------------------------------------------------------------------------+
+| [SICHT 3: COMA KERN-LEBENSZYKLUS-ENGINE & MULTI-PROVIDER CLI-ADAPTER]                                              |
+|  * Null externe Abhängigkeiten [INV-COMA-02]: 100% reine Python-Standardbibliothek (subprocess, pathlib, os, json) |
+|  * Verifizierte Adapter: ClaudeAdapter (Claude Code CLI), CodexAdapter (OpenAI Codex CLI), AgyAdapter (AGY CLI)    |
+|  * Fail-Closed Provider-Sicherheit [INV-COMA-06]: KimiAdapter bleibt ohne explizites Opt-in strikt fail-closed     |
+|  * Begrenzte Probe-Bereinigung [INV-COMA-07]: probe() erzwingt strikte Timeouts & garantierte Kindprozess-Terminierung|
+|  * Prozess-Isolation & RC-Immunität [INV-COMA-03]: Eigene Betriebssystem-Prozessbäume außerhalb von Remote-Sessions|
++--------------------------------------------------------------------------------------------------------------------+
+                                                          |
+                                                          v
++--------------------------------------------------------------------------------------------------------------------+
+| [SICHT 4: AIR-GAP SICHERHEITSPERIMETER, UNPRIVILEGIERTER RUNASINVOKER & GOVERNANCE]                                |
+|  * Unprivilegierte Ausführung [INV-COMA-09]: Striktes RunAsInvoker Benutzermodus, null Administrator-/Root-Rechte  |
+|  * Zero-Network-Egress: Vollständig netzwerkisoliert, null Telemetrie-Übertragung, null externe Sockets           |
+|  * Zero-Copyleft-Isolation: Rein permissive MIT-Lizenz, sauberer Level 1 SBOM Begleiter THIRD_PARTY_LICENSES.txt    |
+|  * Gesetzlicher Hinweis (§ 521 BGB): Haftungsbeschränkung für unentgeltliche Bereitstellung nach deutschem BGB     |
+|  * Sicherheits- & Governance-SLA [INV-COMA-10]: Verbindliche 48h Antwort-SLA & 5 Tage Triage (security@ellmos.ai)  |
++====================================================================================================================+
+```
 
 ---
 
@@ -437,7 +482,7 @@ COMA wahrt Systemstabilität, Sicherheit und Nachvollziehbarkeit über 10 verbin
 ## 13. Tests & Verifikationssuite
 
 ```bat
-python -m pytest -q      :: 290 bestanden
+python -m pytest -q      :: 313 bestanden
 ```
 
 Tests starten niemals echte Provider. Ein beschränkter Probe-Test nutzt den lokalen

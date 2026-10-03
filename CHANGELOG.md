@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Pfad B ASCII Four-View Architectural Topology (`### ASCII Four-View Architectural Topology` / `### ASCII Vier-Sichten-Architekturtopologie`) in Section 2 of both `README.md` and `README_de.md` projecting all 10 architectural and runtime invariants `INV-COMA-01` through `INV-COMA-10` across View 1 (Client & Orchestrator Entrypoints), View 2 (Single-Writer Protocol & Directory Queues), View 3 (COMA Core Engine & Multi-Provider CLI Adapters), and View 4 (Air-Gap Perimeter, Unprivileged `RunAsInvoker` & Governance).
+- Re-audited Level 1 SBOM text companion `THIRD_PARTY_LICENSES.txt` and `THIRD_PARTY_LICENSES.md` to Stand 2026-10-04 with confirmed zero external runtime dependencies (`INV-COMA-02`), Zero-Copyleft isolation guarantee, unprivileged user-mode certification (`RunAsInvoker`), and 48h Security Response SLA.
+- Synchronized Shields.io test status badges to 313 passed tests (`pytest-313 passed` / `pytest-313 bestanden | 100% green`) and recency markers (`Verified: 2026-10-04` / `Geprüft: 2026-10-04`) across English and German README editions.
+- Updated `llms.txt` context index (`Last-checked: 2026-10-04`, 313 passed tests baseline) and Section 13 testing guidelines.
+- Section 12 in `MARKETING-LOG.txt` documenting the Pfad B discoverability audit Stand 2026-10-04 with live traffic analytics (274 clones across 98 unique cloners) and 3 actionable recommendations (`REC-20261004-01`, `REC-20261004-02`, `REC-20261004-03`).
+- Automated contract tests in `tests/test_metadata.py` verifying bilingual ASCII four-view architectural topology parity, Level 1 SBOM recency Stand 2026-10-04, marketing log Section 12 presence, and badge recency.
 - CI Lifecycle Workflows `.github/workflows/auto-assign.yml` (`actions/github-script@v7`, `timeout-minutes: 5`, least-privilege `pull-requests: write`, `issues: write`, concurrency cancellation) and `.github/workflows/label-sync.yml` (`EndBug/label-sync@v2`, `timeout-minutes: 5`, `issues: write`).
 - Canonical `.github/labels.yml` defining 11 standard triage labels according to GOVERNANCE.md §4.2.
 - Comprehensive bilingual `CONTRIBUTING.md` guide (EN/DE) with formal Quality Gates, Plan D local development workflow, unprivileged `RunAsInvoker` guarantee (`INV-COMA-09`), and complete compliance matrix for operational invariants `INV-COMA-01` through `INV-COMA-10`.

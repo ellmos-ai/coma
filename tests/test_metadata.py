@@ -630,11 +630,11 @@ def test_pep621_extended_hygiene_urls():
 
 
 def test_third_party_licenses_audit_recency_20261001():
-    """Verify THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md are audited to 2026-10-01."""
+    """Verify THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md are audited to 2026-10-01 or later."""
     txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
     md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
-    assert "Audited: 2026-10-01" in txt_content
-    assert "Audited:** 2026-10-01" in md_content
+    assert ("Audited: 2026-10-01" in txt_content) or ("Audited: 2026-10-04" in txt_content)
+    assert ("Audited:** 2026-10-01" in md_content) or ("Audited:** 2026-10-04" in md_content)
     for i in range(1, 11):
         inv_id = f"INV-COMA-{i:02d}"
         assert inv_id in txt_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.txt"
@@ -644,7 +644,7 @@ def test_third_party_licenses_audit_recency_20261001():
 def test_marketing_log_audit_stand_20261001():
     """Verify MARKETING-LOG.txt documents Pfad A audit stand 2026-10-01."""
     content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-10-01" in content
+    assert "Stand: 2026-10-01" in content or "Stand: 2026-10-04" in content
     assert "11. Pfad A Maintenance & Hygiene Audit (Stand 2026-10-01)" in content
 
 
@@ -656,3 +656,67 @@ def test_gitignore_additional_multihost_guards():
     assert "LOCK.dev.*" in content
     assert "LOCK.antigravity.*" in content
     assert "LOCK.bugsearch.*" in content
+
+
+def test_ascii_four_view_architectural_topology_parity_en_de():
+    """Verify ASCII Four-View Architectural Topology presence and invariant parity across README.md and README_de.md."""
+    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
+
+    assert "ASCII Four-View Architectural Topology" in readme_en
+    assert "ASCII Vier-Sichten-Architekturtopologie" in readme_de
+
+    for view in ["[VIEW 1:", "[VIEW 2:", "[VIEW 3:", "[VIEW 4:"]:
+        assert view in readme_en, f"{view} missing in README.md"
+
+    for sicht in ["[SICHT 1:", "[SICHT 2:", "[SICHT 3:", "[SICHT 4:"]:
+        assert sicht in readme_de, f"{sicht} missing in README_de.md"
+
+    for i in range(1, 11):
+        inv_id = f"INV-COMA-{i:02d}"
+        assert inv_id in readme_en, f"{inv_id} missing in README.md topology"
+        assert inv_id in readme_de, f"{inv_id} missing in README_de.md topology"
+
+
+def test_third_party_licenses_audit_recency_20261004():
+    """Verify THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md are audited to 2026-10-04."""
+    txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
+    md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
+    assert "Audited: 2026-10-04" in txt_content
+    assert "Audited:** 2026-10-04" in md_content
+    for i in range(1, 11):
+        inv_id = f"INV-COMA-{i:02d}"
+        assert inv_id in txt_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.txt"
+        assert inv_id in md_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.md"
+
+
+def test_marketing_log_audit_stand_20261004():
+    """Verify MARKETING-LOG.txt documents Pfad B audit stand 2026-10-04."""
+    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
+    assert "Stand: 2026-10-04" in content
+    assert "12. Pfad B Discoverability, Visual Architecture & Level 1 SBOM Audit (Stand 2026-10-04)" in content
+    assert "REC-20261004-01" in content
+    assert "REC-20261004-02" in content
+    assert "REC-20261004-03" in content
+
+
+def test_readme_badges_audit_recency_and_test_count_313():
+    """Verify Shields.io badges in README.md and README_de.md reflect 313 tests and 2026-10-04 verification."""
+    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
+
+    assert "pytest-313%20passed" in readme_en
+    assert "verified-2026--10--04" in readme_en
+    assert "pytest-313%20bestanden" in readme_de
+    assert "gepr%C3%BCft-2026--10--04" in readme_de
+
+
+def test_version_freeze_discipline_032():
+    """Verify version 0.3.2 is strictly frozen per T-20260920-167562623 across all manifests."""
+    pyproject_content = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    manifest_data = json.loads((REPO_ROOT / "ellmos-module.v2.json").read_text(encoding="utf-8"))
+    coma_init = (REPO_ROOT / "coma" / "__init__.py").read_text(encoding="utf-8")
+
+    assert 'version = "0.3.2"' in pyproject_content
+    assert manifest_data.get("version") == "0.3.2"
+    assert '__version__ = "0.3.2"' in coma_init
