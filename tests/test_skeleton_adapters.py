@@ -5,6 +5,8 @@ Diese drei sind nach Auftrag **nicht live zu testen**. Geprueft wird deshalb nur
 dass sie die dokumentierte Aufrufkonvention korrekt zusammenbauen — und dass die
 Sicherung greift, die sie von einem unbeaufsichtigten Lauf trennt.
 """
+import os
+
 import pytest
 
 from coma import Spawner, UnverifiedAdapterError
@@ -66,12 +68,42 @@ class TestSpawnerGuard:
 
 
 class TestCodex:
-    def test_uses_native_exec_via_windows_node_entrypoint(self):
-        cmd = CodexAdapter().build_cmd("Mach was")
+    def test_windows_node_entrypoint_contract(self):
+        entrypoint = (
+            r"C:\fixture\node_modules\@openai\codex\bin\codex.js"
+        )
+        cmd = CodexAdapter(
+            executable="node", entrypoint=entrypoint
+        ).build_cmd("Mach was")
         assert cmd[0] == "node"
         assert "@openai/codex/bin/codex.js" in cmd[1].replace("\\", "/")
         assert cmd[2] == "exec"
         assert cmd[-1] == "Mach was"
+
+    def test_native_executable_contract_has_no_node_entrypoint(self):
+        cmd = CodexAdapter(executable="codex").build_cmd(
+            "Mach was", entrypoint=None
+        )
+        assert cmd == [
+            "codex", "exec", "--sandbox", "read-only",
+            "--skip-git-repo-check", "--ephemeral", "Mach was",
+        ]
+
+    def test_host_default_launcher_matches_platform(self):
+        adapter = CodexAdapter()
+        cmd = adapter.build_cmd("Mach was")
+        if os.name == "nt":
+            assert adapter.executable == "node"
+            assert adapter.entrypoint is not None
+            assert "@openai/codex/bin/codex.js" in str(adapter.entrypoint).replace(
+                "\\", "/"
+            )
+            assert cmd[0] == "node"
+            assert cmd[2] == "exec"
+        else:
+            assert adapter.executable == "codex"
+            assert adapter.entrypoint is None
+            assert cmd[0:2] == ["codex", "exec"]
 
     def test_read_only_by_default(self):
         cmd = CodexAdapter().build_cmd("Mach was")
@@ -138,10 +170,38 @@ class TestKimi:
         index = cmd.index("-p")
         assert cmd[index:index + 2] == ["-p", "mach was"]
 
-    def test_windows_uses_node_entrypoint(self):
-        cmd = KimiAdapter().build_cmd("mach was")
+    def test_windows_node_entrypoint_contract(self):
+        entrypoint = (
+            r"C:\fixture\node_modules\@moonshot-ai\kimi-code\dist\main.mjs"
+        )
+        cmd = KimiAdapter(
+            executable="node", entrypoint=entrypoint
+        ).build_cmd("mach was")
         assert cmd[0] == "node"
         assert "@moonshot-ai/kimi-code" in cmd[1].replace("\\", "/")
+        assert cmd[2:] == ["-p", "mach was"]
+
+    def test_native_executable_contract_has_no_node_entrypoint(self):
+        cmd = KimiAdapter(executable="kimi").build_cmd(
+            "mach was", entrypoint=None
+        )
+        assert cmd == ["kimi", "-p", "mach was"]
+
+    def test_host_default_launcher_matches_platform(self):
+        adapter = KimiAdapter()
+        cmd = adapter.build_cmd("mach was")
+        if os.name == "nt":
+            assert adapter.executable == "node"
+            assert adapter.entrypoint is not None
+            assert "@moonshot-ai/kimi-code" in str(adapter.entrypoint).replace(
+                "\\", "/"
+            )
+            assert cmd[0] == "node"
+            assert cmd[2:] == ["-p", "mach was"]
+        else:
+            assert adapter.executable == "kimi"
+            assert adapter.entrypoint is None
+            assert cmd == ["kimi", "-p", "mach was"]
 
     @pytest.mark.parametrize("flag", ["-y", "--yolo", "--auto"])
     def test_incompatible_flags_are_refused(self, flag):
