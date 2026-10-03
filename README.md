@@ -490,6 +490,8 @@ COMA is part of the `ellmos-ai` orchestration architecture and the broader `open
 | **Agent Bootstrap** | [`dev-bricks/safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Safe startup, environment checks & preflight diagnostics |
 | **Umbrella Ecosystem** | [`open-bricks`](https://github.com/open-bricks) | Open-source foundation for local-first developer tools |
 
+- [Swarm AI](https://github.com/ellmos-ai/swarm_ai) optionally uses COMA's Spawner and adapter APIs for provider-backed workflows.
+
 ---
 
 <a id="sec-16"></a>

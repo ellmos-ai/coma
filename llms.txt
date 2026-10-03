@@ -113,6 +113,7 @@ coma check .\coma-vendor.json
 
 - [`README.md`](README.md): Primary documentation and 18-point quick navigation.
 - [`README_de.md`](README_de.md): German documentation and architecture overview.
+- [Swarm AI](https://github.com/ellmos-ai/swarm_ai): Optional consumer of COMA's Spawner and adapter APIs for provider-backed workflows.
 - [`NOTICE`](NOTICE): Formal copyright attribution (Lukas Geiger / ellmos-ai / open-bricks).
 - [`KONZEPT.md`](KONZEPT.md): Architectural rationale, session-decoupling motivation, and offline design.
 - [`SECURITY.md`](SECURITY.md): Process isolation, single-writer protocol boundaries, and 48h vulnerability reporting SLA.
