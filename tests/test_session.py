@@ -126,10 +126,44 @@ def test_probe_accepts_token_from_bounded_fake_process(tmp_path):
     assert probe(command, 5, cwd=tmp_path) == (True, f"{PROBE_TOKEN} erkannt")
 
 
-def test_cli_session_dry_run_never_starts_provider(prompt_file, tmp_path, capsys):
+def test_cli_session_dry_run_never_starts_provider(
+    prompt_file, tmp_path, capsys, monkeypatch
+):
+    monkeypatch.setattr(
+        "coma.session.shutil.which",
+        lambda provider: "codex-test" if provider == "codex" else None,
+    )
+
+    def fail_if_started(*args, **kwargs):
+        pytest.fail("dry-run darf keinen Provider-Prozess starten")
+
+    monkeypatch.setattr("coma.cli.subprocess.run", fail_if_started)
+    monkeypatch.setattr("coma.cli.subprocess.Popen", fail_if_started)
     code = main([
         "session", "--provider", "codex", "--prompt-file", str(prompt_file),
         "--request", "Nur planen.", "--cwd", str(tmp_path), "--dry-run",
     ])
     assert code == 0
-    assert "Nur planen." in capsys.readouterr().out
+    output = capsys.readouterr().out
+    assert output.startswith("codex-test ")
+    assert "Nur planen." in output
+
+
+def test_cli_session_dry_run_reports_missing_cli_without_starting(
+    prompt_file, tmp_path, capsys, monkeypatch
+):
+    monkeypatch.setattr("coma.session.shutil.which", lambda _provider: None)
+
+    def fail_if_started(*args, **kwargs):
+        pytest.fail("fehlende Provider-CLI darf keinen Prozessstart auslösen")
+
+    monkeypatch.setattr("coma.cli.subprocess.run", fail_if_started)
+    monkeypatch.setattr("coma.cli.subprocess.Popen", fail_if_started)
+    code = main([
+        "session", "--provider", "codex", "--prompt-file", str(prompt_file),
+        "--request", "Nur planen.", "--cwd", str(tmp_path), "--dry-run",
+    ])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "Provider 'codex' wurde nicht gefunden" in captured.err
+    assert captured.out == ""
