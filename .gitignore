@@ -68,6 +68,11 @@ _scratch/
 _proof/
 
 # Security and hygiene guards
+_after-care/
+BEFUNDE.md
+MARKETING-LOG.txt
+
+
 *.pem
 *.key
 *.pfx
@@ -101,13 +106,11 @@ uv.lock
 # Host-spezifische Sync-Dateien (OneDrive Sync-Konflikte)
 *-ASUS-GEI*
 *-ASUS*
-*-WORKSTATION-LG*
 *-WORKSTATION*
 *-LAPTOP*
 *-Mac Studio*
 *-MacBook*
 *-IDEAPAD*
-*-IDEAPAD-GEI*
 *.sync-conflict-*
 *.conflict
 *-conflict-*

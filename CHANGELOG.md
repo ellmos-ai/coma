@@ -7,34 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Pfad B ASCII Four-View Architectural Topology (`### ASCII Four-View Architectural Topology` / `### ASCII Vier-Sichten-Architekturtopologie`) in Section 2 of both `README.md` and `README_de.md` projecting all 10 architectural and runtime invariants `INV-COMA-01` through `INV-COMA-10` across View 1 (Client & Orchestrator Entrypoints), View 2 (Single-Writer Protocol & Directory Queues), View 3 (COMA Core Engine & Multi-Provider CLI Adapters), and View 4 (Air-Gap Perimeter, Unprivileged `RunAsInvoker` & Governance).
-- Re-audited Level 1 SBOM text companion `THIRD_PARTY_LICENSES.txt` and `THIRD_PARTY_LICENSES.md` to Stand 2026-10-04 with confirmed zero external runtime dependencies (`INV-COMA-02`), Zero-Copyleft isolation guarantee, unprivileged user-mode certification (`RunAsInvoker`), and 48h Security Response SLA.
-- Synchronized Shields.io test status badges to 313 passed tests (`pytest-313 passed` / `pytest-313 bestanden | 100% green`) and recency markers (`Verified: 2026-10-04` / `Geprüft: 2026-10-04`) across English and German README editions.
-- Updated `llms.txt` context index (`Last-checked: 2026-10-04`, 313 passed tests baseline) and Section 13 testing guidelines.
-- Section 12 in `MARKETING-LOG.txt` documenting the Pfad B discoverability audit Stand 2026-10-04 with live traffic analytics (274 clones across 98 unique cloners) and 3 actionable recommendations (`REC-20261004-01`, `REC-20261004-02`, `REC-20261004-03`).
-- Automated contract tests in `tests/test_metadata.py` verifying bilingual ASCII four-view architectural topology parity, Level 1 SBOM recency Stand 2026-10-04, marketing log Section 12 presence, and badge recency.
-- CI Lifecycle Workflows `.github/workflows/auto-assign.yml` (`actions/github-script@v7`, `timeout-minutes: 5`, least-privilege `pull-requests: write`, `issues: write`, concurrency cancellation) and `.github/workflows/label-sync.yml` (`EndBug/label-sync@v2`, `timeout-minutes: 5`, `issues: write`).
-- Canonical `.github/labels.yml` defining 11 standard triage labels according to GOVERNANCE.md §4.2.
-- Comprehensive bilingual `CONTRIBUTING.md` guide (EN/DE) with formal Quality Gates, Plan D local development workflow, unprivileged `RunAsInvoker` guarantee (`INV-COMA-09`), and complete compliance matrix for operational invariants `INV-COMA-01` through `INV-COMA-10`.
-- Registered `"Contributing"`, `"Level 1 SBOM"`, and `"Plain-Text License"` URLs in PEP 621 `[project.urls]` within `pyproject.toml`.
-- Re-audited Level 1 SBOM companion `THIRD_PARTY_LICENSES.txt` and `THIRD_PARTY_LICENSES.md` to Stand 2026-10-01, validating Zero External Runtime Dependencies (`INV-COMA-02`), Zero-Copyleft Isolation, and unprivileged user-mode execution.
-- Multi-host sync and lock protection in `.gitignore` covering `TASKPLAN_*.md`, `ehthumbs.db`, `LOCK.dev.*`, `LOCK.antigravity.*`, and `LOCK.bugsearch.*`.
-- Hardened pytest configuration in `pyproject.toml` with `.pytest_tmp*`, `.tox`, and `.turbo` in `norecursedirs`.
-- Section 11 in `MARKETING-LOG.txt` documenting the Pfad A maintenance & hygiene audit (Stand 2026-10-01).
-- Synchronized Shields.io badges across `README.md` and `README_de.md` for `Verified: 2026-10-01` / `Geprüft: 2026-10-01`.
-- Updated `llms.txt` context index (`Last-checked: 2026-10-01`).
-- Expanded automated contract test suite in `tests/test_metadata.py` verifying CI lifecycle workflows, labels, contributing guidelines, PEP 621 URLs, and SBOM recency.
-- 18-point bilingual quick navigation parity across `README.md` and `README_de.md` with reciprocal dual HTML anchors (`<a id="sec-01"></a>`..`<a id="sec-18"></a>` aliases).
-- Plain-text Level 1 SBOM companion `THIRD_PARTY_LICENSES.txt` with Invariant Cross-Reference Matrix table mapping `INV-COMA-01`..`INV-COMA-10`, unprivileged user-mode certification (`RunAsInvoker`), and full license text inventory.
-- Registered `"Third-Party Licenses (Text)"` URL in `[project.urls]` and included `THIRD_PARTY_LICENSES.txt` in PEP 621 `license-files` within `pyproject.toml`.
-- Saturated PEP 621 package `keywords` with full 20/20 GitHub repository topics.
-- Hardened pytest runner configuration with `addopts = "-ra -v --basetemp=.pytest_temp"` and `.hypothesis` in `norecursedirs`.
-- Expanded `.gitignore` with multi-host tokens (`*-IDEAPAD*`, `*-IDEAPAD-GEI*`), cache patterns (`.pytest_tmp*/`), and Windows folder descriptors (`Desktop.ini`, `desktop.ini`).
-- Updated `NOTICE` attribution cross-referencing `THIRD_PARTY_LICENSES.txt`.
-- Root `NOTICE` file establishing formal open-source copyright attribution (Lukas Geiger / ellmos-ai / open-bricks).
-- Extended `SECURITY.md` with explicit 48-hour acknowledgment SLA, 5-business-day triage commitment, and official security reporting addresses (`security@ellmos.ai`, `security@open-bricks.org`, `lukas@open-bricks.org`).
-- Section 10 in `MARKETING-LOG.txt` documenting the Pfad B marketing, discoverability, and visual architecture audit.
+### Scope correction — 2026-10-11
+
+- Corrected current documentation to distinguish COMA's local-file and subprocess behavior from the network access, privileges, environment, and permission controls of launched agent CLIs. One writer per channel is a caller convention, and probe cleanup is best-effort.
+- This scope correction supersedes earlier marketing, certification, air-gap, zero-egress, zero-copyleft-isolation, and non-elevation claims in prior Unreleased descriptions and historical documentation. Dates, test counts, and CLI versions below record their original snapshots only; they are not current verification or certification.
+
+### Changed — 2026-10-11
+- Clarified in the English and German READMEs, SECURITY.md, CONTRIBUTING.md, KONZEPT.md, llms.txt, package metadata, and the license inventory that COMA itself uses local files and subprocesses while launched agent CLIs inherit caller privileges and may access networks.
+- Replaced network-isolation, zero-copyleft, RunAsInvoker, certification, and process-tree cleanup guarantees with the documented runtime boundaries. One writer per channel is described as a caller protocol requirement; probe cleanup is best-effort.
+- Corrected adapter examples, role-manifest examples, current CLI source links, and the scope of historical provider compatibility checks.
+- Updated THIRD_PARTY_LICENSES.md and THIRD_PARTY_LICENSES.txt with the actual project and tooling license metadata; linked to the complete upstream Python license text.
+- Updated TODO.md to retain open task identifiers while removing stale current-status claims and clarifying that the kimi-cli 0.31.0 check does not verify kimi-code.
+
+### Removed
+- Removed internal maintenance records from the public tracked set while retaining their local copies.
+- Removed fixed test-count and verification-date badges, and removed automated assertions that depended on internal marketing logs, dated snapshots, or unsupported guarantees.
+
+### Earlier unreleased work — snapshot 2026-10-04
+- Earlier work added the bilingual 18-section README navigation, four-view architecture diagrams, CI lifecycle workflows and labels, contribution guidance, PEP 621 metadata and URLs, test-runner configuration, multi-host ignore patterns, and NOTICE attribution.
+- SECURITY.md records maintainer acknowledgment and triage response targets; these are maintainer policy, not runtime guarantees.
+- The earlier snapshot also recorded dated test counts, adapter versions, and discoverability measurements. Those values remain historical observations and do not establish current verification or certification.
 
 ## [0.3.2] — 2026-09-19
 

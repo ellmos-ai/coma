@@ -4,16 +4,13 @@
 
 **[English](README.md) | [Deutsch](README_de.md)**
 
-[![Pytest Status](https://img.shields.io/badge/pytest-313%20passed-brightgreen.svg)](https://docs.pytest.org/)
-[![Verified](https://img.shields.io/badge/verified-2026--10--04-brightgreen.svg)](MARKETING-LOG.txt)
+[![Tests](https://github.com/ellmos-ai/coma/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/ellmos-ai/coma/actions/workflows/tests.yml)
 [![Third-Party Licenses (Text)](https://img.shields.io/badge/licenses--text-Level%201%20SBOM-blue.svg)](THIRD_PARTY_LICENSES.txt)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Dependencies](https://img.shields.io/badge/dependencies-0%20(stdlib)-brightgreen.svg)](pyproject.toml)
-[![Network](https://img.shields.io/badge/network-zero--egress-success.svg)](SECURITY.md)
-[![Execution](https://img.shields.io/badge/mode-RunAsInvoker-informational.svg)](THIRD_PARTY_LICENSES.md)
+[![Runtime dependencies](https://img.shields.io/badge/runtime%20dependencies-none-blue.svg)](pyproject.toml)
 [![Architecture](https://img.shields.io/badge/architecture-local--first-blue.svg)](KONZEPT.md)
-[![Protocol](https://img.shields.io/badge/protocol-single--writer-informational.svg)](KONZEPT.md)
+[![Protocol](https://img.shields.io/badge/protocol-file--based-informational.svg)](README.md#5-job-protocol)
 [![Security SLA](https://img.shields.io/badge/security-48h%20SLA-blue.svg)](SECURITY.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![LLM Ready](https://img.shields.io/badge/llms.txt-ready-blueviolet.svg)](llms.txt)
@@ -29,7 +26,7 @@
 
 ### Quick Navigation
 
-1. [What Is COMA? & Value Proposition](#1-what-is-coma) · 2. [Primary Use Cases & Session Decoupling](#2-use-cases) · 3. [Target Personas & Discoverability](#3-target-personas--discoverability) · 4. [Quickstart & Command Line Usage](#4-quickstart) · 5. [File-Based Job Board Protocol](#5-job-protocol) · 6. [Spawner Layer & Multi-Engine CLI Adapters](#6-spawner-layer) · 7. [Interactive & Headless Session Planning](#7-interactive-and-headless-sessions) · 8. [Starters from roles[] Declarations](#8-starters-from-roles) · 9. [10-Dimension Comparative Matrix](#9-comparative-matrix-vs-alternatives) · 10. [Dual Mermaid Diagrams](#10-dual-mermaid-diagrams) · 11. [Governance & 10 Runtime Invariants](#11-governance-and-runtime-invariants) · 12. [CLI Commands Reference](#12-cli-commands) · 13. [Testing & Verification Suite](#13-testing) · 14. [Third-Party Licenses & Level 1 SBOM](#14-third-party-licenses--sbom) · 15. [Sibling Ecosystem & Integration](#15-sibling-tools--ecosystem) · 16. [Security Policy & Subprocess Isolation](#16-security) · 17. [Statutory Notice (§ 521 BGB)](#17-statutory-notice--liability-limitation) · 18. [License & Open-Source Umbrella](#18-license--umbrella)
+1. [What Is COMA? & Value Proposition](#1-what-is-coma) · 2. [Primary Use Cases & Session Decoupling](#2-use-cases) · 3. [Target Personas & Discoverability](#3-target-personas--discoverability) · 4. [Quickstart & Command Line Usage](#4-quickstart) · 5. [File-Based Job Board Protocol](#5-job-protocol) · 6. [Spawner Layer & Multi-Engine CLI Adapters](#6-spawner-layer) · 7. [Interactive & Headless Session Planning](#7-interactive-and-headless-sessions) · 8. [Starters from roles[] Declarations](#8-starters-from-roles) · 9. [COMA Behavior and Boundaries](#9-coma-behavior-and-boundaries) · 10. [Dual Mermaid Diagrams](#10-dual-mermaid-diagrams) · 11. [Governance & Runtime Contracts](#11-governance-and-runtime-invariants) · 12. [CLI Commands Reference](#12-cli-commands) · 13. [Testing & Verification Suite](#13-testing) · 14. [Third-Party Licenses & Level 1 SBOM](#14-third-party-licenses--sbom) · 15. [Sibling Ecosystem & Integration](#15-sibling-tools--ecosystem) · 16. [Security Policy & Subprocess Isolation](#16-security) · 17. [Statutory Notice (§ 521 BGB)](#17-statutory-notice--liability-limitation) · 18. [License & Open-Source Umbrella](#18-license--umbrella)
 
 ---
 
@@ -48,7 +45,7 @@
 
 COMA is a **session-decoupled communication channel and process spawner for autonomous AI agents** (file-system based via `IN/`, `OUT/`, `DONE/`). The name stands for **Command & Communication for Autonomous Subagents**.
 
-Single responsibility: COMA does not handle permissions, locks, or long-term agent memory. It works strictly with local files and standard OS processes—**no account required, no network services, no cluster dependencies**. Zero third-party dependencies, standard library only.
+COMA coordinates work through local files and starts agent CLIs as subprocesses. COMA itself does not implement a network service or require a COMA account. A launched CLI may contact its provider or other services and may require its own account or network access. The project declares no direct Python runtime package dependencies.
 
 See [`KONZEPT.md`](KONZEPT.md) for background details, motivations, and architectural decisions.
 
@@ -72,7 +69,7 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 ## 2. Primary Use Cases & Session Decoupling
 
 1. **Decoupling from Remote Control (RC) Sessions**
-   In interactive remote-control sessions, CLI permission bypass flags like `--dangerously-skip-permissions` may fail to pass through to remote clients (open issues [#71518](https://github.com/anthropics/claude-code/issues/71518), [#29214](https://github.com/anthropics/claude-code/issues/29214)). COMA launches the agent as an independent OS process outside the RC session, communicating cleanly via file-system channels.
+   Interactive and remote-control clients can handle CLI permissions differently. COMA starts the selected CLI as a subprocess and exchanges work through filesystem channels; the provider CLI's own permissions remain in effect.
 
 2. **Session-Independent Handoffs & Relays**
    Tasks can be handed off across session boundaries between agents without blocking process threads or losing context.
@@ -82,48 +79,13 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 
 ### ASCII Four-View Architectural Topology
 
-```text
-+====================================================================================================================+
-|                         COMA -- FOUR-VIEW ARCHITECTURAL TOPOLOGY (LOCAL-FIRST & ZERO-EGRESS)                       |
-+====================================================================================================================+
-| [VIEW 1: CLIENT RUNTIMES, ORCHESTRATOR ENTRYPOINTS & SESSION PLANNING]                                             |
-|  * High-Level Client APIs: JobBoard.submit(job_id, prompt), JobRunner.run(job_id), Spawner.run(prompt)             |
-|  * Interactive CLI Commands: coma run, coma cmd, coma session, coma submit, coma status, coma result, coma send    |
-|  * Process-Free Dry Runs [INV-COMA-04]: build_cmd() & build_session_plan() construct argv vectors without execution|
-|  * Deterministic Multi-Provider Fallback [INV-COMA-05]: ordered_candidates() & available_candidates() resolution |
-|  * Idempotent Dual-Platform Starters [INV-COMA-08]: START.bat & start.sh generated from roles[] with marker guards |
-+--------------------------------------------------------------------------------------------------------------------+
-                                                          |
-                                                          v
-+--------------------------------------------------------------------------------------------------------------------+
-| [VIEW 2: SINGLE-WRITER FILE PROTOCOL & DIRECTORY QUEUE TIERS]                                                      |
-|  * Single-Writer File Protocol [INV-COMA-01]: Exactly one writer per channel file, eliminating race conditions      |
-|  * Ingestion Queue: IN/<jobid>.md (job prompt written by submitter; atomic lease acquisition by runner)          |
-|  * Live Bidirectional Streaming: OUT/coma.<jobid>.to-agent.jsonl (orchestrator) & from-agent.jsonl (agent)        |
-|  * Execution Telemetry & Status: OUT/coma.<jobid>.json (runner state machine) & OUT/coma.<jobid>.console.log      |
-|  * Result Delivery & Archival: OUT/<jobid>.result.md -> atomic transition to DONE/<jobid>.md upon completion      |
-+--------------------------------------------------------------------------------------------------------------------+
-                                                          |
-                                                          v
-+--------------------------------------------------------------------------------------------------------------------+
-| [VIEW 3: COMA CORE LIFECYCLE ENGINE & MULTI-PROVIDER CLI ADAPTERS]                                                 |
-|  * Zero External Dependencies [INV-COMA-02]: 100% pure Python standard library (subprocess, pathlib, os, json, sys)|
-|  * Verified Adapters: ClaudeAdapter (Claude Code CLI), CodexAdapter (OpenAI Codex CLI), AgyAdapter (AGY CLI)       |
-|  * Fail-Closed Provider Safety [INV-COMA-06]: KimiAdapter remains fail-closed without explicit verified opt-in     |
-|  * Bounded Probe Cleanup [INV-COMA-07]: probe() enforces strict timeouts & deterministic child termination         |
-|  * Process Isolation & RC Immunity [INV-COMA-03]: Spawns detached OS process trees outside remote control sessions|
-+--------------------------------------------------------------------------------------------------------------------+
-                                                          |
-                                                          v
-+--------------------------------------------------------------------------------------------------------------------+
-| [VIEW 4: AIR-GAP SECURITY PERIMETER, UNPRIVILEGED RUNASINVOKER & GOVERNANCE]                                       |
-|  * Unprivileged User-Mode Execution [INV-COMA-09]: Strict RunAsInvoker non-elevation, zero admin/root requirements |
-|  * Zero Network Egress: Air-gapped local execution, zero telemetry emissions, zero external network sockets        |
-|  * Zero-Copyleft Isolation: Strictly permissive MIT runtime, clean Level 1 SBOM companion THIRD_PARTY_LICENSES.txt |
-|  * Statutory Disclaimer (§ 521 BGB): Gratuitous open-source liability limitation under German Civil Code (§ 521)    |
-|  * Security & Vulnerability SLA [INV-COMA-10]: Committed 48h response SLA & 5-day triage (security@ellmos.ai)     |
-+====================================================================================================================+
-```
+COMA keeps four responsibilities explicit:
+
+- Clients build commands and submit jobs.
+- The job board coordinates through local files and caller-assigned channel writers.
+- The spawner starts provider CLIs as subprocesses that inherit caller privileges.
+- Documentation describes provider, network, permission, and cleanup boundaries.
+
 
 ---
 
@@ -137,34 +99,7 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 <a id="zielgruppen--auffindbarkeit"></a>
 ## 3. Target Personas & Discoverability
 
-### Target Personas
-
-- **[PERSONA-01] Autonomous Agent Framework Engineers & Swarm Architects:**
-  - *Context:* Developers designing multi-agent swarms, relay pipelines, or hierarchical agent hierarchies across Claude Code, OpenAI Codex, and Google Antigravity.
-  - *Pain Point:* Subprocess management and inter-agent communication are typically tightly coupled to brittle IPC pipes, sockets, or complex cloud servers that fail when child processes hang.
-  - *How COMA Solves It:* Pure file-system based queueing and bi-directional streaming channels (`to-agent.jsonl`, `from-agent.jsonl`) with single-writer guarantees (`INV-COMA-01`) and session decoupling (`INV-COMA-03`).
-
-- **[PERSONA-02] Local-First & Sovereign AI Developers:**
-  - *Context:* Engineers running AI developer toolchains locally on sovereign workstations and air-gapped environments without external cloud telemetry or mandatory accounts.
-  - *Pain Point:* Modern orchestration tools enforce cloud dependencies, Docker daemons, Redis clusters, or SaaS subscriptions just to run a child agent.
-  - *How COMA Solves It:* Zero external runtime dependencies (100% standard library `INV-COMA-02`), zero network egress, and fully self-contained directory protocol (`IN/`, `OUT/`, `DONE/`).
-
-- **[PERSONA-03] Remote Control & Headless Automation DevOps:**
-  - *Context:* DevOps engineers orchestrating headless runs, scheduled tasks, or remote terminal sessions (e.g. VS Code Remote, SSH, Antigravity/Claude remote control).
-  - *Pain Point:* Interactive permission bypass flags (e.g. `--dangerously-skip-permissions`, `--yolo`) fail to pass through remote sessions (open Anthropic issues #71518, #29214), stalling unattended automation for manual user approval.
-  - *How COMA Solves It:* Spawns agents in detached, independent OS process trees outside the remote-control session with verifiable, process-free dry-run contracts (`INV-COMA-04`).
-
-- **[PERSONA-04] Enterprise Security Officers & Systems Auditors:**
-  - *Context:* Security compliance teams auditing enterprise codebases for supply-chain risks, privilege escalation, and data exfiltration.
-  - *Pain Point:* Agent frameworks bundle hundreds of transitive node/python dependencies, spawn uncontrolled background daemons, or demand root/administrator privileges.
-  - *How COMA Solves It:* Zero third-party dependencies, strictly unprivileged user-mode execution (`RunAsInvoker` / `INV-COMA-09`), fail-closed adapter safety (`INV-COMA-06`), and strict 48h security triage SLA (`INV-COMA-10`).
-
-### High-Intent Search Queries
-
-| Language | High-Intent Search Queries |
-|---|---|
-| **English (EN)** | `autonomous agent lifecycle manager python` · `session decoupled agent runner` · `claude code cli spawner` · `codex cli subprocess orchestration` · `local-first agent communication channel` · `file-based agent job board` · `zero dependency agent spawner` · `bypass claude code remote control permission stall` |
-| **German (DE)** | `autonome ki agenten lebenszyklus python` · `agenten prozess entkopplung dateibasiert` · `claude code cli automatisierung spawner` · `ki agenten job board ohne redis` · `lokale agenten steuerung standardbibliothek` · `remote session rechteabfrage umgehen agenten` · `multi agenten kommunikation dateisystem` · `offline agenten runner python stdlib` |
+COMA is for developers integrating agent CLIs, teams coordinating jobs through local files, and maintainers who need to review subprocess permissions and data flow. It does not provide an agent, provider account, or security sandbox; selected CLIs keep their own permission and network behavior.
 
 ---
 
@@ -177,10 +112,12 @@ Separation of verbs: COMA uses `spawn`, `send`, `poll`, `result`. A coordinator 
 <a id="schnellstart"></a>
 ## 4. Quickstart & Command Line Usage
 
+Install COMA from the canonical Git repository with `python -m pip install "git+https://github.com/ellmos-ai/coma.git"`. The PyPI distribution named `coma` is a different project.
+
 ```python
 from coma import JobBoard, JobRunner
 
-board = JobBoard(r"C:\jobs\_agentjobs")
+board = JobBoard(r"C:\path\to\agent-work")
 board.submit("myjob", "# Instructions\nWrite result to OUT/myjob.result.md.\n")
 
 result = JobRunner(board).run("myjob")
@@ -190,10 +127,10 @@ print(result["status"]["state"], result["result_written"])
 Or from the command line:
 
 ```bat
-coma --root C:\jobs\_agentjobs run myjob
-coma --root C:\jobs\_agentjobs run myjob --dry-run   :: preview command without launching
-coma --root C:\jobs\_agentjobs status myjob
-coma --root C:\jobs\_agentjobs result myjob
+coma --root C:\path\to\agent-work run myjob
+coma --root C:\path\to\agent-work run myjob --dry-run   :: preview command without launching
+coma --root C:\path\to\agent-work status myjob
+coma --root C:\path\to\agent-work result myjob
 ```
 
 `--dry-run` constructs the complete command and displays it without consuming tokens or starting a process.
@@ -220,7 +157,7 @@ OUT/   <jobid>.result.md                Final agent result output
 DONE/  <jobid>.md                       Completed job prompt
 ```
 
-**Single writer per file:** No locking required, structural collision prevention.
+**Channel writers:** Callers must assign one writer per channel file. Role checks do not provide OS locking or identity enforcement; callers coordinate concurrent writers.
 
 ---
 
@@ -246,15 +183,16 @@ spawner = Spawner(adapter)
 result = spawner.run("Say Hello", log_file="run.log")
 ```
 
-### Verified Adapters
+### Versioned Adapter Compatibility Notes
 
-| Adapter | Target Engine | Status |
+The version strings record prior local checks, not a current support guarantee or live-provider verification.
+
+| Adapter | Target Engine | Historical note |
 |---|---|---|
-| `claude` | Anthropic Claude Code CLI | **Verified** — Flags checked against `claude --help` 2.1.263 |
-| `codex` | OpenAI Codex CLI | **Verified** — Tested against CLI 0.153.4 |
-| `agy` | Google Antigravity / AGY CLI | **Verified** — Tested against agy 1.1.27 |
-| `kimi` | Kimi Code CLI | **Skeleton** — help contract checked with CLI 0.31.0; no real prompt run |
-
+| claude | Anthropic Claude Code CLI | Prior flag check against version 2.1.263; not a current certification |
+| codex | OpenAI Codex CLI | Prior compatibility check against version 0.153.4; not a current certification |
+| agy | Google Antigravity / AGY CLI | Prior compatibility check against version 1.1.27; not a current certification |
+| kimi | Kimi Code CLI | Skeleton; prior help contract check against version 0.31.0; no live prompt run |
 ---
 
 <a id="sec-07"></a>
@@ -266,13 +204,9 @@ result = spawner.run("Say Hello", log_file="run.log")
 <a id="interaktive-und-headless-sitzungen"></a>
 ## 7. Interactive and Headless Session Planning
 
-`build_session_plan()` provides one process-free contract for interactive and
-headless Claude, Codex, AGY and Kimi argv. A role prompt file and the user
-request remain separate arguments. `ordered_candidates()` and
-`available_candidates()` build a deterministic provider fallback chain, while
-`build_probe_command()` and `probe()` provide a bounded read-only reachability
-check with child-process cleanup. Kimi remains fail-closed unless a caller that
-already owns a verified Kimi contract explicitly opts in.
+`build_session_plan()` creates provider-specific argv without starting a process. A role prompt file and the user request remain separate arguments. `ordered_candidates()` and `available_candidates()` build a deterministic provider fallback chain.
+
+Probe commands are not uniformly read-only: Codex uses `--sandbox read-only`; Claude receives `--strict-mcp-config` but no general read-only sandbox; AGY and Kimi add no access restriction. Inspect generated arguments and the selected CLI permissions before running. Probe cleanup is best-effort and platform-dependent. Kimi opt-in applies to adapter session planning and spawner execution; `build_probe_command()` has no separate fail-closed guard.
 
 ```python
 from coma import build_session_plan
@@ -295,21 +229,27 @@ print(plan.command)  # argv only; no process has started
 <a id="starter-aus-roles"></a>
 ## 8. Starters from roles[] Declarations
 
-`coma starters generate` reads the module's top-level `roles[]` declarations
-and writes a thin `START.bat` plus executable `start.sh`. Both forward to the
-unified console when it is installed and expose a visible COMA fallback when it
-is not. The generator only replaces files carrying its own marker unless
-`--force` is explicit.
+`coma starters generate` reads a user-provided module manifest with a top-level `roles[]` array. Each role must include `id`, `prompt`, `request`, and a non-empty `providers` list. The prompt path is relative to the manifest and the file must exist. `ellmos-module.v2.json` describes COMA itself and is not a starter roles manifest.
+
+```json
+{
+  "id": "my-module",
+  "roles": [
+    { "id": "reviewer", "prompt": "prompts/reviewer.md", "request": "Review the current change.", "providers": ["codex"] }
+  ]
+}
+```
 
 ```bat
-coma starters generate --manifest ellmos-module.v2.json --output-dir starters
-starters\START.bat tasksolver --provider codex --dry-run
+coma starters generate --manifest my-module.json --output-dir starters
+starters\START.bat reviewer --provider codex --dry-run
 ```
 
 ---
 
 <a id="sec-09"></a>
 <a id="9-10-dimension-comparative-matrix-vs-alternatives"></a>
+<a id="9-coma-behavior-and-boundaries"></a>
 <a id="9-comparative-matrix-vs-alternatives"></a>
 <a id="comparative-matrix-vs-alternatives"></a>
 <a id="comparative-matrix"></a>
@@ -317,20 +257,17 @@ starters\START.bat tasksolver --provider codex --dry-run
 <a id="9-vergleichsmatrix-vs-alternativen"></a>
 <a id="vergleichsmatrix-vs-alternativen"></a>
 <a id="vergleichsmatrix"></a>
-## 9. 10-Dimension Comparative Matrix vs. Alternatives
+## 9. COMA Behavior and Boundaries
 
-| Technical Dimension / Invariant | COMA (`ellmos-ai/coma`) | Celery / RQ / Redis Queue | Temporal / Camunda / Airflow | Raw Python Subprocess | Cloud Agent Frameworks (LangGraph/CrewAI) |
-|---|---|---|---|---|---|
-| **INV-COMA-01 Single-Writer Protocol** | **Native file protocol (`IN/`, `OUT/`, `DONE/`)** | Requires centralized Redis/RabbitMQ | Database state tables / distributed locks | Unmanaged raw OS pipes (race-prone) | Cloud SaaS database / opaque remote state |
-| **INV-COMA-02 Zero Runtime Dependencies** | **100% Python Standard Library** | Multiple third-party packages & brokers | Heavy JVM/Go/Python dependency stack | Python standard library | Heavy third-party dependency tree |
-| **INV-COMA-03 Session Decoupling (RC)** | **Detached OS process tree outside RC** | Background workers require daemon setup | Heavy orchestration engine | Child process killed on session exit | Serverless cloud execution (external) |
-| **INV-COMA-04 Process-Free Dry Runs** | **Built-in `build_cmd` & `--dry-run`** | None (Queues require live execution) | Complex workflow dry-run mocks | Manual string concatenation | Token-consuming test runs |
-| **INV-COMA-05 Multi-Provider Fallback** | **Deterministic `ordered_candidates`** | Static worker routing | Dynamic activity routing | Manual try/except loops | Vendor-locked LLM API adapters |
-| **INV-COMA-06 Fail-Closed Provider Safety** | **Explicit opt-in guard (`KimiAdapter`)** | Open execution | Open execution | Silent failure / unhandled exceptions | Silent fallback / hallucinations |
-| **INV-COMA-07 Bounded Probe Cleanup** | **Timeouts & child-process reaping** | Heartbeat checks with broker timeouts | Server-side worker timeouts | Can leave orphan zombie processes | Cloud container timeout |
-| **INV-COMA-08 Idempotent Starters** | **Marker guards on `START.bat`/`start.sh`** | None | CLI scaffolders | Manual shell scripts | Cloud web dashboard |
-| **INV-COMA-09 User-Mode Execution** | **Strictly `RunAsInvoker` (Unprivileged)** | Often requires daemon/systemd service | Often requires daemon/system services | Inherits parent privileges | Container or cloud VM privileges |
-| **INV-COMA-10 48h Security SLA** | **48h Acknowledgment & 5d Triage** | Variable open-source tracker | Enterprise SLA ($$$) / Community | None | SaaS SLA (Commercial account required) |
+| Dimension | COMA behavior and limit |
+|---|---|
+| Job coordination | Local directory and file-based job protocol. |
+| Direct Python runtime packages | None are declared in `pyproject.toml`; this says nothing about provider CLIs or their own dependencies. |
+| Network behavior | COMA itself does not implement a network service. A launched CLI may contact providers or other services. |
+| Channel concurrency | Callers must assign one writer per channel. Role checks are not OS locks or identity enforcement. |
+| Process permissions | Agent CLIs inherit the launching process privileges; COMA does not sandbox them. |
+| Probe cleanup | Timeout and platform-dependent best-effort cleanup; descendants may remain. |
+| Security reporting | Maintainers publish acknowledgment and triage targets in SECURITY.md. |
 
 ---
 
@@ -355,9 +292,9 @@ flowchart TD
     end
 
     subgraph Layer2 ["2. Queue & Protocol Directory"]
-        B1 --> C1["_agentjobs/IN/"]
-        C2["_agentjobs/OUT/"]
-        C3["_agentjobs/DONE/"]
+        B1 --> C1["agent-work/IN/"]
+        C2["agent-work/OUT/"]
+        C3["agent-work/DONE/"]
     end
 
     subgraph Layer3 ["3. COMA Core Lifecycle Engine"]
@@ -369,12 +306,12 @@ flowchart TD
     subgraph Layer4 ["4. Multi-Provider CLI Adapters"]
         D2 --> E1["ClaudeAdapter"]
         D2 --> E2["CodexAdapter"]
-        D2 --> E3["AntigravityAdapter"]
-        D2 --> E4["KimiAdapter (Fail-Closed)"]
+        D2 --> E3["AgyAdapter"]
+        D2 --> E4["Kimi: opt-in via Spawner/session"]
     end
 
-    subgraph Layer5 ["5. Detached OS Processes & Channels"]
-        E1 & E2 & E3 & E4 -->|"Spawns Unprivileged Process"| F1["Detached Agent Process"]
+    subgraph Layer5 ["5. Agent CLI Subprocesses & Channels"]
+        E1 & E2 & E3 & E4 -->|"Starts subprocess; caller privileges inherited"| F1["Agent CLI subprocess"]
         F1 -->|"Progress Events"| G1["OUT/coma.<jobid>.from-agent.jsonl"]
         F1 -->|"Final Output"| G2["OUT/<jobid>.result.md"]
         F1 -->|"Console Logs"| G3["OUT/coma.<jobid>.console.log"]
@@ -393,12 +330,12 @@ sequenceDiagram
     participant Board as "JobBoard (IN/)"
     participant Runner as "COMA Runner / Spawner"
     participant Adapter as "CLI Adapter (Claude/Codex/AGY/Kimi)"
-    participant Subprocess as "Agent Process (Detached OS Process)"
+    participant Subprocess as "Agent CLI subprocess (inherits caller privileges)"
     participant Channels as "Output Channels (OUT/)"
     participant Archive as "Job Archive (DONE/)"
 
     Orchestrator->>Board: "submit(job_id, prompt_markdown)"
-    Note over Board: "Single writer: Orchestrator writes IN/<job_id>.md"
+    Note over Board: "Assigned writer: Orchestrator writes IN/<job_id>.md"
     Orchestrator->>Runner: "run(job_id) (or background watcher triggers)"
     Runner->>Board: "Read prompt & acquire single-worker lease"
     Runner->>Adapter: "build_cmd(prompt, options) -> Process-free argv"
@@ -429,22 +366,22 @@ sequenceDiagram
 <a id="11-governance--und-laufzeit-invarianten"></a>
 <a id="governance--und-laufzeit-invarianten"></a>
 <a id="invariants"></a>
-## 11. Governance & 10 Runtime Invariants
+## 11. Governance & Runtime Contracts
 
-To preserve security, system integrity, and predictability, COMA adheres to 10 strict invariants:
+The following table separates implementation behavior from caller conventions and maintainer policy:
 
 | ID | Invariant | Description |
 |---|---|---|
-| **INV-COMA-01** | **Single-Writer Rule** | Each channel file in `_agentjobs/` has exactly one writer (`IN/` by submitter, `to-agent.jsonl` by orchestrator, `from-agent.jsonl`/`result.md` by agent, `coma.<jobid>.json` by runner). Eliminates lock contention and sync conflicts. |
-| **INV-COMA-02** | **Zero External Runtime Dependencies** | The core COMA library makes 0 network connections, opens no ports, and has zero external package dependencies. Standard library only. |
-| **INV-COMA-03** | **Session Decoupling** | Subprocesses run in dedicated, independent OS process trees outside interactive terminal sessions, bypassing remote-control interactive permission stalls. |
+| **INV-COMA-01** | **Channel writer convention** | Callers must assign one writer per channel file. Optional role checks are not OS locks or identity enforcement; callers coordinate concurrency. |
+| **INV-COMA-02** | **Direct runtime dependencies** | `pyproject.toml` declares no direct external Python runtime packages. COMA itself does not implement a network service; launched agent CLIs may access networks and services. |
+| **INV-COMA-03** | **Subprocess lifecycle** | Provider CLIs start as subprocesses. Their permission behavior, privileges, and network access come from the CLI and launching environment; COMA does not sandbox them. |
 | **INV-COMA-04** | **Process-Free Dry Runs** | Command builders (`build_cmd`, `build_session_plan`, `--dry-run`) construct argument lists deterministically without starting processes or consuming LLM tokens. |
 | **INV-COMA-05** | **Deterministic CLI Fallback** | Multi-provider fallback chains (`ordered_candidates`) resolve binaries deterministically without silent execution of unverified engines. |
-| **INV-COMA-06** | **Fail-Closed Provider Safety** | Unverified or experimental adapters (such as Kimi) remain fail-closed and reject real prompt runs unless callers explicitly opt in with an established contract. |
-| **INV-COMA-07** | **Bounded Probe Cleanup** | Reachability probes (`probe()`) enforce strict execution timeouts and guarantee child-process cleanup to avoid orphaned processes. |
+| **INV-COMA-06** | **Kimi execution opt-in** | Spawner/session execution through `coma.spawn` and `coma.session` requires explicit opt-in; raw adapter or probe argument construction does not enforce the gate. |
+| **INV-COMA-07** | **Probe timeout and cleanup** | Reachability probes use a timeout and attempt platform-dependent cleanup. Windows requests process-tree termination; Unix kills the direct process. Descendant termination is not guaranteed. |
 | **INV-COMA-08** | **Idempotent Dual-Platform Starters** | Starter scripts (`START.bat`, `start.sh`) generated from `roles[]` carry unique marker guards preventing accidental overwrites of custom wrappers. |
-| **INV-COMA-09** | **Unprivileged User-Mode Execution** | Strictly unprivileged user-space execution (`RunAsInvoker`); zero administrative elevation, driver hooks, or root permissions required. |
-| **INV-COMA-10** | **48h Security Response SLA** | Committed 48-hour response SLA and 5-business-day vulnerability triage for all reported security hazards. |
+| **INV-COMA-09** | **Inherited privileges** | Child processes inherit the launching process privileges. COMA does not request elevation, drop privileges, or provide a security isolation boundary. |
+| **INV-COMA-10** | **Maintainer response policy** | [`SECURITY.md`](SECURITY.md) states targets of acknowledgment within 48 hours and triage within 5 business days. |
 
 ---
 
@@ -483,11 +420,11 @@ To preserve security, system integrity, and predictability, COMA adheres to 10 s
 ## 13. Testing & Verification Suite
 
 ```bash
-python -m pytest -q      :: 313 passed tests
+python -m pytest -ra -v
 ```
 
-Tests never start a provider. One bounded probe test uses the local Python
-interpreter as a harmless fake CLI; all remaining subprocess calls are mocked.
+Tests mock provider CLI execution; the suite does not perform live-provider verification. A probe test starts a controlled local Python process to check reachability.
+
 
 ---
 
@@ -500,13 +437,7 @@ interpreter as a harmless fake CLI; all remaining subprocess calls are mocked.
 <a id="drittanbieter-lizenzen"></a>
 ## 14. Third-Party Licenses & Level 1 SBOM
 
-COMA enforces an audited **Level 1 Software Bill of Materials (SBOM)** with Zero External Runtime Dependencies (`INV-COMA-02`):
-
-- **Core Runtime:** 100% Python Standard Library ([PSF License 2.0](https://docs.python.org/3/license.html)).
-- **Zero-Copyleft Isolation Guarantee:** Strictly permissive licensing throughout (MIT / PSF-2.0 / Apache-2.0). Zero viral copyleft exposure.
-- **Unprivileged Execution:** Certified for standard user mode (`RunAsInvoker`).
-- **Complete SBOM & License Texts:** Maintained in [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) with comprehensive SPDX inventory and 10-invariant compliance matrix.
-
+The project license is MIT. [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) inventories the project and listed Python dependencies. It does not certify the licenses of separately installed agent CLIs, provider services, the Python runtime, or build tools. The project declares no direct Python runtime package dependencies in `pyproject.toml`.
 ---
 
 <a id="sec-15"></a>
@@ -535,7 +466,14 @@ COMA is part of the `ellmos-ai` orchestration architecture and the broader `open
 | **Agent Bootstrap** | [`dev-bricks/safe-start-for-codex`](https://github.com/dev-bricks/safe-start-for-codex) | Safe startup, environment checks & preflight diagnostics |
 | **Umbrella Ecosystem** | [`open-bricks`](https://github.com/open-bricks) | Open-source foundation for local-first developer tools |
 
-- [Swarm AI](https://github.com/ellmos-ai/swarm_ai) optionally uses COMA's Spawner and adapter APIs for provider-backed workflows.
+Documented integrations in public repositories are optional or use COMA at a specific integration point; they do not imply a hard dependency:
+
+- [swarm_ai](https://github.com/ellmos-ai/swarm_ai) uses COMA Spawner and adapter APIs for provider-backed workflows.
+- [marblerun](https://github.com/ellmos-ai/marblerun) integrates with COMA Spawner and adapters.
+- [ellmos-scheduler](https://github.com/ellmos-ai/ellmos-scheduler) integrates with COMA Spawner and adapters.
+- [task-master](https://github.com/ellmos-ai/task-master) has an optional COMA integration.
+- [open-ocean](https://github.com/ellmos-ai/open-ocean) checks for optional COMA session support and provides a CLI fallback.
+- [ticket-master](https://github.com/ellmos-ai/ticket-master) uses COMA Starters at build time; it is not a runtime integration.
 
 ---
 
@@ -546,10 +484,9 @@ COMA is part of the `ellmos-ai` orchestration architecture and the broader `open
 <a id="16-sicherheitsarchitektur--subprozess-isolation"></a>
 <a id="16-sicherheit"></a>
 <a id="sicherheit"></a>
-## 16. Security Policy & Subprocess Isolation
+## 16. Security Boundaries and Reporting
 
-For subprocess isolation details, single-writer protocol boundaries, non-elevation certification (`RunAsInvoker`), and vulnerability disclosure policies, see [`SECURITY.md`](SECURITY.md).
-
+COMA starts provider CLIs as subprocesses. Child processes inherit the launching process privileges and may use the network; COMA does not sandbox them. For channel conventions, probe cleanup limits, and vulnerability reporting, see [`SECURITY.md`](SECURITY.md).
 ---
 
 <a id="sec-17"></a>
@@ -559,11 +496,9 @@ For subprocess isolation details, single-writer protocol boundaries, non-elevati
 <a id="17-gesetzlicher-hinweis--haftungsbeschraenkung-521-bgb"></a>
 <a id="17-gesetzlicher-hinweis--haftungsbeschraenkung"></a>
 <a id="gesetzlicher-hinweis"></a>
-## 17. Statutory Notice & Liability Limitation (§ 521 BGB)
+## 17. Statutory Notice (§ 521 BGB)
 
-> **Statutory Notice pursuant to German Law (§ 521 BGB - Gefälligkeitsrecht):**
-> COMA is provided free of charge as an open-source developer tool without commercial consideration. In accordance with § 521 of the German Civil Code (*BGB*), the liability of the authors and contributors is restricted to intent (*Vorsatz*) and gross negligence (*grobe Fahrlässigkeit*). Use of this software, including process spawning and execution of autonomous subagents, occurs at the user's sole risk and discretion.
-
+The project is provided under the MIT license. Whether statutory rules such as section 521 BGB apply depends on the legal relationship and applicable law; this documentation does not provide a blanket exemption from liability.
 ---
 
 <a id="sec-18"></a>

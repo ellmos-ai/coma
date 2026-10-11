@@ -8,13 +8,13 @@ kein Gedächtnis. Das Vokabular trennt sauber: COMA spricht ``spawn``, ``send``,
 ``poll``, ``result`` — ein Koordinator wie Roshambo spricht ``claim``,
 ``release``, ``remember``, ``recall``, ``decide``, ``status``.
 
-Arbeitet mit Dateien und Prozessen: **ohne Konto, ohne Netz, ohne Cluster.**
+COMA selbst nutzt lokale Dateien und Subprozesse und stellt keinen Netzwerkdienst bereit. Gestartete Agenten-CLIs können Anbieter und andere Dienste kontaktieren; COMA isoliert sie nicht und sperrt ihren Netzzugriff.
 
 Kurzform::
 
     from coma import JobBoard, JobRunner
 
-    board = JobBoard(r"C:\\…\\_control-center\\_agentjobs")
+    board = JobBoard("path/to/agent-work")
     result = JobRunner(board).run("meinjob")
     print(result["status"]["state"], result["result_written"])
 

@@ -22,7 +22,7 @@ Herkunft                                                          Beitrag
                                                                   ``--verbose``,
                                                                   ``--safe-mode``,
                                                                   ``CLAUDECODE``-Bereinigung
-``_control-center/START-LOCAL-AGENT.bat:72``                      Standardkonfiguration
+``START-LOCAL-AGENT.bat:72``                      Standardkonfiguration
                                                                   (Modell ``opus``,
                                                                   Zeiger-Prompt)
 ===============================================================  ==========================
