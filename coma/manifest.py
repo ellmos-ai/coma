@@ -22,7 +22,7 @@ Format (``coma-vendor.json``, neben der Kopie oder an beliebiger Stelle)::
       "module": "coma",
       "version": "0.1.0",
       "vendored_at": "2026-07-26T12:00:00",
-      "source": "C:/_Local_DEV/repos/coma/coma",
+      "source": "path/to/coma",
       "path": "third_party/coma",
       "files": {"spawn.py": "sha256:…", "adapters/claude.py": "sha256:…"}
     }

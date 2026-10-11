@@ -68,6 +68,11 @@ _scratch/
 _proof/
 
 # Security and hygiene guards
+_after-care/
+BEFUNDE.md
+MARKETING-LOG.txt
+
+
 *.pem
 *.key
 *.pfx

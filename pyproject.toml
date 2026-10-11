@@ -27,16 +27,13 @@ keywords = [
     "local-first",
     "messaging",
     "multi-agent",
-    "offline-first",
     "open-bricks",
-    "process-isolation",
     "python",
     "session-decoupling",
     "spawn",
     "status-polling",
     "subagents",
     "zero-dependencies",
-    "zero-egress",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -50,9 +47,9 @@ classifiers = [
     "Topic :: Software Development :: Build Tools",
     "Topic :: System :: Distributed Computing",
 ]
-# Absichtlich leer. COMA arbeitet mit Dateien und Prozessen -- ohne Konto, ohne
-# Netz, ohne Cluster. Das ist sein Trennungsgrund gegenüber Roshambo, nicht ein
-# noch nicht erledigter Schritt. Siehe KONZEPT.md, Abschnitt "Offline".
+# Absichtlich leer: COMA deklariert keine direkten externen Python-Laufzeitpakete.
+# COMA nutzt lokale Dateien und Subprozesse, implementiert selbst aber keinen Netzwerkdienst.
+# Gestartete Anbieter-CLIs können eigene Abhängigkeiten und Netzzugriff haben.
 dependencies = []
 
 [project.optional-dependencies]
@@ -71,7 +68,6 @@ Security = "https://github.com/ellmos-ai/coma/blob/main/SECURITY.md"
 Notice = "https://github.com/ellmos-ai/coma/blob/main/NOTICE"
 "Plain-Text License" = "https://raw.githubusercontent.com/ellmos-ai/coma/main/LICENSE"
 "LLM Ready" = "https://github.com/ellmos-ai/coma/blob/main/llms.txt"
-"Marketing Log" = "https://github.com/ellmos-ai/coma/blob/main/MARKETING-LOG.txt"
 "Level 1 SBOM" = "https://github.com/ellmos-ai/coma/blob/main/THIRD_PARTY_LICENSES.md"
 "Third-Party Licenses" = "https://github.com/ellmos-ai/coma/blob/main/THIRD_PARTY_LICENSES.md"
 "Third-Party Licenses (Text)" = "https://github.com/ellmos-ai/coma/blob/main/THIRD_PARTY_LICENSES.txt"

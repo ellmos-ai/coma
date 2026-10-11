@@ -1,128 +1,98 @@
 # COMA — Command & Communication for Autonomous Agents
 
-> Machine-readable specification and RAG context index for `ellmos-ai/coma`.<br>
-> Last-checked: 2026-10-04<br>
-> Verification: 313 passed Pytest unit & contract tests (100% green).<br>
-> Execution Mode: Standard User Mode (`RunAsInvoker`) — Zero Administrative Elevation.<br>
-> Attribution & Notice: [NOTICE](NOTICE) | [MIT License](LICENSE) | [Level 1 SBOM (Text)](THIRD_PARTY_LICENSES.txt)<br>
-> Statutory Notice: § 521 BGB Gefälligkeitsrecht applies.
+> Machine-readable specification and RAG context index for ellmos-ai/coma.
+> Updated: 2026-10-11 | Current package version: 0.3.2 (frozen).
+> Install from the canonical Git repository. The PyPI name `coma` belongs to a different project.
 
-## Overview
+## Scope
 
-COMA (`coma`) is a zero-dependency, local-first **agent lifecycle layer and session-decoupled communication channel**. It manages how autonomous AI agents (such as Claude Code CLI, OpenAI Codex CLI, Google Antigravity / AGY CLI, and Kimi Code CLI) are spawned as independent subprocesses, monitored during execution, and communicated with via a file-based job board protocol.
+COMA coordinates jobs through local files and starts agent command-line tools as subprocesses. COMA itself does not implement a network service. A launched CLI may contact its provider or other services, require an account, and access the network. COMA does not sandbox child processes or block their network access.
 
-COMA operates purely on local files and standard processes—without external network services, databases, cloud servers, or user accounts. Zero external runtime dependencies (`INV-COMA-02`).
+The project declares no direct external Python runtime package dependencies in `pyproject.toml`. This describes COMA package metadata; it does not describe dependencies, permissions, or network behavior of agent CLIs, Python itself, or build tools.
 
-## Core Architecture & Responsibilities
+## Core responsibilities
 
-| Layer | Responsibility | Handled By |
-|---|---|---|
-| **Lifecycle & Spawner** | Process creation, CLI argument formatting, subprocess execution, stdout/stderr logging | **COMA (`coma.spawner`, `coma.adapters`)** |
-| **Decoupled Communication** | Session-independent job submission, progress tracking, status reporting, result retrieval | **COMA (`coma.protocol`, `coma.board`, `coma.runner`)** |
-| **Session Planning** | Process-free argv planning for interactive and headless sessions with CLI reachability probes | **COMA (`coma.session`)** |
-| **Starter Generation** | Dual-platform starter scripts (`START.bat`, `start.sh`) generated from `roles[]` manifests | **COMA (`coma.starters`)** |
-| **Locking & Permissions** | File access rules, claim management (optional protocol integration) | `lock-master` / Roshambo |
-| **Agent Memory** | Context retention, decision history, attempt tracking | `memoryhooker` / Roshambo |
+| Area | Responsibility |
+|---|---|
+| Job lifecycle | Create, execute, monitor, and retrieve jobs through a file-based board. |
+| Session planning | Construct provider-specific argv without starting a process. |
+| CLI adapters | Format arguments for provider CLIs; enforcement depends on the provider CLI. |
+| Probe | Start a provider-specific reachability probe with a timeout and best-effort cleanup. |
+| Starters | Generate `START.bat` and `start.sh` from a user-provided module manifest with a top-level `roles[]` array. |
 
-## Target Personas
+COMA does not provide a scheduler, access-control system, lock manager, agent memory, provider account, or security sandbox.
 
-- **[PERSONA-01] Autonomous Agent Framework Engineers & Swarm Architects:** Designing multi-agent swarms, relay pipelines, or hierarchical agent networks.
-- **[PERSONA-02] Local-First & Sovereign AI Developers:** Running AI developer toolchains locally on sovereign workstations and air-gapped systems without cloud telemetry.
-- **[PERSONA-03] Remote Control & Headless Automation DevOps:** Orchestrating headless runs, scheduled tasks, or remote terminal sessions where interactive permission flags stall.
-- **[PERSONA-04] Enterprise Security Officers & Systems Auditors:** Auditing software supply-chains for zero dependencies, non-elevation (`RunAsInvoker`), and 48h security SLAs.
+## Job board protocol
 
-## The File-Based Job Board Protocol
+The job board uses local directories such as `IN/`, `OUT/`, and `DONE/`. Callers must assign one writer per channel file. Optional role checks are not OS-level locking or identity enforcement and do not exclude two processes using the same role. Callers coordinate concurrent writes.
 
-Job communication uses a directory structure (`_agentjobs/`) with distinct single-writer files to eliminate file-locking collisions across sessions:
+## Process and permission boundaries
 
-```
-IN/    <jobid>.md                       Job prompt / instruction (Markdown)
-OUT/   <jobid>.result.md                Final result output from agent
-       coma.<jobid>.json               Runner status (state: PENDING, RUNNING, DONE, FAILED)
-       coma.<jobid>.from-agent.jsonl   Agent-to-runner event stream (.jsonl)
-       coma.<jobid>.to-agent.jsonl     Runner-to-agent instruction stream (.jsonl)
-       coma.<jobid>.console.log        Combined stdout / stderr log
-DONE/  <jobid>.md                       Completed job prompt (moved upon success)
-```
+Agent CLIs inherit the launching process privileges and environment. COMA does not request elevation or drop privileges. Configure and review each provider CLI permission profile and environment before starting it.
 
-## CLI Adapters
+Adapter profiles differ. Claude `dontAsk` permits Read, Edit, Write, Bash, Glob, and Grep; its separate `read_only` preset limits tools to Read, Glob, and Grep. MCP is off by default; `bat_compat` can enable broader permissions and MCP. Codex defaults to `read-only`, `write` uses workspace-write, and `danger-full-access` can be configured.
 
-COMA abstracts CLI flag differences into verified adapters:
-- **`ClaudeAdapter`**: Formats flags for Anthropic Claude Code CLI (`-p`, `--permission-mode dontAsk`, `--allowedTools`, `--disallowedTools mcp__*`).
-- **`CodexAdapter`**: Formats flags for OpenAI Codex CLI (`exec`, workspace-write, `--output-last-message`).
-- **`AntigravityAdapter`**: Formats flags for Google Antigravity / AGY CLI (`agy`).
-- **`KimiAdapter`**: Formats flags for Kimi Code CLI (fail-closed skeleton).
+Probe arguments are provider-specific and do not all establish read-only access: Codex adds `--sandbox read-only`; Claude adds `--strict-mcp-config` but no general read-only sandbox; AGY and Kimi add no access restriction. Inspect argv and CLI permissions before running. Kimi opt-in applies to adapter session planning and Spawner execution; `build_probe_command()` has no separate fail-closed guard.
 
-## Session Planning & Starters
+On Windows probe cleanup requests process-tree termination; on Unix it kills the direct process. Cleanup is best-effort and descendant termination is not guaranteed.
 
-- **`build_session_plan()`**: Constructs process-free argument lists for interactive or headless provider sessions (`Claude`, `Codex`, `AGY`, `Kimi`), keeping role prompts and requests separated.
-- **`ordered_candidates()` / `available_candidates()`**: Deterministic provider fallback chain.
-- **`probe()` / `build_probe_command()`**: Bounded, read-only reachability check with child-process cleanup.
-- **`coma starters generate`**: Generates dual-platform `START.bat` and `start.sh` from module `roles[]` definitions with overwrite protection markers.
+## API and CLI
 
-## Governance & 10 Runtime Invariants
+The public Python API includes `JobBoard`, `JobRunner`, `Spawner`, `ClaudeAdapter`, `CodexAdapter`, `AgyAdapter`, `KimiAdapter` (unverified; Spawner/session execution requires explicit opt-in), `build_session_plan`, `ordered_candidates`, `available_candidates`, `build_probe_command`, and `probe`.
 
-- **INV-COMA-01 (Single Writer):** Exactly one writer per channel file; no distributed locking needed.
-- **INV-COMA-02 (Zero Egress):** 0 network calls, 0 listening ports, standard library only.
-- **INV-COMA-03 (Session Decoupling):** Spawner runs processes detached from interactive client sessions outside RC.
-- **INV-COMA-04 (Process-Free Dry Runs):** Argv construction without starting processes or consuming tokens.
-- **INV-COMA-05 (Deterministic CLI Fallback):** Multi-provider chains resolve binaries deterministically.
-- **INV-COMA-06 (Fail-Closed Provider Safety):** Unverified adapters (Kimi) reject real prompt runs unless explicit opt-in.
-- **INV-COMA-07 (Bounded Probes):** Reachability checks enforce timeouts and guarantee child-process cleanup.
-- **INV-COMA-08 (Idempotent Starters):** Generated starters carry unique markers to prevent overwrites.
-- **INV-COMA-09 (Unprivileged Execution):** Standard user mode execution (`RunAsInvoker`); zero root/admin elevation.
-- **INV-COMA-10 (48h Security Response SLA):** Committed 48-hour response SLA and 5-business-day vulnerability triage.
+Process planning builds argv only; Spawner execution starts the configured provider CLI.
 
-## Quick Python API Usage
-
-```python
-from coma import JobBoard, JobRunner, ClaudeAdapter, Spawner, build_session_plan
-
-# 1. Job Board Protocol
-board = JobBoard(r"C:\jobs\_agentjobs")
-board.submit("job123", "# Instruction\nPerform technical audit and write output to OUT/job123.result.md\n")
-
-# 2. Run Job via Runner
-runner = JobRunner(board)
-result = runner.run("job123")
-
-# 3. Direct Spawner Usage
-adapter = ClaudeAdapter.preset("unattended")
-spawner = Spawner(adapter)
-handle = spawner.start("Audit code", log_file="audit.log")
-
-# 4. Session Planning
-plan = build_session_plan("codex", prompt_file="AGENTS.md", request="Audit code", mode="headless")
-print(plan.command)
-```
-
-## Quick CLI Usage
+Examples:
 
 ```bat
-coma --root C:\jobs\_agentjobs submit job123 --file prompt.md
-coma --root C:\jobs\_agentjobs run job123 --dry-run
-coma --root C:\jobs\_agentjobs status job123
-coma --root C:\jobs\_agentjobs result job123
-coma adapters
-coma session --provider codex --prompt-file AGENTS.md --request "Audit" --dry-run
-coma starters generate --manifest ellmos-module.v2.json --output-dir starters
-coma check .\coma-vendor.json
+python -m coma --help
+python -m coma adapters
+python -m pip install "git+https://github.com/ellmos-ai/coma.git"
 ```
 
-## Key Documentation & RAG References
+For role starters, provide a user module manifest with a top-level `roles` array and a prompt file for each role. Each role needs `id`, `prompt`, `request`, and a non-empty `providers` list. The prompt path is relative to the manifest and the file must exist. `ellmos-module.v2.json` describes COMA itself and is not a role-starter manifest.
 
-- [`README.md`](README.md): Primary documentation and 18-point quick navigation.
-- [`README_de.md`](README_de.md): German documentation and architecture overview.
-- [Swarm AI](https://github.com/ellmos-ai/swarm_ai): Optional consumer of COMA's Spawner and adapter APIs for provider-backed workflows.
-- [`NOTICE`](NOTICE): Formal copyright attribution (Lukas Geiger / ellmos-ai / open-bricks).
-- [`KONZEPT.md`](KONZEPT.md): Architectural rationale, session-decoupling motivation, and offline design.
-- [`SECURITY.md`](SECURITY.md): Process isolation, single-writer protocol boundaries, and 48h vulnerability reporting SLA.
-- [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md): Level 1 SBOM, zero-dependency invariant, and unprivileged user mode certification.
-- [`THIRD_PARTY_LICENSES.txt`](THIRD_PARTY_LICENSES.txt): Plain-text Level 1 SBOM companion file and full license text inventory.
-- [`MARKETING-LOG.txt`](MARKETING-LOG.txt): Target personas, SEO keywords, ecosystem integrations, and release highlights.
-- [`CHANGELOG.md`](CHANGELOG.md): Historical releases and semantic version log.
-- [`TODO.md`](TODO.md): Release readiness gates and active task tracker.
+```json
+{
+  "id": "my-module",
+  "roles": [
+    { "id": "reviewer", "prompt": "prompts/reviewer.md", "request": "Review the current change.", "providers": ["codex"] }
+  ]
+}
+```
 
-## Statutory Notice (§ 521 BGB)
+```bat
+coma starters generate --manifest my-module.json --output-dir starters
+starters\START.bat reviewer --provider codex --dry-run
+```
 
-Pursuant to § 521 BGB (German Civil Code), COMA is provided free of charge without consideration. Liability is limited to intent and gross negligence.
+## Known integrations
+
+The following public repositories have documented, optional COMA integrations:
+
+- [swarm_ai](https://github.com/ellmos-ai/swarm_ai) uses COMA Spawner and adapter APIs for provider-backed workflows.
+- [marblerun](https://github.com/ellmos-ai/marblerun) uses COMA Spawner and adapter APIs.
+- [ellmos-scheduler](https://github.com/ellmos-ai/ellmos-scheduler) uses COMA Spawner and adapter APIs.
+- [task-master](https://github.com/ellmos-ai/task-master) has an optional COMA integration.
+- [open-ocean](https://github.com/ellmos-ai/open-ocean) checks for optional COMA session support and provides a CLI fallback.
+- [ticket-master](https://github.com/ellmos-ai/ticket-master) uses COMA Starters at build time; it is not a runtime integration.
+
+## Tests
+
+The automated suite mocks provider CLI execution and does not perform live-provider verification. A probe test starts a controlled local Python process to check reachability. Test counts are available from current CI; this file does not pin a count.
+
+## Public documentation
+
+- [English README](README.md)
+- [German README](README_de.md)
+- [Security policy](SECURITY.md)
+- [Third-party license inventory](THIRD_PARTY_LICENSES.md)
+- [Plain-text license inventory](THIRD_PARTY_LICENSES.txt)
+- [Changelog](CHANGELOG.md)
+- [Open tasks](TODO.md)
+
+## Legal and license notes
+
+The project is provided under the MIT license. Whether statutory rules such as section 521 BGB apply depends on the legal relationship and applicable law; this documentation does not provide a blanket exemption from liability.
+
+The repository license and dependency inventory do not certify separately installed agent CLIs, provider services, or build tools. Their terms apply independently.

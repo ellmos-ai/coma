@@ -95,7 +95,7 @@ def fake_popen():
 @pytest.fixture
 def board(tmp_path: Path) -> JobBoard:
     """Ein leeres Jobverzeichnis mit IN/ OUT/ DONE/."""
-    board = JobBoard(tmp_path / "_agentjobs")
+    board = JobBoard(tmp_path / "agent-work")
     board.ensure_dirs()
     return board
 

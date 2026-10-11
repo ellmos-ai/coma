@@ -59,9 +59,7 @@ def test_core_documentation_files():
         "LICENSE",
         "NOTICE",
         "KONZEPT.md",
-        "BEFUNDE.md",
         "CHANGELOG.md",
-        "MARKETING-LOG.txt",
         "THIRD_PARTY_LICENSES.md",
         "TODO.md",
         "pyproject.toml",
@@ -99,16 +97,13 @@ def test_llms_txt_structure():
     content = llms_path.read_text(encoding="utf-8")
 
     assert "# COMA" in content
-    assert "Last-checked:" in content
-    assert "Verification:" in content
+    assert "Updated:" in content
     assert "ClaudeAdapter" in content
     assert "CodexAdapter" in content
-    assert "AntigravityAdapter" in content
+    assert "AgyAdapter" in content
     assert "KimiAdapter" in content
     assert "JobBoard" in content
     assert "JobRunner" in content
-    assert "INV-COMA-01" in content
-    assert "MARKETING-LOG.txt" in content
 
 
 def test_readme_badge_and_ecosystem_parity():
@@ -141,20 +136,8 @@ def test_pyproject_pep621_urls():
     assert "Security" in pyproject_content
     assert "Notice" in pyproject_content
     assert "LLM Ready" in pyproject_content
-    assert "Marketing Log" in pyproject_content
     assert "Parent Organization" in pyproject_content
     assert "Umbrella Ecosystem" in pyproject_content
-
-
-def test_marketing_log_structure():
-    """Verify that MARKETING-LOG.txt exists and contains required strategic sections."""
-    marketing_log_path = REPO_ROOT / "MARKETING-LOG.txt"
-    assert marketing_log_path.exists()
-    content = marketing_log_path.read_text(encoding="utf-8")
-    assert "Ziel-Personas" in content or "Target" in content
-    assert "Discoverability" in content or "SEO" in content
-    assert "Awesome-" in content
-    assert "Roadmap" in content or "Empfehlungen" in content
 
 
 def test_license_and_third_party_inventory():
@@ -162,7 +145,6 @@ def test_license_and_third_party_inventory():
     licenses_path = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
     assert licenses_path.exists()
     content = licenses_path.read_text(encoding="utf-8")
-    assert "Zero External Runtime Dependencies" in content
     assert "INV-COMA-02" in content
     assert "MIT License" in content
 
@@ -243,19 +225,6 @@ def test_pyproject_pytest_addopts():
     assert 'addopts = "-ra -v --basetemp=.pytest_temp"' in content
 
 
-def test_marketing_log_recent_hygiene_entry():
-    """Verify MARKETING-LOG.txt includes recent Pfad A hygiene audit entry."""
-    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert (
-        "Stand: 2026-10-01" in content
-        or "Stand: 2026-09-28" in content
-        or "Stand: 2026-09-24" in content
-        or "Stand: 2026-09-14" in content
-    )
-    assert "Pfad A" in content
-    assert "Release 0.3.1 Highlights" in content
-
-
 def test_changelog_recent_pfad_a_entry():
     """Verify CHANGELOG.md documents Release 0.3.1 on 2026-09-14."""
     content = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
@@ -319,36 +288,6 @@ def test_readme_18_point_navigation_parity():
         assert f'id="{anchor}"' in readme_en, f"Reciprocal anchor '{anchor}' missing in README.md"
 
 
-def test_target_personas_and_high_intent_queries():
-    """Verify that both READMEs document 4 target personas and high-intent SEO queries."""
-    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
-
-    personas = ["[PERSONA-01]", "[PERSONA-02]", "[PERSONA-03]", "[PERSONA-04]"]
-    for persona in personas:
-        assert persona in readme_en, f"{persona} missing in README.md"
-        assert persona in readme_de, f"{persona} missing in README_de.md"
-
-    assert "High-Intent Search Queries" in readme_en or "High-Intent" in readme_en
-    assert "High-Intent Suchbegriffe" in readme_de or "High-Intent" in readme_de
-
-
-def test_comparative_matrix_and_invariants():
-    """Verify that both READMEs include the 10-dimension comparative matrix vs alternatives."""
-    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
-
-    alternatives = ["Celery", "Temporal", "Subprocess", "LangGraph"]
-    for alt in alternatives:
-        assert alt in readme_en, f"Alternative '{alt}' missing in README.md matrix"
-        assert alt in readme_de, f"Alternative '{alt}' missing in README_de.md matrix"
-
-    for i in range(1, 11):
-        inv_id = f"INV-COMA-{i:02d}"
-        assert inv_id in readme_en, f"{inv_id} missing in README.md"
-        assert inv_id in readme_de, f"{inv_id} missing in README_de.md"
-
-
 def test_statutory_notice_bgb_521():
     """Verify statutory disclaimer pursuant to § 521 BGB in English and German."""
     readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
@@ -358,19 +297,12 @@ def test_statutory_notice_bgb_521():
     assert "521 BGB" in readme_en
     assert "521 BGB" in readme_de
     assert "521 BGB" in llms_txt
-    assert "Gefälligkeitsrecht" in readme_de
-    assert "grobe Fahrlässigkeit" in readme_de
 
 
-def test_third_party_licenses_sbom_and_run_as_invoker():
-    """Verify THIRD_PARTY_LICENSES.md Level 1 SBOM, RunAsInvoker, and 10 invariants."""
+def test_third_party_licenses_sbom_inventory_ids():
+    """Verify the Level 1 SBOM document and invariant identifiers."""
     content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
 
-    assert "2026-09-19" in content
-    assert "Audited" in content
-    assert "RunAsInvoker" in content
-    assert "Zero External Runtime Dependencies" in content
-    assert "Zero-Copyleft Isolation Guarantee" in content
     assert "Level 1 Software Bill of Materials" in content
 
     for i in range(1, 11):
@@ -403,14 +335,11 @@ def test_mermaid_diagram_syntax():
                 assert not line_str.endswith(";"), f"Trailing semicolon found in {lang} sequence diagram: {line_str}"
 
 
-def test_changelog_and_marketing_log_release_0_3_2():
-    """Verify CHANGELOG.md and MARKETING-LOG.txt record Release 0.3.2."""
+def test_changelog_release_0_3_2():
+    """Verify CHANGELOG.md records Release 0.3.2."""
     changelog = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    marketing = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
 
     assert "[0.3.2] — 2026-09-19" in changelog
-    assert "Release 0.3.2 Highlights" in marketing
-    assert "Pfad B" in marketing
 
 
 def test_notice_attribution_file():
@@ -466,13 +395,6 @@ def test_unreleased_changelog_entry():
     assert ".gitignore" in content
 
 
-def test_marketing_log_audit_stand_20260924():
-    """Verify MARKETING-LOG.txt documents Pfad A audit stand 2026-09-24."""
-    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "2026-09-24" in content
-    assert "Pfad A Maintenance & Hygiene Audit (Stand 2026-09-24)" in content
-
-
 def test_readme_sec_01_to_18_anchor_parity():
     """Verify that README.md and README_de.md implement sec-01 through sec-18 reciprocal anchors."""
     readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
@@ -491,9 +413,6 @@ def test_third_party_licenses_text_companion():
     content = text_path.read_text(encoding="utf-8")
 
     assert "LEVEL 1 SBOM NOTICE" in content
-    assert "RunAsInvoker" in content
-    assert "Zero External Runtime Dependencies" in content
-    assert "Zero-Copyleft Isolation Guarantee" in content
     assert "MIT LICENSE" in content
     assert "PYTHON SOFTWARE FOUNDATION LICENSE" in content
 
@@ -519,33 +438,19 @@ def test_pep621_github_topics_saturation():
         "local-first",
         "messaging",
         "multi-agent",
-        "offline-first",
         "open-bricks",
-        "process-isolation",
         "python",
         "session-decoupling",
         "spawn",
         "status-polling",
         "subagents",
         "zero-dependencies",
-        "zero-egress",
     ]
     for topic in topics:
         assert f'"{topic}"' in pyproject_content, (
             f"Topic '{topic}' missing in pyproject.toml keywords"
         )
     assert '"Third-Party Licenses (Text)"' in pyproject_content
-
-
-def test_marketing_log_audit_stand_20260928():
-    """Verify MARKETING-LOG.txt documents Pfad B audit stand 2026-09-28."""
-    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-09-28" in content
-    assert (
-        "Pfad B Discoverability, Visual Architecture & Level 1 SBOM Audit (Stand"
-        " 2026-09-28)"
-        in content
-    )
 
 
 def test_notice_third_party_text_companion():
@@ -611,7 +516,6 @@ def test_bilingual_contributing_guidelines():
     content = contrib_path.read_text(encoding="utf-8")
     assert "Contributing to coma" in content
     assert "Mitwirken an coma" in content
-    assert "RunAsInvoker" in content
     assert "T-20260920-167562623" in content
     assert "pytest -ra -v" in content
     for i in range(1, 11):
@@ -629,25 +533,6 @@ def test_pep621_extended_hygiene_urls():
     assert '".turbo"' in pyproject_content
 
 
-def test_third_party_licenses_audit_recency_20261001():
-    """Verify THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md are audited to 2026-10-01 or later."""
-    txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
-    md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
-    assert ("Audited: 2026-10-01" in txt_content) or ("Audited: 2026-10-04" in txt_content)
-    assert ("Audited:** 2026-10-01" in md_content) or ("Audited:** 2026-10-04" in md_content)
-    for i in range(1, 11):
-        inv_id = f"INV-COMA-{i:02d}"
-        assert inv_id in txt_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.txt"
-        assert inv_id in md_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.md"
-
-
-def test_marketing_log_audit_stand_20261001():
-    """Verify MARKETING-LOG.txt documents Pfad A audit stand 2026-10-01."""
-    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-10-01" in content or "Stand: 2026-10-04" in content
-    assert "11. Pfad A Maintenance & Hygiene Audit (Stand 2026-10-01)" in content
-
-
 def test_gitignore_additional_multihost_guards():
     """Verify .gitignore includes TASKPLAN, ehthumbs.db, and lock guards."""
     content = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
@@ -656,59 +541,6 @@ def test_gitignore_additional_multihost_guards():
     assert "LOCK.dev.*" in content
     assert "LOCK.antigravity.*" in content
     assert "LOCK.bugsearch.*" in content
-
-
-def test_ascii_four_view_architectural_topology_parity_en_de():
-    """Verify ASCII Four-View Architectural Topology presence and invariant parity across README.md and README_de.md."""
-    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
-
-    assert "ASCII Four-View Architectural Topology" in readme_en
-    assert "ASCII Vier-Sichten-Architekturtopologie" in readme_de
-
-    for view in ["[VIEW 1:", "[VIEW 2:", "[VIEW 3:", "[VIEW 4:"]:
-        assert view in readme_en, f"{view} missing in README.md"
-
-    for sicht in ["[SICHT 1:", "[SICHT 2:", "[SICHT 3:", "[SICHT 4:"]:
-        assert sicht in readme_de, f"{sicht} missing in README_de.md"
-
-    for i in range(1, 11):
-        inv_id = f"INV-COMA-{i:02d}"
-        assert inv_id in readme_en, f"{inv_id} missing in README.md topology"
-        assert inv_id in readme_de, f"{inv_id} missing in README_de.md topology"
-
-
-def test_third_party_licenses_audit_recency_20261004():
-    """Verify THIRD_PARTY_LICENSES.txt and THIRD_PARTY_LICENSES.md are audited to 2026-10-04."""
-    txt_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.txt").read_text(encoding="utf-8")
-    md_content = (REPO_ROOT / "THIRD_PARTY_LICENSES.md").read_text(encoding="utf-8")
-    assert "Audited: 2026-10-04" in txt_content
-    assert "Audited:** 2026-10-04" in md_content
-    for i in range(1, 11):
-        inv_id = f"INV-COMA-{i:02d}"
-        assert inv_id in txt_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.txt"
-        assert inv_id in md_content, f"{inv_id} missing in THIRD_PARTY_LICENSES.md"
-
-
-def test_marketing_log_audit_stand_20261004():
-    """Verify MARKETING-LOG.txt documents Pfad B audit stand 2026-10-04."""
-    content = (REPO_ROOT / "MARKETING-LOG.txt").read_text(encoding="utf-8")
-    assert "Stand: 2026-10-04" in content
-    assert "12. Pfad B Discoverability, Visual Architecture & Level 1 SBOM Audit (Stand 2026-10-04)" in content
-    assert "REC-20261004-01" in content
-    assert "REC-20261004-02" in content
-    assert "REC-20261004-03" in content
-
-
-def test_readme_badges_audit_recency_and_test_count_313():
-    """Verify Shields.io badges in README.md and README_de.md reflect 313 tests and 2026-10-04 verification."""
-    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
-
-    assert "pytest-313%20passed" in readme_en
-    assert "verified-2026--10--04" in readme_en
-    assert "pytest-313%20bestanden" in readme_de
-    assert "gepr%C3%BCft-2026--10--04" in readme_de
 
 
 def test_version_freeze_discipline_032():

@@ -1,29 +1,29 @@
 # TODO.md — Active work
 
 **Version:** 0.3.2
-**Updated:** 2026-09-24
-**Reason:** Standardization, NOTICE attribution, multi-host lock defense, gate readiness, and AI discoverability
+**Updated:** 2026-10-11
+**Reason:** Current implementation scope, documentation accuracy, and repository hygiene
 **Purpose:** Track only work that remains open.
 
 ## STATUS
 
 | Category | Status | Evidence / next gate |
 |---|---|---|
-| Core Spawner & Adapters | DONE | Process-free command generation, mocked runner execution, Claude/Codex/AGY verified, Kimi fail-closed; verified by 260 automated tests (100% green). |
-| Multi-Channel Job Protocol | DONE | IN/OUT/DONE queues, single-writer channels (`coma.<jobid>.json`, `to-agent.jsonl`, `from-agent.jsonl`, `result.md`, `console.log`), atomic moves. |
-| Session Planning & Probing | DONE | Process-free `build_session_plan`, deterministic `ordered_candidates`, bounded reachability `probe` with child-process cleanup. |
+| Core Spawner & Adapters | DONE | Command construction and mocked execution are covered; prior Claude/Codex/AGY checks are historical compatibility notes, not current certification. Kimi remains unverified and fail-closed by default. |
+| Multi-Channel Job Protocol | DONE | IN/OUT/DONE queues and channel files; callers assign one writer per channel. Role checks are not OS locks or identity enforcement. |
+| Session Planning & Probing | DONE | Session planning constructs argv; reachability probes use a timeout and best-effort platform-dependent cleanup. Descendant termination is not guaranteed. |
 | Starters Generator | DONE | Dual-platform `START.bat` and `start.sh` generation from module `roles[]` with idempotent marker guards. |
-| Path Neutrality & Hygiene | DONE | Neutral environments, standard `.gitignore` patterns, zero personal paths, zero secrets. |
+| Path Neutrality & Hygiene | DONE | Reviewed tracked files for known host-path patterns and common credential markers; this bounded check does not certify that no secrets exist. |
 | AI Discoverability & Metadata | DONE | Machine-readable `llms.txt`, PEP 621 classifiers, PEP 639 license inventory, schema v2 metadata parity. |
 | CI Workflows & Multi-Host Defense | DONE | Multi-OS/Python GitHub Actions with timeouts, stale triage workflow, hardened .gitignore. |
-| Ecosystem Integration | DONE | Registered in `.MODULES/.ORCHESTRATION/coma`, Plan-D pointer configured, shared under `ellmos-ai` and `open-bricks`. |
-| Public Release Gate | USER | MIT License selected; explicit public visibility approval pending from user. |
+| Ecosystem Integration | DONE | Public repositories document optional integrations and specific use points; they do not imply hard dependencies. |
+| Public source and package status | CURRENT | GitHub source is public; version 0.3.2 remains frozen. Install from the canonical Git repository; the PyPI name coma belongs to a different project. |
 
 ## Formalized next tasks
 
 - [ ] **TASK-COMA-01: Kimi-Live-Verifikationsgate** (`effort=special`, `scope=kimi`, priority `normal`).
-  - **Ziel:** Sobald Kimi Code CLI über einen autorisierten interaktiven Promptlauf-Vertrag verfügt, Verifikationsflag in `coma/session.py` und `coma/adapters/kimi.py` von Skeleton auf Verified heben.
-  - **Definition of Done:** End-to-End Test mit Kimi-CLI-Prozess in isolierter Sandbox; Dokumentation in `BEFUNDE.md` und `KONZEPT.md`.
+  - **Ziel:** Sobald die aktuelle `kimi-code`-Nachfolge-CLI über einen autorisierten interaktiven Promptlauf-Vertrag verfügt, Verifikationsflag in `coma/session.py` und `coma/adapters/kimi.py` von Skeleton auf Verified heben. Der frühere Check von `kimi-cli` 0.31.0 (archiviert am 2026-09-23) belegt keine Kompatibilität mit dem Nachfolger.
+  - **Definition of Done:** End-to-End-Test mit der aktuellen `kimi-code`-CLI nach einem autorisierten Promptlauf-Vertrag; aktuelle Adaptergrenzen in `KONZEPT.md` dokumentieren.
 
 - [ ] **TASK-COMA-02: Zentrale Multi-Agent-Registry** (`effort=large`, `scope=registry`, priority `normal`).
   - **Ziel:** Zentrale Schnittstelle für die Orchestrierung dynamischer Agentenflotten über COMA-Prozess-Spawner.

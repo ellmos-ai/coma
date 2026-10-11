@@ -7,7 +7,7 @@
   "kind": "runtime",
   "status": "development",
   "visibility": "public",
-  "description": "Provider-unabhängige Orchestrierungs- und Lebenszyklus-Schicht für Agentenprozesse. Spawn-Schicht mit verifizierten CLI-Adaptern für Claude, Codex und Agy sowie fail-closed Kimi-Gerüst, Datei-Protokoll mit einem Schreiber je Datei, Statusschreiber und Poll-Hilfen. COMA ist kein Scheduler, sperrt nichts, verwaltet keine Rechte und hält kein Gedächtnis.",
+  "description": "Provider-unabhängige Orchestrierungs- und Lebenszyklus-Schicht für Agentenprozesse. Spawn-Schicht mit verifizierten CLI-Adaptern für Claude, Codex und Agy sowie fail-closed Kimi-Gerüst, Datei-Protokoll mit einem Schreiber je Datei, Statusschreiber und Poll-Hilfen. Die Netzwerkgrenze beschreibt COMA selbst; gestartete Anbieter-CLIs können Netzwerkzugriff haben. COMA ist kein Scheduler, sperrt nichts, verwaltet keine Rechte und hält kein Gedächtnis.",
   "package": "coma",
   "entrypoints": {
     "cli": "python -m coma",

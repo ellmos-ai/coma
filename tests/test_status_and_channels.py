@@ -2,7 +2,7 @@
 """Statusschreiber und Kanaele.
 
 Der Statustest ist ein Kompatibilitaetstest: Die Schluessel muessen denen von
-``_agentjobs/coma_status.py`` entsprechen, sonst lesen ``.bat`` und
+``agent-work/coma_status.py`` entsprechen, sonst lesen ``.bat`` und
 Python-Schicht aneinander vorbei.
 """
 import json

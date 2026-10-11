@@ -1,6 +1,6 @@
 """Der Statusschreiber — **einziger** Schreiber von ``coma.<jobid>.json``.
 
-Vorlage: ``_control-center/_agentjobs/coma_status.py``. Die Schluessel sind
+Vorlage: eine bestehende JSON-Statusdatei. Die Schlüssel sind
 zeichengleich uebernommen (``job_id``, ``state``, ``model``, ``started``,
 ``finished``, ``job_file``, ``result_file``, ``exit_code``), damit die bestehende
 Startschale und diese Python-Schicht dieselbe Datei lesen und schreiben koennen.
