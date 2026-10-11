@@ -68,10 +68,8 @@ Die Verben trennen sauber: COMA spricht `spawn`, `send`, `poll`, `result`. Ein K
 <a id="use-cases"></a>
 ## 2. Primäre Anwendungsfälle & Session-Entkopplung
 
-1. **Entkopplung von Remote-Control-Sessions (RC-Immunität)**
+1. **Entkopplung von Remote-Control-Sessions**
    Interaktive Clients und Remote-Control-Sitzungen können CLI-Berechtigungen unterschiedlich handhaben. COMA startet das gewählte CLI als Subprozess und tauscht Aufträge über Dateisystemkanäle aus; die Berechtigungen des Anbieter-CLIs gelten weiterhin.
-
-   Die Lösung ist, den Agenten **gar nicht erst in der RC-Session leben zu lassen**: Ein eigener lokaler Betriebssystem-Prozess außerhalb dieser Session, Kommunikation robust über das Dateisystem. **COMA umgeht keine Sicherheitsgrenze**, sondern nutzt dokumentierte CLI-Flags (`--permission-mode`, `--allowedTools`) an der Stelle, an der sie tatsächlich ankommen.
 
 2. **Session-übergreifende Handoffs & Multi-Agent Relays**
    Aufgaben werden über Session-Grenzen hinweg zwischen Agenten übergeben, ohne dass Prozesse blockieren oder Kontext verloren geht.
