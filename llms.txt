@@ -77,6 +77,10 @@ The following public repositories have documented, optional COMA integrations:
 - [open-ocean](https://github.com/ellmos-ai/open-ocean) checks for optional COMA session support and provides a CLI fallback.
 - [ticket-master](https://github.com/ellmos-ai/ticket-master) uses COMA Starters at build time; it is not a runtime integration.
 
+## Related project
+
+- [agent-ops-stack](https://github.com/ellmos-ai/agent-ops-stack) fetches seven repositories from its manifest and reports their declared wiring labels. COMA is a related project, not one of its manifest sources.
+
 ## Tests
 
 The automated suite mocks provider CLI execution and does not perform live-provider verification. A probe test starts a controlled local Python process to check reachability. Test counts are available from current CI; this file does not pin a count.
