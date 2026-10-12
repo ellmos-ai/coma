@@ -456,7 +456,7 @@ COMA ist integraler Bestandteil der `ellmos-ai`-Architektur und des `open-bricks
 | **Lock-Governance** | [`ellmos-ai/lock-master`](https://github.com/ellmos-ai/lock-master) | Zentrale Projektsperren & Multi-Tree-Koordination (Roshambo) |
 | **Hook-Management** | [`ellmos-ai/hook-master`](https://github.com/ellmos-ai/hook-master) | Kanonisches Hook-Management & Multi-Agent-Materialisierung |
 | **Richtlinien-Register** | [`ellmos-ai/policy-registry`](https://github.com/ellmos-ai/policy-registry) | Zentrale Governance, Rollendefinitionen & Delegationsregeln |
-| **Flotten-Betrieb** | [`ellmos-ai/agent-ops-stack`](https://github.com/ellmos-ai/agent-ops-stack) | Multi-Agenten-Betrieb, Health-Telemetrie & Monitoring |
+| **Quellmanifest** | [`ellmos-ai/agent-ops-stack`](https://github.com/ellmos-ai/agent-ops-stack) | Manifestbasierter Fetcher für sieben Agentenbetriebs-Repositories; meldet deren deklarierte Wiring-Labels. COMA ist ein verwandtes Werkzeug, aber keine Quelle in seinem Manifest. |
 | **Datentransfer** | [`ellmos-ai/sqlite-transit-sync`](https://github.com/ellmos-ai/sqlite-transit-sync) | Zero-Copy Transaktions-Sync & SQLite-Replikation |
 | **Automationsfluss** | [`ellmos-ai/workflowhooker`](https://github.com/ellmos-ai/workflowhooker) | Ereignistrigger, Pipeline-Hooks & Webhook-Orchestrierung |
 | **Gedächtnissicherung** | [`ellmos-ai/memoryhooker`](https://github.com/ellmos-ai/memoryhooker) | Kontexterhalt, episodisches Gedächtnis & Lessons-Learned |
