@@ -1,6 +1,6 @@
 THIRD-PARTY LICENSES & LEVEL 1 SBOM NOTICE
 Project: ellmos-ai/coma
-Inventory snapshot: 2026-10-04 (previous snapshots listed in THIRD_PARTY_LICENSES.md)
+Inventory snapshot: 2026-10-31 (previous snapshots listed in THIRD_PARTY_LICENSES.md)
 Repository License: MIT License (see LICENSE)
 Repository Attribution Notice: NOTICE (see NOTICE)
 Scope: COMA repository and listed Python packages for runtime metadata, testing, and build.
