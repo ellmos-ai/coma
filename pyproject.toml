@@ -44,6 +44,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Build Tools",
     "Topic :: System :: Distributed Computing",
 ]
@@ -65,6 +66,7 @@ Contributing = "https://github.com/ellmos-ai/coma/blob/main/CONTRIBUTING.md"
 Issues = "https://github.com/ellmos-ai/coma/issues"
 Changelog = "https://github.com/ellmos-ai/coma/blob/main/CHANGELOG.md"
 Security = "https://github.com/ellmos-ai/coma/blob/main/SECURITY.md"
+"Security Policy" = "https://github.com/ellmos-ai/coma/blob/main/SECURITY.md"
 Notice = "https://github.com/ellmos-ai/coma/blob/main/NOTICE"
 "Plain-Text License" = "https://raw.githubusercontent.com/ellmos-ai/coma/main/LICENSE"
 "LLM Ready" = "https://github.com/ellmos-ai/coma/blob/main/llms.txt"

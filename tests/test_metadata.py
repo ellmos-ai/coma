@@ -552,3 +552,54 @@ def test_version_freeze_discipline_032():
     assert 'version = "0.3.2"' in pyproject_content
     assert manifest_data.get("version") == "0.3.2"
     assert '__version__ = "0.3.2"' in coma_init
+
+
+def test_dependabot_ecosystem_security():
+    """Verify .github/dependabot.yml ecosystem security policy and limits."""
+    dependabot_path = REPO_ROOT / ".github" / "dependabot.yml"
+    assert dependabot_path.exists(), ".github/dependabot.yml missing"
+    dep_text = dependabot_path.read_text(encoding="utf-8")
+    assert "version: 2" in dep_text
+    assert 'package-ecosystem: "pip"' in dep_text
+    assert "open-pull-requests-limit: 0" in dep_text
+    assert 'package-ecosystem: "github-actions"' in dep_text
+    assert "open-pull-requests-limit: 3" in dep_text
+    assert "Europe/Berlin" in dep_text
+
+
+def test_ci_whitespace_gate():
+    """Verify .github/workflows/tests.yml includes automated git diff --check gate."""
+    ci_path = REPO_ROOT / ".github" / "workflows" / "tests.yml"
+    assert ci_path.exists(), ".github/workflows/tests.yml missing"
+    ci_text = ci_path.read_text(encoding="utf-8")
+    assert "git diff --check" in ci_text
+
+
+def test_pep621_python_313_and_security_policy():
+    """Verify pyproject.toml defines Python 3.13 classifier and Security Policy URL."""
+    pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert '"Programming Language :: Python :: 3.13"' in pyproject_text
+    assert '"Security Policy"' in pyproject_text
+
+
+def test_gitignore_multihost_thumbs_and_taskplan():
+    """Verify .gitignore includes lowercase thumbs.db and wildcard TASKPLAN patterns."""
+    gi_text = (REPO_ROOT / ".gitignore").read_text(encoding="utf-8")
+    assert "thumbs.db" in gi_text
+    assert "TASKPLAN*" in gi_text
+    assert "*-TASKPLAN*" in gi_text
+    assert "*-ASUS-GEI.*" in gi_text
+    assert "*-IDEAPAD-GEI.*" in gi_text
+
+
+def test_canonical_labels_includes_github_actions():
+    """Verify .github/labels.yml defines github-actions workflow update label."""
+    labels_text = (REPO_ROOT / ".github" / "labels.yml").read_text(encoding="utf-8")
+    assert "name: github-actions" in labels_text or "name: 'github-actions'" in labels_text
+
+
+def test_changelog_pfad_a_20261031_entry():
+    """Verify CHANGELOG.md documents Pfad A technical hygiene on 2026-10-31."""
+    cl_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "### Pfad A Technical Hygiene — 2026-10-31" in cl_text
+    assert ".github/dependabot.yml" in cl_text

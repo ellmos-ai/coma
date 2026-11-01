@@ -1,7 +1,7 @@
 # Third-Party Licenses & Software Inventory
 
 > **Repository License:** [MIT License](LICENSE) | [Attribution Notice](NOTICE)<br>
-> **Inventory snapshot:** 2026-10-04 (previous snapshots: 2026-10-01, 2026-09-28, 2026-09-24, 2026-09-19, 2026-09-12)<br>
+> **Inventory snapshot:** 2026-10-31 (previous snapshots: 2026-10-04, 2026-10-01, 2026-09-28, 2026-09-24, 2026-09-19, 2026-09-12)<br>
 > **Scope:** COMA project and listed Python packages for runtime metadata, testing, and build.<br>
 > **Process boundary:** Launched provider CLIs inherit caller privileges and environment and may access networks.
 

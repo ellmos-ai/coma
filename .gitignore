@@ -100,11 +100,15 @@ LOCK.antigravity.*
 LOCK.bugsearch.*
 .automation-lock
 TASKPLAN_*.md
+TASKPLAN*
+*-TASKPLAN*
 uv.lock
 !package-lock.json
 
 # Host-spezifische Sync-Dateien (OneDrive Sync-Konflikte)
 *-ASUS-GEI*
+*-ASUS-GEI.*
+*-IDEAPAD-GEI.*
 *-ASUS*
 *-WORKSTATION*
 *-LAPTOP*
@@ -140,6 +144,7 @@ wheelhouse/
 # OS-Artefakte
 .DS_Store
 Thumbs.db
+thumbs.db
 ehthumbs.db
 Desktop.ini
 desktop.ini

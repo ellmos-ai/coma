@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Pfad A Technical Hygiene — 2026-10-31
+- Added Dependabot Ecosystem Security configuration (`.github/dependabot.yml`) with security-only pip policy (zero version bumps, grouped security updates) and weekly GitHub Actions workflow updates (Europe/Berlin timezone).
+- Added canonical `github-actions` label to `.github/labels.yml` for automated workflow dependency tracking.
+- Hardened CI test matrix in `.github/workflows/tests.yml` with an automated `git diff --check` whitespace and line-ending verification step.
+- Expanded PEP 621 metadata in `pyproject.toml` with `"Programming Language :: Python :: 3.13"` classifier and `"Security Policy"` URL.
+- Hardened `.gitignore` with lowercase `thumbs.db`, wildcards `TASKPLAN*` / `*-TASKPLAN*`, and host sync patterns `*-ASUS-GEI.*` and `*-IDEAPAD-GEI.*`.
+- Re-audited Level 1 SBOM in `THIRD_PARTY_LICENSES.md` and `THIRD_PARTY_LICENSES.txt` as of snapshot 2026-10-31, confirming runtime and subprocess scope across invariants INV-COMA-01..INV-COMA-10.
+- Synchronized `llms.txt` and documentation references to 2026-10-31 while keeping version 0.3.2 strictly frozen per T-20260920-167562623.
+- Added automated contract tests in `tests/test_metadata.py` verifying dependabot configuration, CI whitespace gate, Python 3.13 metadata, and .gitignore hardening.
+
 ### Scope correction — 2026-10-11
 
 - Corrected current documentation to distinguish COMA's local-file and subprocess behavior from the network access, privileges, environment, and permission controls of launched agent CLIs. One writer per channel is a caller convention, and probe cleanup is best-effort.

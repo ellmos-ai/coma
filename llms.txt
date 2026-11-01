@@ -1,7 +1,7 @@
 # COMA — Command & Communication for Autonomous Agents
 
 > Machine-readable specification and RAG context index for ellmos-ai/coma.
-> Updated: 2026-10-11 | Current package version: 0.3.2 (frozen).
+> Updated: 2026-10-31 | Current package version: 0.3.2 (frozen).
 > Install from the canonical Git repository. The PyPI name `coma` belongs to a different project.
 
 ## Scope
