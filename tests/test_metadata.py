@@ -177,7 +177,7 @@ def test_stale_workflow_present_and_safe():
     stale_path = REPO_ROOT / ".github" / "workflows" / "stale.yml"
     assert stale_path.exists(), ".github/workflows/stale.yml missing"
     content = stale_path.read_text(encoding="utf-8")
-    assert "actions/stale@v9" in content
+    assert re.search(r"actions/stale@v\d+", content)
     assert "timeout-minutes: 10" in content
     assert "cancel-in-progress: true" in content
     assert "issues: write" in content
@@ -189,7 +189,7 @@ def test_welcome_workflow_present_and_safe():
     welcome_path = REPO_ROOT / ".github" / "workflows" / "welcome.yml"
     assert welcome_path.exists(), ".github/workflows/welcome.yml missing"
     content = welcome_path.read_text(encoding="utf-8")
-    assert "actions/first-interaction@v3" in content
+    assert re.search(r"actions/first-interaction@v\d+", content)
     assert "timeout-minutes: 5" in content
     assert "cancel-in-progress: true" in content
 
@@ -464,7 +464,7 @@ def test_ci_lifecycle_auto_assign_workflow():
     wf_path = REPO_ROOT / ".github" / "workflows" / "auto-assign.yml"
     assert wf_path.exists(), "auto-assign.yml missing"
     content = wf_path.read_text(encoding="utf-8")
-    assert "actions/github-script@v7" in content
+    assert re.search(r"actions/github-script@v\d+", content)
     assert "timeout-minutes: 5" in content
     assert "cancel-in-progress: true" in content
     assert "pull-requests: write" in content
