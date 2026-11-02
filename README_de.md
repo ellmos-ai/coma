@@ -504,4 +504,4 @@ Das Projekt wird unter der MIT-Lizenz bereitgestellt. Ob gesetzliche Vorschrifte
 <a id="18-license--umbrella"></a>
 ## 18. Lizenz & Open-Source-Dach
 
-MIT-Lizenz. Entwickelt unter dem Dach von [ellmos-ai](https://github.com/ellmos-ai) und [open-bricks](https://github.com/open-bricks). Siehe [LICENSE](LICENSE) und [NOTICE](NOTICE) für Copyright- und Urheberhinweise.
+MIT-Lizenz. Entwickelt unter dem Dach von [ellmos-ai](https://github.com/ellmos-ai) und [open-bricks](https://github.com/open-bricks). Siehe [LICENSE](LICENSE), [NOTICE](NOTICE), [CONTRIBUTING.md](CONTRIBUTING.md) und [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) für Copyright-, Beitrags- und Community-Richtlinien.

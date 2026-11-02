@@ -1,0 +1,4 @@
+# COMA — LLM Guidance Pointer
+
+This repository provides canonical LLM guidance, architecture notes, and machine-readable navigation in **[llms.txt](llms.txt)**.
+For autonomous agent workflows and lifecycle protocol documentation, see **[llms.txt](llms.txt)** and **[README.md](README.md)**.

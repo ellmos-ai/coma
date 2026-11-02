@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Pfad A Technical Hygiene — 2026-11-02
+- Synchronized module manifest schema and PIN in `_schema/ellmos.module.v2.schema.json` and `_schema/PIN.json` with the canonical `.MODULES/_templates` schema (`sync_schema_to_repo.py`), resolving schema drift in `test_module_manifest_contract.py`.
+- Added bilingual Code of Conduct (`CODE_OF_CONDUCT.md`) based on Contributor Covenant v2.1 with security contacts (`security@ellmos.ai`, `support@lukasgeiger.com`).
+- Added `llm.txt` fast pointer to `llms.txt` and `README.md` conforming to GITHUB-POLICY P-022.
+- Added `"Code of Conduct"` URL to `[project.urls]` in `pyproject.toml`.
+- Updated documentation references in `README.md` and `README_de.md` linking `CODE_OF_CONDUCT.md`.
+- Expanded metadata contract tests in `tests/test_metadata.py` verifying Code of Conduct, llm.txt pointer, pyproject URLs, and schema parity while strictly maintaining version freeze discipline at 0.3.2 per T-20260920-167562623.
+
 ### Pfad A Technical Hygiene — 2026-10-31
 - Added Dependabot Ecosystem Security configuration (`.github/dependabot.yml`) with security-only pip policy (zero version bumps, grouped security updates) and weekly GitHub Actions workflow updates (Europe/Berlin timezone).
 - Added canonical `github-actions` label to `.github/labels.yml` for automated workflow dependency tracking.
