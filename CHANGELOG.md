@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Pfad B Marketing & Discoverability — 2026-11-07
+- Synchronized canonical Manifest schema (_schema/ellmos.module.v2.schema.json) and SHA-256 PIN (_schema/PIN.json), keeping contract tests 100% green.
+- Updated bilingual README architecture (README.md and README_de.md) with verified test count badge (309 passing tests measured live via pytest).
+- Enriched Section 13 (Testing & Verification Suite) in both languages with explicit breakdown of the 309 contract, boundary, adapter, session, and starter tests.
+- Re-verified dual Mermaid diagrams (5-layer system architecture topology and end-to-end execution lifecycle) syntax via lint_mermaid.py (0 errors).
+- Maintained strict version freeze at 0.3.2 across pyproject.toml, llmos-module.v2.json, and coma/__init__.py per T-20260920-167562623.
+
 ### Pfad A Technical Hygiene — 2026-10-31
 - Added Dependabot Ecosystem Security configuration (`.github/dependabot.yml`) with security-only pip policy (zero version bumps, grouped security updates) and weekly GitHub Actions workflow updates (Europe/Berlin timezone).
 - Added canonical `github-actions` label to `.github/labels.yml` for automated workflow dependency tracking.

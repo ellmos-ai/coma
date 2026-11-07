@@ -5,6 +5,7 @@
 **[English](README.md) | [Deutsch](README_de.md)**
 
 [![Tests](https://github.com/ellmos-ai/coma/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/ellmos-ai/coma/actions/workflows/tests.yml)
+[![Tests (Anzahl)](https://img.shields.io/badge/tests-309%20bestanden-brightgreen.svg)](tests/)
 [![Drittanbieter-Lizenzen (Text)](https://img.shields.io/badge/lizenzen--text-Level%201%20SBOM-blue.svg)](THIRD_PARTY_LICENSES.txt)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
@@ -422,8 +423,7 @@ Die folgende Tabelle trennt Implementierungsverhalten, Aufruferkonventionen und 
 python -m pytest -ra -v
 ```
 
-Tests mocken die Ausführung von Anbieter-CLIs; die Suite ist keine Live-Anbieter-Verifikation.
-Ein Sondentest startet einen kontrollierten lokalen Python-Prozess, um Erreichbarkeit zu prüfen.
+Die Verifikationssuite umfasst **309 bestandene Tests**, die Extraktionsgrenzen, CLI-Adapter (Claude, Codex, AGY, Kimi), Sitzungsplaner, duale Starter-Generierung, Status- und Kanal-I/O sowie die Modul-Manifest-Vertragstreue abdecken. Tests mocken die Ausführung von Anbieter-CLIs; die Suite ist keine Live-Anbieter-Verifikation. Ein Sondentest startet einen kontrollierten lokalen Python-Prozess, um Erreichbarkeit zu prüfen.
 
 ---
 

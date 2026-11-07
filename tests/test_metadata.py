@@ -603,3 +603,21 @@ def test_changelog_pfad_a_20261031_entry():
     cl_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     assert "### Pfad A Technical Hygiene — 2026-10-31" in cl_text
     assert ".github/dependabot.yml" in cl_text
+
+
+def test_changelog_pfad_b_20261107_entry():
+    """Verify CHANGELOG.md documents Pfad B marketing & discoverability on 2026-11-07."""
+    cl_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "### Pfad B Marketing & Discoverability — 2026-11-07" in cl_text
+    assert "_schema/ellmos.module.v2.schema.json" in cl_text
+
+
+def test_readme_test_count_badge_parity():
+    """Verify that both README.md and README_de.md include verified test count badges."""
+    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
+
+    assert "tests-309%20passed" in readme_en
+    assert "tests-309%20bestanden" in readme_de
+    assert "309 passing tests" in readme_en
+    assert "309 bestandene Tests" in readme_de
