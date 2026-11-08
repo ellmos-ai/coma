@@ -64,6 +64,8 @@ def test_core_documentation_files():
         "TODO.md",
         "pyproject.toml",
         "ellmos-module.v2.json",
+        "CODE_OF_CONDUCT.md",
+        "llm.txt",
     ]
     for rel_path in required_files:
         file_path = REPO_ROOT / rel_path
@@ -617,7 +619,44 @@ def test_readme_test_count_badge_parity():
     readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
     readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
 
-    assert "tests-309%20passed" in readme_en
-    assert "tests-309%20bestanden" in readme_de
-    assert "309 passing tests" in readme_en
-    assert "309 bestandene Tests" in readme_de
+    assert "tests-313%20passed" in readme_en
+    assert "tests-313%20bestanden" in readme_de
+    assert "313 passing tests" in readme_en
+    assert "313 bestandene Tests" in readme_de
+
+
+def test_code_of_conduct_bilingual_and_contacts():
+    """Verify CODE_OF_CONDUCT.md provides bilingual terms and valid security contacts."""
+    coc_path = REPO_ROOT / "CODE_OF_CONDUCT.md"
+    assert coc_path.exists(), "CODE_OF_CONDUCT.md missing"
+    coc_text = coc_path.read_text(encoding="utf-8")
+    assert "## Deutsch" in coc_text
+    assert "## English" in coc_text
+    assert "security@ellmos.ai" in coc_text
+    assert "support@lukasgeiger.com" in coc_text
+    assert "Contributor Covenant" in coc_text
+
+
+def test_llm_txt_pointer():
+    """Verify llm.txt exists and points to llms.txt and README.md."""
+    llm_path = REPO_ROOT / "llm.txt"
+    assert llm_path.exists(), "llm.txt missing"
+    llm_text = llm_path.read_text(encoding="utf-8")
+    assert "llms.txt" in llm_text
+    assert "README.md" in llm_text
+
+
+def test_pyproject_code_of_conduct_url():
+    """Verify pyproject.toml defines Code of Conduct URL."""
+    pyproject_text = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert '"Code of Conduct"' in pyproject_text
+    assert "CODE_OF_CONDUCT.md" in pyproject_text
+
+
+def test_changelog_pfad_a_20261102_entry():
+    """Verify CHANGELOG.md documents Pfad A technical hygiene on 2026-11-02."""
+    cl_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "### Pfad A Technical Hygiene — 2026-11-02" in cl_text
+    assert "CODE_OF_CONDUCT.md" in cl_text
+    assert "llm.txt" in cl_text
+    assert "sync_schema_to_repo.py" in cl_text

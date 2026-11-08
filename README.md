@@ -5,7 +5,7 @@
 **[English](README.md) | [Deutsch](README_de.md)**
 
 [![Tests](https://github.com/ellmos-ai/coma/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/ellmos-ai/coma/actions/workflows/tests.yml)
-[![Tests (Count)](https://img.shields.io/badge/tests-309%20passed-brightgreen.svg)](tests/)
+[![Tests (Count)](https://img.shields.io/badge/tests-313%20passed-brightgreen.svg)](tests/)
 [![Third-Party Licenses (Text)](https://img.shields.io/badge/licenses--text-Level%201%20SBOM-blue.svg)](THIRD_PARTY_LICENSES.txt)
 [![Version](https://img.shields.io/badge/version-0.3.2-blue.svg)](pyproject.toml)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
@@ -424,7 +424,7 @@ The following table separates implementation behavior from caller conventions an
 python -m pytest -ra -v
 ```
 
-The verification suite comprises **309 passing tests** covering extraction boundaries, CLI adapters (Claude, Codex, AGY, Kimi), session planners, dual-platform starters generation, status and channel I/O, and module manifest contract conformance. Tests mock provider CLI execution; the suite does not perform live-provider verification. A probe test starts a controlled local Python process to check reachability.
+The verification suite comprises **313 passing tests** covering extraction boundaries, CLI adapters (Claude, Codex, AGY, Kimi), session planners, dual-platform starters generation, status and channel I/O, and module manifest contract conformance. Tests mock provider CLI execution; the suite does not perform live-provider verification. A probe test starts a controlled local Python process to check reachability.
 
 
 ---
@@ -511,4 +511,4 @@ The project is provided under the MIT license. Whether statutory rules such as s
 <a id="stand--lizenz"></a>
 ## 18. License & Open-Source Umbrella
 
-MIT License. Developed under the [ellmos-ai](https://github.com/ellmos-ai) / [open-bricks](https://github.com/open-bricks) ecosystem. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for copyright attribution.
+MIT License. Developed under the [ellmos-ai](https://github.com/ellmos-ai) / [open-bricks](https://github.com/open-bricks) ecosystem. See [LICENSE](LICENSE), [NOTICE](NOTICE), [CONTRIBUTING.md](CONTRIBUTING.md), and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for copyright, contribution, and community conduct guidelines.
