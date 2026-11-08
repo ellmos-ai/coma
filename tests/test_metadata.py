@@ -607,6 +607,24 @@ def test_changelog_pfad_a_20261031_entry():
     assert ".github/dependabot.yml" in cl_text
 
 
+def test_changelog_pfad_b_20261107_entry():
+    """Verify CHANGELOG.md documents Pfad B marketing & discoverability on 2026-11-07."""
+    cl_text = (REPO_ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    assert "### Pfad B Marketing & Discoverability — 2026-11-07" in cl_text
+    assert "_schema/ellmos.module.v2.schema.json" in cl_text
+
+
+def test_readme_test_count_badge_parity():
+    """Verify that both README.md and README_de.md include verified test count badges."""
+    readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    readme_de = (REPO_ROOT / "README_de.md").read_text(encoding="utf-8")
+
+    assert "tests-313%20passed" in readme_en
+    assert "tests-313%20bestanden" in readme_de
+    assert "313 passing tests" in readme_en
+    assert "313 bestandene Tests" in readme_de
+
+
 def test_code_of_conduct_bilingual_and_contacts():
     """Verify CODE_OF_CONDUCT.md provides bilingual terms and valid security contacts."""
     coc_path = REPO_ROOT / "CODE_OF_CONDUCT.md"

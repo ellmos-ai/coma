@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Pfad B Marketing & Discoverability — 2026-11-07
+- Synchronized canonical Manifest schema (_schema/ellmos.module.v2.schema.json) and SHA-256 PIN (_schema/PIN.json), keeping contract tests 100% green.
+- Updated bilingual README architecture (README.md and README_de.md) with verified test count badge (313 passing tests measured live via pytest).
+- Enriched Section 13 (Testing & Verification Suite) in both languages with explicit breakdown of the 313 contract, boundary, adapter, session, and starter tests.
+- Re-verified dual Mermaid diagrams (5-layer system architecture topology and end-to-end execution lifecycle) syntax via lint_mermaid.py (0 errors).
+- Maintained strict version freeze at 0.3.2 across pyproject.toml, llmos-module.v2.json, and coma/__init__.py per T-20260920-167562623.
 ### Pfad A Technical Hygiene — 2026-11-02
 - Synchronized module manifest schema and PIN in `_schema/ellmos.module.v2.schema.json` and `_schema/PIN.json` with the canonical `.MODULES/_templates` schema (`sync_schema_to_repo.py`), resolving schema drift in `test_module_manifest_contract.py`.
 - Added bilingual Code of Conduct (`CODE_OF_CONDUCT.md`) based on Contributor Covenant v2.1 with security contacts (`security@ellmos.ai`, `support@lukasgeiger.com`).
