@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Re-verified dual Mermaid diagrams (5-layer system architecture topology and end-to-end execution lifecycle) syntax via lint_mermaid.py (0 errors).
 - Maintained strict version freeze at 0.3.2 across pyproject.toml, llmos-module.v2.json, and coma/__init__.py per T-20260920-167562623.
 
+### Canonical manifest schema synchronization — 2026-11-02
+- Resynchronized `_schema/ellmos.module.v2.schema.json` and its content hash through the prescribed schema synchronizer after the canonical-drift test failed.
+- Retains the existing adapter contract while accepting the canonical report-provider surface and Python entry-point adapter declarations.
+- Manifest, runtime, version, and drift-test logic remain unchanged; includes the pending setup-python v7 upgrade from PR #14.
+
 ### Pfad A Technical Hygiene — 2026-10-31
 - Added Dependabot Ecosystem Security configuration (`.github/dependabot.yml`) with security-only pip policy (zero version bumps, grouped security updates) and weekly GitHub Actions workflow updates (Europe/Berlin timezone).
 - Added canonical `github-actions` label to `.github/labels.yml` for automated workflow dependency tracking.
