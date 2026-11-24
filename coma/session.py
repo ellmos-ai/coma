@@ -29,6 +29,23 @@ PROBE_SENTINEL = "COMA_SESSION_PROBE_OK"
 PROBE_TOKEN = PROBE_SENTINEL
 PROBE_REQUEST = f"Reply with exactly {PROBE_TOKEN} and nothing else."
 DEFAULT_PROBE_TIMEOUT = 120.0
+_AGY_EFFORT_SUFFIXES: tuple[str, ...] = (
+    "-xhigh", "-medium", "-thinking", "-high", "-low", "-max",
+)
+
+
+def split_agy_model_effort(model: str, effort: str = "") -> tuple[str, str]:
+    """Vermeidet den agy-Konflikt '--model <m>-<effort> conflicts with --effort=...'.
+
+    In agy 1.5+ fuehren Modellnamen mit eingebettetem Effort-Suffix zusammen
+    mit einem separaten --effort-Flag sofort zu 'invalid model selection'.
+    """
+    clean_model = str(model or "").strip()
+    clean_effort = str(effort or "").strip()
+    lowered = clean_model.lower()
+    if clean_model and any(lowered.endswith(suffix) for suffix in _AGY_EFFORT_SUFFIXES):
+        return clean_model, ""
+    return clean_model, clean_effort
 
 
 @dataclass(frozen=True)
@@ -224,13 +241,14 @@ def build_session_plan(
         commands = (tuple(command),)
 
     elif name == "agy":
+        agy_model, agy_effort = split_agy_model_effort(model, effort)
         command = [cli]
         if trusted:
             command.extend(["--dangerously-skip-permissions", "--mode", "accept-edits"])
-        if model:
-            command.extend(["--model", model])
-        if effort:
-            command.extend(["--effort", effort])
+        if agy_model:
+            command.extend(["--model", agy_model])
+        if agy_effort:
+            command.extend(["--effort", agy_effort])
         command.extend(["--add-dir", str(prompt_path.parent)])
         command.extend([
             "--prompt-interactive" if actual_mode == "interactive" else "-p",
@@ -349,11 +367,12 @@ def build_probe_command(
             command.extend(["--config", f"model_reasoning_effort={json.dumps(effort)}"])
         command.append(PROBE_REQUEST)
     elif name == "agy":
-        if model:
-            command.extend(["--model", model])
-        if effort:
-            command.extend(["--effort", effort])
-        command.extend(["-p", PROBE_REQUEST])
+        agy_model, agy_effort = split_agy_model_effort(model, effort)
+        if agy_model:
+            command.extend(["--model", agy_model])
+        if agy_effort:
+            command.extend(["--effort", agy_effort])
+        command.extend(["--disable-slash-commands", "--output-format", "text", "-p", PROBE_REQUEST])
     else:
         if model:
             command.extend(["--model", model])
@@ -434,9 +453,12 @@ def probe(
 
 from .clutch import (  # noqa: E402
     GANG_PREFIX_MAP,
+    clamp_effort,
+    discover_agy_model_efforts,
     gang_to_candidate,
     get_clutch_models_status,
     is_clutch_available,
+    provider_model_choices,
     resolve_clutch_candidates,
 )
 
@@ -455,6 +477,8 @@ __all__ = [
     "available_candidates",
     "build_probe_command",
     "build_session_plan",
+    "clamp_effort",
+    "discover_agy_model_efforts",
     "gang_to_candidate",
     "get_clutch_models_status",
     "is_clutch_available",
@@ -462,5 +486,7 @@ __all__ = [
     "normalize_provider",
     "ordered_candidates",
     "probe",
+    "provider_model_choices",
     "resolve_clutch_candidates",
+    "split_agy_model_effort",
 ]

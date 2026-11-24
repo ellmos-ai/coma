@@ -84,6 +84,20 @@ def test_agy_modes_and_unicode_path_are_single_arguments(prompt_file, tmp_path):
     assert str(prompt_file) in interactive.command[-1]
     assert headless.command[-2] == "-p"
 
+    # Suffixed agy model must NOT emit a conflicting --effort flag (agy 1.5+)
+    suffixed = build_session_plan(
+        "agy", prompt_file=prompt_file, request="Los.",
+        model="gemini-4-hydrogen-low", effort="high",
+        cwd=tmp_path, executable="agy-test",
+    )
+    assert "--effort" not in suffixed.command
+    assert suffixed.command[suffixed.command.index("--model") + 1] == "gemini-4-hydrogen-low"
+
+    probe_cmd = build_probe_command("agy", "agy-test", model="gemini-4-hydrogen-low", effort="high")
+    assert "--effort" not in probe_cmd
+    assert "--disable-slash-commands" in probe_cmd
+    assert "--output-format" in probe_cmd
+
 
 def test_kimi_is_fail_closed_and_two_phase_when_explicit(prompt_file, tmp_path):
     with pytest.raises(AdapterError, match="nicht live verifiziert"):
