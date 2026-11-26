@@ -185,3 +185,59 @@ def test_ordered_and_available_candidates_preserves_source():
     assert len(available) == 2
     assert available[0].source == "clutch"
     assert available[1].source == "config"
+
+
+def test_discover_agy_models_and_effort_clamping():
+    from coma.clutch import (
+        clamp_effort,
+        discover_agy_model_efforts,
+        provider_model_choices,
+    )
+
+    agy_stdout = "\n".join([
+        "Fetching available models...",
+        "gemini-4-neon-high\tGemini 4 Neon (High)",
+        "gemini-4-neon-xhigh\tGemini 4 Neon (XHigh)",
+        "gemini-4-carbon-medium\tGemini 4 Carbon (Medium)",
+        "gemini-4-carbon-high\tGemini 4 Carbon (High)",
+        "gemini-4-hydrogen-low\tGemini 4 Hydrogen (Low)",
+        "gemini-pro-orchestrator\tOrchestrator (Carbon)",
+        "gpt-oss-120b-medium\tGPT-OSS 120B (Medium)",
+    ])
+
+    def run_mock(cmd, *args, **kwargs):
+        if cmd[:2] == ["/bin/agy", "models"]:
+            return FakeCompletedProcess(returncode=0, stdout=agy_stdout)
+        return FakeCompletedProcess(returncode=1)
+
+    efforts = discover_agy_model_efforts(which=lambda n: f"/bin/{n}", run=run_mock)
+    assert list(efforts.keys()) == [
+        "gemini-4-carbon",
+        "gemini-4-neon",
+        "gemini-4-hydrogen",
+        "gpt-oss-120b",
+    ]
+    assert efforts["gpt-oss-120b"] == ("medium",)
+    assert clamp_effort("xhigh", efforts["gpt-oss-120b"]) == "medium"
+    assert clamp_effort("xhigh", efforts["gemini-4-carbon"]) == "high"
+
+    # Retired agy model is skipped when live_agy_efforts is provided
+    cand, skip = gang_to_candidate(
+        "agy-gemini-3.5-flash",
+        effort="high",
+        live_agy_efforts=efforts,
+    )
+    assert cand is None
+    assert "lokaler agy-CLI" in skip
+
+    # Live model gets effort clamped to supported level
+    cand, skip = gang_to_candidate(
+        "agy-gpt-oss-120b",
+        effort="xhigh",
+        live_agy_efforts=efforts,
+    )
+    assert skip is None
+    assert cand == Candidate("agy", "gpt-oss-120b", "medium", source="clutch")
+
+    choices = provider_model_choices("agy", which=lambda n: f"/bin/{n}", run=run_mock)
+    assert choices == ("gemini-4-carbon", "gemini-4-neon", "gemini-4-hydrogen", "gpt-oss-120b")
